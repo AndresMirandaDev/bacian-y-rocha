@@ -1,10 +1,9 @@
 'use client';
 import { useSession } from 'next-auth/react';
-import Image from 'next/image';
-import { authOptions } from './api/auth/[...nextauth]/route';
+
 import LoginPage from './login/page';
 import { redirect } from 'next/navigation';
-import { Container } from '@radix-ui/themes';
+
 import LoadingScreen from './components/LoadingScreen';
 
 const Home = () => {
