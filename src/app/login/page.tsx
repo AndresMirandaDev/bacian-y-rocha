@@ -7,31 +7,15 @@ import { RiLoginCircleLine } from 'react-icons/ri';
 import LoadingScreen from '../components/LoadingScreen';
 
 const LoginPage = () => {
-  //   const [loading, setLoading] = useState(true);
-  //   useEffect(() => {
-  //     const checkIfInitialLoad = !localStorage.getItem('isInitialLoad');
-
-  //     if (checkIfInitialLoad) {
-  //       // It's the initial load (refreshing the page)
-  //       localStorage.setItem('isInitialLoad', 'true');
-  //       setLoading(true); // Set loading to true when refreshing
-  //     } else {
-  //       // It's not the initial load
-  //       localStorage.removeItem('isInitialLoad');
-  //       setLoading(false); // Set loading to false after rendering
-  //     }
-  //   }, []);
-
-  //   if (loading) return <LoadingScreen />;
   return (
-    <div className="flex h-screen w-screen  justify-center items-center bg-cyan-700">
+    <div className="flex h-screen w-screen  justify-center items-center bg-blue-950">
       <Flex
         direction="column"
         justify="center"
         align="center"
         className="w-full"
       >
-        <Card className="md:h-1/2 md:w-1/2 shadow-2xl">
+        <Card className="md:h-1/2 md:w-1/2 shadow-2xl bg-white">
           <Flex
             direction="column"
             justify="center"
@@ -44,10 +28,10 @@ const LoginPage = () => {
                 Bienvenido
               </Text>
               <Image
-                src={require('../../../public/assets/images/generic-logo.png')}
+                src={require('../../../public/assets/images/byrs.png')}
                 alt="Logo"
-                height={400}
-                width={400}
+                height={200}
+                width={200}
               />
             </Flex>
             <Flex justify="center" align="center">

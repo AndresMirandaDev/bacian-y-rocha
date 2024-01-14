@@ -57,7 +57,7 @@ const SignInPage = () => {
           align="center"
           className="w-full p-5"
         >
-          <Card className="md:h-full sm:w-full md:w-1/2 shadow-2xl">
+          <Card className="md:h-2/3 sm:w-1/2 md:w-1/2 shadow-2xl">
             <Flex
               direction="column"
               justify="center"
@@ -71,10 +71,10 @@ const SignInPage = () => {
                     Inicia Sesión
                   </Text>
                   <Image
-                    src={require('../../../public/assets/images/generic-logo.png')}
+                    src={require('../../../public/assets/images/byrs.png')}
                     alt="Logo"
-                    height={400}
-                    width={400}
+                    height={200}
+                    width={200}
                   />
                 </Flex>
                 <Form.Root onSubmit={onSubmit}>

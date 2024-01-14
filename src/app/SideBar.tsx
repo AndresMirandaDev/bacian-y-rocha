@@ -20,7 +20,7 @@ import { useSession } from 'next-auth/react';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 
-import logo from '../../public/assets/images/generic-logo.png';
+import logo from '../../public/assets/images/byrs.png';
 
 const SideBar = () => {
   const { status } = useSession();
@@ -66,11 +66,11 @@ const SideBar = () => {
             </Box>
             <Box
               className={classNames({
-                'mb-5': true,
+                'mb-5 justify-center flex': true,
                 hidden: !open,
               })}
             >
-              <Image src={logo} alt="logo" />
+              <Image src={logo} alt="logo" height={125} width={125} />
             </Box>
             <NavLinks open={open} />
           </Flex>
