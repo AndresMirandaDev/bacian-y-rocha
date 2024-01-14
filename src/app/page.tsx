@@ -8,7 +8,7 @@ import LoadingScreen from './components/LoadingScreen';
 import { getServerSession } from 'next-auth';
 import { useState } from 'react';
 
-const Home = async () => {
+const Home = () => {
   const session = useSession();
 
   console.log(session);

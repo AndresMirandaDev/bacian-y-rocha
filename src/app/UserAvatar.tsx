@@ -24,7 +24,6 @@ const UserAvatar = () => {
     <nav
       className={classNames({
         'w-screen shadow-sm bg-[var(--accent-9)]': true,
-        hidden: status === 'loading',
       })}
     >
       <Flex justify="end" mr="5">
@@ -32,8 +31,8 @@ const UserAvatar = () => {
           <DropdownMenu.Root>
             <DropdownMenu.Trigger>
               <Box className="cursor-pointer text-slate-100 text-4xl">
-                {status === 'authenticated' && <FaUserCircle />}
                 {status === 'loading' && <Skeleton />}
+                {status === 'authenticated' && <FaUserCircle />}
               </Box>
             </DropdownMenu.Trigger>
             <DropdownMenu.Content className="p-2">
