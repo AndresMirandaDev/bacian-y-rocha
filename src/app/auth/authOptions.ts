@@ -6,7 +6,6 @@ import axios from "axios";
 const authOptions: NextAuthOptions = {
     theme:{
       colorScheme:'light',
-      logo:'../../../../../public/assets/images/generic-logo.png'
     },
     providers:[
       CredentialsProvider({

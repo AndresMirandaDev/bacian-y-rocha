@@ -5,8 +5,10 @@ import LoginPage from './login/page';
 import { redirect } from 'next/navigation';
 
 import LoadingScreen from './components/LoadingScreen';
+import { getServerSession } from 'next-auth';
+import { useState } from 'react';
 
-const Home = () => {
+const Home = async () => {
   const session = useSession();
 
   if (session.status === 'authenticated') return redirect('/dashboard');
