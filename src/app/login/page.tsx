@@ -1,3 +1,4 @@
+'use client';
 import { Box, Button, Card, Flex, Text } from '@radix-ui/themes';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
