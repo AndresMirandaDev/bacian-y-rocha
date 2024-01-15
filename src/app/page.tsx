@@ -11,7 +11,7 @@ import { useState } from 'react';
 const Home = () => {
   const session = useSession();
 
-  console.log(session);
+
 
   if (session.status === 'loading') return <LoadingScreen />;
   if (session.status === 'authenticated') return redirect('/dashboard');

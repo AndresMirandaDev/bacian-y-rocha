@@ -39,6 +39,7 @@ const SignInPage = () => {
       redirect: false,
     });
 
+    console.log(result);
     if (!result?.ok) {
       return toast.error('Correo o Contraseña inválido.');
     }

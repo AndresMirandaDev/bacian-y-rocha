@@ -1,6 +1,8 @@
 import  CredentialsProvider  from "next-auth/providers/credentials";
 import { NextAuthOptions, Session } from "next-auth";
 import axios from "axios";
+import * as bcrypt from 'bcrypt'
+import prisma from "../../../prisma/client";
 
 
 const authOptions: NextAuthOptions = {
@@ -21,12 +23,25 @@ const authOptions: NextAuthOptions = {
           if(!credentials?.email || !credentials.password) 
             return null;
 
-           const response = await axios.post(`https://backendabq.onrender.com/api/user/signin`, credentials)
+           const user = await prisma.user.findUnique({
+            where: {email : credentials.email }
+           })
 
-          if(!response.data.accessToken)
-            return null;
+           if(!user) return null
 
-          return response.data.user  
+           const passwordMatch = await bcrypt.compare(credentials.password, user.password)
+           
+           const {email, id, image, phone,role,name} = user
+           const signedUser = {
+            id,
+            name,
+            email,
+            image,
+            phone,
+            role
+           }
+
+           return passwordMatch ? signedUser : null
 
         } 
       }),
