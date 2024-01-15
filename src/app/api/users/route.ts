@@ -1,3 +1,4 @@
+import * as bcrypt from 'bcrypt';
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../prisma/client";
 import { userSchema } from "./validationSchema";
@@ -20,9 +21,26 @@ export async function POST(request:NextRequest) {
         if (userExists)
             return NextResponse.json({
                 message:'Email is already registered'
+        },{ status:400 })
+
+        const salt = await bcrypt.genSalt(10)
+        const encryptedPassword =await bcrypt.hash(body.password, salt)
+
+        const newUser =  await prisma.user.create({
+            data:{
+                name:body.name,
+                email:body.email,
+                password:encryptedPassword,
+                phone:body.phone,
+                image:body.image,
+            }
         })
+
+        return NextResponse.json({ message:'success', body:newUser }, { status:201 })
+
     } catch (error) {
-        
+
+        return NextResponse.json({ message:'an unexpected error ocurred', body:error}, { status: 500 })
     }
 
 }
@@ -34,3 +52,5 @@ export async function GET(request:NextRequest) {
     })
     return NextResponse.json(users)
 }
+
+
