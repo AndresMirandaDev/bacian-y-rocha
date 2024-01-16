@@ -23,3 +23,41 @@ model User {
 enum Role {
   admin
 }
+
+model Quote {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  number String @unique
+  file   String
+}
+
+model SaleOrder {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  materials      Material[]
+  receptionGuide String
+  status         Status     @default(PENDING)
+}
+
+model MaterialAssignedToWO {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  material  Material
+  quantity  Int
+  workOrder String   @db.ObjectId
+  saleOrder String   @db.ObjectId
+}
+
+type Material {
+  name      String
+  unitPrice Int
+  quantity  Int
+}
+
+enum Status {
+  PENDING
+  IN_PROCESS
+  NOTMATCHING
+  ARRIVED
+}
+
+model WorkOrder {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+}

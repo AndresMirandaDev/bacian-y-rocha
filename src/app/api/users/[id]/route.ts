@@ -9,7 +9,7 @@ interface Params {
 
 export async function PATCH(request:NextRequest, { params } : Params) {
     const body = await request.json()
-    console.log(body)
+ 
     const isValid = await patchUserSchema.safeParse(body)
     try {
         if (!isValid.success)
@@ -51,8 +51,10 @@ export async function DELETE(request:NextRequest, { params }: Params) {
         return NextResponse.json({ message: 'Invalid user' } , { status:404 })
 
     await prisma.user.delete({
-        where:{ id: params.id }
+        where:{ id: user.id }
     })
 
-    return NextResponse.json({})
+    return NextResponse.json({
+        message: 'success'
+    })
 }

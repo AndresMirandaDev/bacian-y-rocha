@@ -16,7 +16,8 @@ export async function POST(request:NextRequest) {
                 { status:400 }
         ) 
         
-        const userExists = await prisma.user.findFirst({where:{email:body.email}})       
+        const userExists = await prisma.user.findFirst({where:{email:body.email}}) 
+
         
         if (userExists)
             return NextResponse.json({
