@@ -31,18 +31,21 @@ model Quote {
 }
 
 model SaleOrder {
-  id             String     @id @default(auto()) @map("_id") @db.ObjectId
-  materials      Material[]
-  receptionGuide String
-  status         Status     @default(PENDING)
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  materials         Material[]
+  receptionGuide    String
+  status            Status              @default(PENDING)
+  assignedMaterials AssignedMaterials[]
 }
 
-model MaterialAssignedToWO {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  material  Material
-  quantity  Int
-  workOrder String   @db.ObjectId
-  saleOrder String   @db.ObjectId
+model AssignedMaterials {
+  id               String    @id @default(auto()) @map("_id") @db.ObjectId
+  material         Material
+  assignedQuantity Int
+  workOrderId      String    @db.ObjectId
+  saleOrderId      String    @db.ObjectId
+  workOrder        WorkOrder @relation(fields: [workOrderId], references: [id])
+  saleOrder        SaleOrder @relation(fields: [saleOrderId], references: [id])
 }
 
 type Material {
@@ -54,10 +57,11 @@ type Material {
 enum Status {
   PENDING
   IN_PROCESS
-  NOTMATCHING
+  NOT_MATCHING
   ARRIVED
 }
 
 model WorkOrder {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  assignedMaterials AssignedMaterials[]
 }
