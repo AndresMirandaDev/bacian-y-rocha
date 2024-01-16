@@ -8,7 +8,7 @@ interface Params {
 
 export async function GET(request:NextRequest, { params } : Params){
     try {
-        const quote = await prisma.saleOrder.findUnique({
+        const quote = await prisma.quote.findUnique({
             where: { id : params.id }
         })
         if(!quote)
