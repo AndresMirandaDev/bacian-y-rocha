@@ -91,8 +91,8 @@ const NavLinks = ({ open }: NavlinkProps) => {
 
   const links = [
     { label: 'Inicio', href: '/dashboard', icon: <MdDashboard /> },
-    { label: 'Ordenes de trabajos', href: '/ot', icon: <FaHelmetSafety /> },
-    { label: 'Ordenes de Compra', href: '/oc', icon: <FaFileInvoiceDollar /> },
+    { label: 'O.trabajo', href: '/ot', icon: <FaHelmetSafety /> },
+    { label: 'O.Compra', href: '/oc', icon: <FaFileInvoiceDollar /> },
   ];
 
   return (

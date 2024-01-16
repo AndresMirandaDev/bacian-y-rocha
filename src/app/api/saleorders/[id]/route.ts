@@ -13,7 +13,7 @@ export async function GET (request:NextRequest, { params }: Params){
         })
 
         if(!saleOrder)
-            return NextResponse.json({ message: 'Invaild id' }, { status:404 })
+            return NextResponse.json({ message: 'Invalid id' }, { status:404 })
 
         return NextResponse.json({
             message:'success',
@@ -24,7 +24,7 @@ export async function GET (request:NextRequest, { params }: Params){
     
     catch (error) {
         return NextResponse.json({
-            message: 'An unexpected error ocurred',
+            message: 'An unexpected error occurred',
             error
         }, { status : 500 })
     }
@@ -54,14 +54,14 @@ export async function PATCH (request:NextRequest, { params }: Params){
             }
         })    
         return NextResponse.json({
-            message:'sucess',
+            message:'success',
             body: updatedSaleOrder
         })
 
     } 
     
     catch (error) {
-        return NextResponse.json({ message:'An unexpected error ocurred'} , { status: 500} )
+        return NextResponse.json({ message:'An unexpected error occurred', error} , { status: 500} )
     }
 }
 
@@ -72,7 +72,7 @@ export async function DELETE(request: NextRequest, { params }: Params){
         })
 
         if(!saleOrder)
-            return NextResponse.json({ message:'Invaild id' }, { status: 404 })
+            return NextResponse.json({ message:'Invalid id' }, { status: 404 })
 
         await prisma.saleOrder.delete({
             where: { id: saleOrder.id}
@@ -84,6 +84,6 @@ export async function DELETE(request: NextRequest, { params }: Params){
     } 
     
     catch (error) {
-        return NextResponse.json({ message:'An unexpected error ocurred'} , { status: 500} )
+        return NextResponse.json({ message:'An unexpected error occurred', error} , { status: 500} )
     }
 }

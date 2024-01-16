@@ -23,7 +23,7 @@ export async function POST(request:NextRequest) {
     
     catch (error) {
         console.log(error)
-        return NextResponse.json({message:"An unexpected error ocurred", error},{ status: 500 })
+        return NextResponse.json({message:"An unexpected error occurred", error},{ status: 500 })
     }
 
 }
@@ -34,6 +34,6 @@ export async function GET(request:NextRequest) {
         const saleOrders = await prisma.saleOrder.findMany()
         return NextResponse.json({ message:'success' , body: saleOrders })
     } catch (error) {
-        return NextResponse.json({message:'An unexpected error ocurred', error },{ status: 500 })
+        return NextResponse.json({message:'An unexpected error occurred', error },{ status: 500 })
     }
 }
