@@ -14,9 +14,9 @@ const QuotesTable = ({ quotes }: Props) => {
 
   return (
     <>
-      <Table.Root variant="ghost">
+      <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
-          <Table.Row className="text-slate-100">
+          <Table.Row>
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Archivo</Table.ColumnHeaderCell>
           </Table.Row>

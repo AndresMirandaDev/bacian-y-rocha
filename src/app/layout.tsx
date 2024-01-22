@@ -24,7 +24,7 @@ export default async function RootLayout({
     <html lang="en" data-theme="light">
       <body className={inter.className}>
         <AuthProvider>
-          <Theme appearance="light" radius="large">
+          <Theme appearance="light" radius="large" accentColor="indigo">
             <div className="flex">
               <SideBar />
               <main>
