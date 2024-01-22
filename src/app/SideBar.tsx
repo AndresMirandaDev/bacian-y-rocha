@@ -1,23 +1,18 @@
 'use client';
-import React, { useState } from 'react';
-import Link from 'next/link';
-import classNames from 'classnames';
 import { Box, Container, Flex, Text } from '@radix-ui/themes';
+import classNames from 'classnames';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { FaHelmetSafety } from 'react-icons/fa6';
+import { useState } from 'react';
+import { FaFileInvoice, FaHelmetSafety } from 'react-icons/fa6';
 
-import { MdDashboard } from 'react-icons/md';
 import { FaFileInvoiceDollar } from 'react-icons/fa6';
-
-import { FaChartBar } from 'react-icons/fa';
-import { TbActivity } from 'react-icons/tb';
+import { MdDashboard } from 'react-icons/md';
 
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoMdClose } from 'react-icons/io';
-import { FaBoxOpen } from 'react-icons/fa6';
 
 import { useSession } from 'next-auth/react';
-import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 
 import logo from '../../public/assets/images/byrs.png';
@@ -93,6 +88,11 @@ const NavLinks = ({ open }: NavlinkProps) => {
     { label: 'Inicio', href: '/dashboard', icon: <MdDashboard /> },
     { label: 'O.trabajo', href: '/ot', icon: <FaHelmetSafety /> },
     { label: 'O.Compra', href: '/oc', icon: <FaFileInvoiceDollar /> },
+    {
+      label: 'Cotizaciones',
+      href: '/quotes',
+      icon: <FaFileInvoice />,
+    },
   ];
 
   return (
