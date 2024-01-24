@@ -1,7 +1,6 @@
-import { Box, Button, Card, Grid, Separator } from '@radix-ui/themes';
-import React from 'react';
-import QuotesTable from './QuotesTable';
+import { Box, Card, Grid, Separator } from '@radix-ui/themes';
 import prisma from '../../../prisma/client';
+import QuotesTable from './QuotesTable';
 import RegisterQuote from './RegisterQuote';
 
 const QuotesPage = async () => {

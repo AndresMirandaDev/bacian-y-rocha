@@ -28,3 +28,13 @@ body {
     @apply text-zinc-500 hover:text-zinc-800 transition-colors
   }
 }
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number]{
+  -moz-appearance: textfield;
+}

@@ -1,5 +1,5 @@
 'use client';
-import { Table } from '@radix-ui/themes';
+import { Box, Button, Table } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import Pagination from '../components/Pagination';
 import { Quote } from '@prisma/client';
