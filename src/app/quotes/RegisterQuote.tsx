@@ -50,33 +50,35 @@ const RegisterQuote = () => {
           <Callout.Text>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <Flex direction="column" gap="4">
+      <Flex direction="column" className="min-h-full" justify="between">
         <Box>
           <Text className="text-xl">Registrar Nueva Cotización</Text>
         </Box>
-        <Form.Root onSubmit={handleSubmit}>
-          <Flex direction="column" gap="4">
-            <FormField
-              value={number}
-              setValue={setNumber}
-              typeMismatch="Número Inválido"
-              valueMissing="Ingrese número de cotización"
-              label="Número de cotización"
-              type="number"
-            />
-            <Box>
-              <FileUploader publicId={file} setPublicId={setFile} />
-            </Box>
-            <Flex gap="4">
-              <Form.Submit asChild>
-                <Button disabled={isSubmitting}>
-                  {isSubmitting && <Spinner />}
-                  {isSubmitting ? 'Registrando' : 'Registrar'}
-                </Button>
-              </Form.Submit>
+        <Box>
+          <Form.Root onSubmit={handleSubmit}>
+            <Flex direction="column" gap="9">
+              <FormField
+                value={number}
+                setValue={setNumber}
+                typeMismatch="Número Inválido"
+                valueMissing="Ingrese número de cotización"
+                label="Número de cotización"
+                type="number"
+              />
+              <Box>
+                <FileUploader publicId={file} setPublicId={setFile} />
+              </Box>
+              <Flex gap="4" direction="column">
+                <Form.Submit asChild>
+                  <Button disabled={isSubmitting}>
+                    {isSubmitting && <Spinner />}
+                    {isSubmitting ? 'Registrando' : 'Registrar'}
+                  </Button>
+                </Form.Submit>
+              </Flex>
             </Flex>
-          </Flex>
-        </Form.Root>
+          </Form.Root>
+        </Box>
       </Flex>
       <Toaster />
     </>
