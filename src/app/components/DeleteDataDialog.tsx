@@ -4,6 +4,7 @@ import { FaTrash } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import Spinner from './Spinner';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   name: string;
@@ -12,10 +13,13 @@ interface Props {
 
 const DeleteDataDialog = ({ name, id }: Props) => {
   const [isDeleting, setDeleting] = useState(false);
+  const router = useRouter();
   const handleDelete = async () => {
     try {
       setDeleting(true);
       await axios.delete(`api/quotes/${id}`);
+      toast.success('Los datos han sido eliminados correctamente.');
+      router.refresh();
     } catch (error) {
       setDeleting(false);
       toast.error(
