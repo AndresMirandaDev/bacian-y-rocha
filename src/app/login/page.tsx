@@ -18,7 +18,7 @@ const LoginPage = () => {
         align="center"
         className="w-full"
       >
-        <Card className="md:h-1/2 md:w-1/2 shadow-2xl bg-white">
+        <Box className="md:h-1/2 md:w-1/2 shadow-2xl bg-[rgba(254,254,254,0.68813462885154064)] rounded-xl z-10 p-5">
           <Flex
             direction="column"
             justify="center"
@@ -46,7 +46,7 @@ const LoginPage = () => {
               </Button>
             </Flex>
           </Flex>
-        </Card>
+        </Box>
       </Flex>
     </div>
   );

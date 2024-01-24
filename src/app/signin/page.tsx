@@ -1,6 +1,6 @@
 'use client';
 import * as Form from '@radix-ui/react-form';
-import { Button, Card, Flex, Text } from '@radix-ui/themes';
+import { Box, Button, Card, Flex, Text } from '@radix-ui/themes';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 import { redirect, useRouter } from 'next/navigation';
@@ -60,7 +60,7 @@ const SignInPage = () => {
           align="center"
           className="w-full p-5"
         >
-          <Card className="md:h-2/3 sm:w-1/2 md:w-1/2 shadow-2xl">
+          <Box className="md:h-2/3 sm:w-1/2 md:w-1/2 shadow-2xl z-10 bg-[rgba(254,254,254,0.68813462885154064)] rounded-2xl">
             <Flex
               direction="column"
               justify="center"
@@ -155,7 +155,7 @@ const SignInPage = () => {
                 </Form.Root>
               </Flex>
             </Flex>
-          </Card>
+          </Box>
         </Flex>
       </div>
       <Toaster
