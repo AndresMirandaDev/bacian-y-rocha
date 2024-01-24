@@ -8,7 +8,7 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { RiLoginCircleLine } from 'react-icons/ri';
 import LoadingScreen from '../components/LoadingScreen';
-import MovingBackground from '../background/page';
+import MovingBackground from '../components/background/MovingBackground';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');

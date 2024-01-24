@@ -1,12 +1,9 @@
 'use client';
-import { Box, Button, Card, Flex, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Text } from '@radix-ui/themes';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
 import { RiLoginCircleLine } from 'react-icons/ri';
-import LoadingScreen from '../components/LoadingScreen';
-import MovingBackground from '../background/page';
+import MovingBackground from '../components/background/MovingBackground';
 
 const LoginPage = () => {
   return (
