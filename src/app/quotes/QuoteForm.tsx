@@ -71,7 +71,9 @@ const QuoteForm = ({ quote }: Props) => {
       )}
       <Flex direction="column" className="min-h-full" justify="between">
         <Box>
-          <Text className="text-xl">Registrar Nueva Cotización</Text>
+          <Text className="text-xl">
+            {quote ? 'Actualizar nueva cotización' : 'Editar Cotización'}
+          </Text>
         </Box>
         <Box>
           <Form.Root onSubmit={handleSubmit}>
