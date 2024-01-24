@@ -1,7 +1,7 @@
 'use client';
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { Quote } from '@prisma/client';
-import { IconButton, Table } from '@radix-ui/themes';
+import { IconButton, Table, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { FaFilePdf } from 'react-icons/fa6';
 import Pagination from '../components/Pagination';
@@ -16,6 +16,7 @@ const QuotesTable = ({ quotes }: Props) => {
 
   return (
     <>
+      <Text className="text-xl">Cotizaciones</Text>
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>

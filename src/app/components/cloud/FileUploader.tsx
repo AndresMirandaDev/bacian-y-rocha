@@ -33,7 +33,7 @@ const FileUploader = ({ publicId, setPublicId }: Props) => {
       >
         {({ open }) => (
           <button
-            className="btn mt-3 bg-[var(--accent-9)] text-white"
+            className="btn mt-3 bg-[var(--accent-9)] text-white hover:bg-gray-600"
             onClick={(e) => open()}
             type="button"
           >

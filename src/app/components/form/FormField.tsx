@@ -9,6 +9,7 @@ interface Props {
   typeMismatch: string;
   label: string;
   type?: HTMLInputTypeAttribute;
+  name: string;
 }
 
 const FormField = ({
@@ -18,12 +19,13 @@ const FormField = ({
   typeMismatch,
   label,
   type,
+  name,
 }: Props) => {
   const errorMessageClassname = 'text-red-500 text-sm opacity-80';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
 
   return (
-    <Form.Field className="rounded-md" name="email">
+    <Form.Field className="rounded-md" name={name}>
       <div
         style={{
           display: 'flex',
