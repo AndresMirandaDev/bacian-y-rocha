@@ -72,7 +72,7 @@ const QuoteForm = ({ quote }: Props) => {
       <Flex direction="column" className="min-h-full" justify="between">
         <Box>
           <Text className="text-xl">
-            {quote ? 'Actualizar nueva cotización' : 'Editar Cotización'}
+            {quote ? 'Actualizar cotización' : 'Registrar nueva cotización'}
           </Text>
         </Box>
         <Box>
