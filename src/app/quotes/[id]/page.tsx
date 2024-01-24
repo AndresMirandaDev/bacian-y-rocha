@@ -1,4 +1,4 @@
-import { Box, Card } from '@radix-ui/themes';
+import { Box, Card, Container } from '@radix-ui/themes';
 import { notFound } from 'next/navigation';
 import prisma from '../../../../prisma/client';
 import dynamic from 'next/dynamic';
@@ -21,11 +21,13 @@ const QuoteDetails = async ({ params }: Props) => {
   });
   if (!quote) return notFound();
   return (
-    <Card>
-      <Box>
-        <QuoteForm quote={quote} />
-      </Box>
-    </Card>
+    <Container className="p-3">
+      <Card>
+        <Box>
+          <QuoteForm quote={quote} />
+        </Box>
+      </Card>
+    </Container>
   );
 };
 
