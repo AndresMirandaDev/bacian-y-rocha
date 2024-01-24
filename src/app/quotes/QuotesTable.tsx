@@ -1,10 +1,11 @@
 'use client';
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { Quote } from '@prisma/client';
-import { IconButton, Table, Text } from '@radix-ui/themes';
+import { Box, Flex, IconButton, Table, Text } from '@radix-ui/themes';
 import { useState } from 'react';
-import { FaFilePdf } from 'react-icons/fa6';
+import { FaFilePdf, FaTrash } from 'react-icons/fa6';
 import Pagination from '../components/Pagination';
+import { FaEdit } from 'react-icons/fa';
 
 interface Props {
   quotes: Quote[];
@@ -22,6 +23,7 @@ const QuotesTable = ({ quotes }: Props) => {
           <Table.Row>
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Archivo PDF</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Acciones</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -44,6 +46,16 @@ const QuotesTable = ({ quotes }: Props) => {
                     >
                       <FaFilePdf />
                     </IconButton>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Flex gap="3">
+                      <Box className="text-cyan-600 cursor-pointer">
+                        <FaEdit size={15} />
+                      </Box>
+                      <Box className="text-red-400 cursor-pointer">
+                        <FaTrash />
+                      </Box>
+                    </Flex>
                   </Table.Cell>
                 </Table.Row>
               );
