@@ -8,6 +8,7 @@ import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { RiLoginCircleLine } from 'react-icons/ri';
 import LoadingScreen from '../components/LoadingScreen';
+import MovingBackground from '../background/page';
 
 const SignInPage = () => {
   const [email, setEmail] = useState('');
@@ -51,7 +52,8 @@ const SignInPage = () => {
 
   return (
     <>
-      <div className="flex h-screen w-screen  justify-center bg-cyan-700">
+      <div className="flex h-screen w-screen  justify-center ">
+        <MovingBackground />
         <Flex
           direction="column"
           justify="center"
