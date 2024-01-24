@@ -7,6 +7,7 @@ import { FaFilePdf, FaTrash } from 'react-icons/fa6';
 import Pagination from '../components/Pagination';
 import { FaEdit } from 'react-icons/fa';
 import DeleteDataDialog from '../components/DeleteDataDialog';
+import Link from 'next/link';
 
 interface Props {
   quotes: Quote[];
@@ -51,7 +52,9 @@ const QuotesTable = ({ quotes }: Props) => {
                   <Table.Cell>
                     <Flex gap="3">
                       <Box className="text-cyan-600 cursor-pointer">
-                        <FaEdit size={15} />
+                        <Link href={`/quotes/${quote.id}`}>
+                          <FaEdit size={15} />
+                        </Link>
                       </Box>
                       <DeleteDataDialog
                         name={`cotización nr ${quote.number}`}

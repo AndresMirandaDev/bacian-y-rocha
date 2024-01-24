@@ -3,14 +3,19 @@ import * as Form from '@radix-ui/react-form';
 import { Box, Button, Callout, Flex, Text } from '@radix-ui/themes';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { MdDangerous } from 'react-icons/md';
 import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import toast, { Toaster } from 'react-hot-toast';
 import Spinner from '../components/Spinner';
+import { Quote } from '@prisma/client';
 
-const RegisterQuote = () => {
+interface Props {
+  quote?: Quote;
+}
+
+const QuoteForm = ({ quote }: Props) => {
   const router = useRouter();
 
   const [open, setOpen] = useState(false);
@@ -19,19 +24,33 @@ const RegisterQuote = () => {
   const [isSubmitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
+  useEffect(() => {
+    if (quote) {
+      setNumber(quote!.number);
+      setFile(quote!.file);
+    }
+  }, [quote]);
+
   const errorMessageClassname = 'text-red-500 text-sm opacity-80';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      setSubmitting(true);
-      await axios.post('/api/quotes', { number, file });
-      setError('');
-      setNumber('');
-      setFile('');
-      router.refresh();
-      toast.success('Se ha registrado una nueva cotización');
+      if (quote) {
+        setSubmitting(true);
+        await axios.patch(`/api/quotes/${quote.id}`, { number, file });
+        router.refresh();
+        toast.success('Cotización ha sido actualizada.');
+      } else {
+        setSubmitting(true);
+        await axios.post('/api/quotes', { number, file });
+        setError('');
+        setNumber('');
+        setFile('');
+        router.refresh();
+        toast.success('Se ha registrado una nueva cotización');
+      }
     } catch (error) {
       setSubmitting(false);
       setError('Hubo un error inesperado, inténtelo nuevamente');
@@ -73,7 +92,10 @@ const RegisterQuote = () => {
                 <Form.Submit asChild>
                   <Button disabled={isSubmitting}>
                     {isSubmitting && <Spinner />}
-                    {isSubmitting ? 'Registrando' : 'Registrar'}
+                    {!isSubmitting && !quote && 'Registrar'}
+                    {!isSubmitting && quote && 'Actualizar'}
+                    {isSubmitting && !quote && 'Registrando'}
+                    {isSubmitting && quote && 'Actualizando'}
                   </Button>
                 </Form.Submit>
               </Flex>
@@ -86,4 +108,4 @@ const RegisterQuote = () => {
   );
 };
 
-export default RegisterQuote;
+export default QuoteForm;
