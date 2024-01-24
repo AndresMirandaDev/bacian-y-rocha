@@ -1,40 +1,84 @@
 'use client';
-import { Button, Card, Dialog, Flex, Text } from '@radix-ui/themes';
-import React, { useState } from 'react';
 import * as Form from '@radix-ui/react-form';
+import { Box, Button, Callout, Flex, Text } from '@radix-ui/themes';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import React, { useState } from 'react';
+import { MdDangerous } from 'react-icons/md';
+import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
+import toast, { Toaster } from 'react-hot-toast';
+import Spinner from '../components/Spinner';
 
 const RegisterQuote = () => {
+  const router = useRouter();
+
   const [open, setOpen] = useState(false);
   const [number, setNumber] = useState('');
   const [file, setFile] = useState('');
+  const [isSubmitting, setSubmitting] = useState(false);
+  const [error, setError] = useState('');
 
   const errorMessageClassname = 'text-red-500 text-sm opacity-80';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      setSubmitting(true);
+      await axios.post('/api/quotes', { number, file });
+      setError('');
+      setNumber('');
+      setFile('');
+      router.refresh();
+      toast.success('Se ha registrado una nueva cotización');
+    } catch (error) {
+      setSubmitting(false);
+      setError('Hubo un error inesperado, inténtelo nuevamente');
+      console.log(error);
+    }
+    setSubmitting(false);
+  };
+
   return (
     <>
-      <Dialog.Root onOpenChange={() => setOpen(!open)}>
-        <Dialog.Trigger>
-          <Button>
-            {!open ? 'Registrar Cotización' : 'Cerrar Formulario'}
-          </Button>
-        </Dialog.Trigger>
-        <Dialog.Content>
-          <Dialog.Title>Registrar Cotización</Dialog.Title>
-          <Form.Root>
-            <Flex direction="column">
-              <FormField
-                value={number}
-                setValue={setNumber}
-                label="Número de cotización"
-                valueMissing="Ingrese número de cotización"
-                typeMismatch="Número inválido"
-                type="number"
-              />
+      {error && (
+        <Callout.Root color="red" className="mb-5">
+          <Callout.Icon>
+            <MdDangerous />
+          </Callout.Icon>
+          <Callout.Text>{error}</Callout.Text>
+        </Callout.Root>
+      )}
+      <Flex direction="column" gap="4">
+        <Box>
+          <Text className="text-xl">Registrar Nueva Cotización</Text>
+        </Box>
+        <Form.Root onSubmit={handleSubmit}>
+          <Flex direction="column" gap="4">
+            <FormField
+              value={number}
+              setValue={setNumber}
+              typeMismatch="Número Inválido"
+              valueMissing="Ingrese número de cotización"
+              label="Número de cotización"
+              type="number"
+            />
+            <Box>
+              <FileUploader publicId={file} setPublicId={setFile} />
+            </Box>
+            <Flex gap="4">
+              <Form.Submit asChild>
+                <Button disabled={isSubmitting}>
+                  {isSubmitting && <Spinner />}
+                  {isSubmitting ? 'Registrando' : 'Registrar'}
+                </Button>
+              </Form.Submit>
             </Flex>
-          </Form.Root>
-        </Dialog.Content>
-      </Dialog.Root>
+          </Flex>
+        </Form.Root>
+      </Flex>
+      <Toaster />
     </>
   );
 };

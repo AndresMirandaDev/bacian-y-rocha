@@ -1,8 +1,10 @@
 'use client';
-import { Box, Button, Table } from '@radix-ui/themes';
-import React, { useState } from 'react';
-import Pagination from '../components/Pagination';
+import { cloudinaryBaseUrl } from '@/cloud/config';
 import { Quote } from '@prisma/client';
+import { IconButton, Table } from '@radix-ui/themes';
+import { useState } from 'react';
+import { FaFilePdf } from 'react-icons/fa6';
+import Pagination from '../components/Pagination';
 
 interface Props {
   quotes: Quote[];
@@ -18,7 +20,7 @@ const QuotesTable = ({ quotes }: Props) => {
         <Table.Header className="bg-blue-300">
           <Table.Row>
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Archivo</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Archivo PDF</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -28,7 +30,20 @@ const QuotesTable = ({ quotes }: Props) => {
               return (
                 <Table.Row key={quote.id}>
                   <Table.Cell className="font-bold">#{quote.number}</Table.Cell>
-                  <Table.Cell>{quote.file}</Table.Cell>
+                  <Table.Cell>
+                    <IconButton
+                      size="1"
+                      color="gray"
+                      onClick={() => {
+                        window.open(
+                          `${cloudinaryBaseUrl}/image/upload/${quote.file}`,
+                          '_blank'
+                        );
+                      }}
+                    >
+                      <FaFilePdf />
+                    </IconButton>
+                  </Table.Cell>
                 </Table.Row>
               );
             })}
