@@ -66,7 +66,7 @@ export async function PATCH(request:NextRequest, { params } : Params){
 
 export async function DELETE(request:NextRequest, { params }: Params) {
     try {
-        const quote = await prisma.saleOrder.findUnique({
+        const quote = await prisma.quote.findUnique({
             where: { id : params.id }
         })
         if(!quote)
