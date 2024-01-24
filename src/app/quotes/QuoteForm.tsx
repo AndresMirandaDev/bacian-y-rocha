@@ -90,7 +90,10 @@ const QuoteForm = ({ quote }: Props) => {
               </Box>
               <Flex gap="4" direction="column">
                 <Form.Submit asChild>
-                  <Button disabled={isSubmitting}>
+                  <Button
+                    disabled={isSubmitting}
+                    className="bg-[var(--accent-9)]"
+                  >
                     {isSubmitting && <Spinner />}
                     {!isSubmitting && !quote && 'Registrar'}
                     {!isSubmitting && quote && 'Actualizar'}
