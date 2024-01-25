@@ -1,34 +1,26 @@
-import { Box, Card, Container } from '@radix-ui/themes';
-import { notFound } from 'next/navigation';
-import prisma from '../../../../prisma/client';
+import React from 'react';
+import DetailsSkeleton from './DetailsSkeleton';
 import dynamic from 'next/dynamic';
-import QuoteFormSkeleton from '../_components/QuoteFormSkeleton';
+import prisma from '../../../../prisma/client';
+import { notFound } from 'next/navigation';
 
-const QuoteForm = dynamic(() => import('@/app/quotes/QuoteForm'), {
+const QuoteDetails = dynamic(() => import('@/app/quotes/[id]/QuoteDetails'), {
   ssr: false,
-  loading: () => <QuoteFormSkeleton />,
+  loading: () => <DetailsSkeleton />,
 });
 
-interface Props {
+interface Params {
   params: { id: string };
 }
 
-const QuoteDetails = async ({ params }: Props) => {
+const DetailsPage = async ({ params }: Params) => {
   const quote = await prisma.quote.findUnique({
     where: {
       id: params.id,
     },
   });
   if (!quote) return notFound();
-  return (
-    <Container className="p-3">
-      <Card>
-        <Box>
-          <QuoteForm quote={quote} />
-        </Box>
-      </Card>
-    </Container>
-  );
+  return <QuoteDetails quote={quote} />;
 };
 
-export default QuoteDetails;
+export default DetailsPage;

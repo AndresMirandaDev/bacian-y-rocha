@@ -1,7 +1,7 @@
 'use client';
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { Quote } from '@prisma/client';
-import { Box, Flex, IconButton, Table, Text } from '@radix-ui/themes';
+import { Badge, Box, Flex, IconButton, Table, Text } from '@radix-ui/themes';
 import { useState } from 'react';
 import { FaFilePdf, FaTrash } from 'react-icons/fa6';
 import Pagination from '../components/Pagination';
@@ -25,7 +25,8 @@ const QuotesTable = ({ quotes }: Props) => {
           <Table.Row>
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Archivo PDF</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Acciones</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Fecha de solicitud</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Estado</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -34,33 +35,35 @@ const QuotesTable = ({ quotes }: Props) => {
             .map((quote) => {
               return (
                 <Table.Row key={quote.id}>
-                  <Table.Cell className="font-bold">#{quote.number}</Table.Cell>
-                  <Table.Cell>
-                    <IconButton
-                      size="1"
-                      color="gray"
-                      onClick={() => {
-                        window.open(
-                          `${cloudinaryBaseUrl}/image/upload/${quote.file}`,
-                          '_blank'
-                        );
-                      }}
-                    >
-                      <FaFilePdf />
-                    </IconButton>
+                  <Table.Cell className="font-bold">
+                    <Link href={`/quotes/${quote.id}`}>#{quote.number}</Link>
                   </Table.Cell>
                   <Table.Cell>
-                    <Flex gap="3">
-                      <Box className="text-cyan-600 cursor-pointer">
-                        <Link href={`/quotes/${quote.id}`}>
-                          <FaEdit size={15} />
-                        </Link>
-                      </Box>
-                      <DeleteDataDialog
-                        name={`cotización nr ${quote.number}`}
-                        id={quote.id}
-                      />
-                    </Flex>
+                    {quote.file !== 'pending' && (
+                      <IconButton
+                        size="1"
+                        color="gray"
+                        onClick={() => {
+                          window.open(
+                            `${cloudinaryBaseUrl}/image/upload/${quote.file}`,
+                            '_blank'
+                          );
+                        }}
+                      >
+                        <FaFilePdf />
+                      </IconButton>
+                    )}
+                    {quote.file === 'pending' && 'No hay archivo'}
+                  </Table.Cell>
+                  <Table.Cell>
+                    {quote.requestedDate.toLocaleDateString()}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Badge
+                      color={quote.status === 'PENDING' ? 'yellow' : 'grass'}
+                    >
+                      {quote.status === 'PENDING' ? 'Pendiente' : 'Enviada'}
+                    </Badge>
                   </Table.Cell>
                 </Table.Row>
               );
