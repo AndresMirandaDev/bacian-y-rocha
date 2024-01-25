@@ -6,7 +6,7 @@ import { userSchema } from "./validationSchema";
 
 export async function POST(request:NextRequest) {
     const body = await request.json()
-    
+
     try {
         const isValid = userSchema.safeParse(body)
 

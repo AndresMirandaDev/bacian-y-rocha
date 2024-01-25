@@ -25,9 +25,12 @@ enum Role {
 }
 
 model Quote {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  number String @unique
-  file   String
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  number        String   @unique
+  customer      String
+  requestedDate DateTime @default(now())
+  quoteSent     DateTime
+  file          String
 }
 
 model SaleOrder {
