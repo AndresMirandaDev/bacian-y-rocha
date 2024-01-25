@@ -30,7 +30,7 @@ model Quote {
   customer      String
   requestedDate DateTime @default(now())
   quoteSent     DateTime
-  file          String
+  file          String   @default("pending")
 }
 
 model SaleOrder {
