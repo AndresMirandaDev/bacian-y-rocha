@@ -1,15 +1,8 @@
-import {
-  Card,
-  Grid,
-  Flex,
-  Box,
-  Badge,
-  Text,
-  Container,
-} from '@radix-ui/themes';
-import Skeleton from '@/app/components/Skeleton';
+import { Box, Card, Grid, Flex, Container } from '@radix-ui/themes';
+import React from 'react';
+import Skeleton from 'react-loading-skeleton';
 
-const DetailsSkeleton = () => {
+const QuoteFormm = () => {
   return (
     <Container className="p-3">
       <Box className="p-5">
@@ -81,4 +74,4 @@ const DetailsSkeleton = () => {
   );
 };
 
-export default DetailsSkeleton;
+export default QuoteFormm;
