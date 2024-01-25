@@ -18,7 +18,7 @@ interface Props {
 }
 
 const QuoteDetails = async ({ quote }: Props) => {
-  const labelStyle = 'text-lg font-light';
+  const labelStyle = 'text-lg font-light text-zinc-500';
   const infoStyle = 'text-xl font-semibold text-zinc-800';
 
   if (!quote) return notFound();

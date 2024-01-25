@@ -25,7 +25,7 @@ const QuoteDetails = async ({ params }: Props) => {
     <Container className="p-3">
       <Card>
         <Box>
-          <QuoteFormm />
+          <QuoteFormm quote={quote} />
         </Box>
       </Card>
     </Container>
