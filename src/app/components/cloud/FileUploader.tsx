@@ -15,7 +15,7 @@ interface Props {
 const FileUploader = ({ publicId, setPublicId }: Props) => {
   return (
     <>
-      {publicId && (
+      {publicId && publicId !== 'pending' && (
         <CldImage src={publicId} width={270} height={180} alt="image" />
       )}
       <CldUploadWidget
