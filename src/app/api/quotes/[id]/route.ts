@@ -46,13 +46,17 @@ export async function PATCH(request:NextRequest, { params } : Params){
         if(!quote)
             return NextResponse.json({ message:'Invalid id'}, { status: 404 })
 
-        const { number, file } = body
+        const { number, file, details, requestedDate, quoteSent, status } = body
         
         const updatedQuote = await prisma.quote.update({
             where: { id: quote.id },
             data:{
                 number,
-                file
+                file,
+                details,
+                requestedDate,
+                quoteSent,
+                status
             }
         })
 

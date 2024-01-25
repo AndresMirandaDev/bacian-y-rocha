@@ -20,16 +20,19 @@ export async function POST(request:NextRequest) {
     const body = await request.json()
     const isValid = await quoteValidationSchema.safeParse(body)
 
+
     try {
       if(!isValid.success)
         return NextResponse.json({ message:isValid.error.format() }, { status: 400 })  
 
-      const { number , file } = body
+      const { number ,customer, details,requestedDate, } = body
       
       const newQuote =  await prisma.quote.create({
         data:{
             number,
-            file
+            customer,
+            details,
+            requestedDate
         }
       })
 
@@ -37,6 +40,7 @@ export async function POST(request:NextRequest) {
     } 
     
     catch (error) {
+        console.log(error)
         return NextResponse.json({ message:'An unexpected error occurred',error }, { status:500 })     
     }
 }

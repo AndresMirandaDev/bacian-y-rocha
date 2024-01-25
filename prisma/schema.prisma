@@ -25,13 +25,18 @@ enum Role {
 }
 
 model Quote {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  number        String      @unique
+  id            String         @id @default(auto()) @map("_id") @db.ObjectId
+  number        String         @unique
   customer      String
-  requestedDate DateTime    @default(now())
-  quoteSent     DateTime
-  file          String      @default("pending")
-  status        QuoteStatus @default(PENDING)
+  details       QuoteDetails[]
+  requestedDate DateTime
+  quoteSent     DateTime?
+  file          String         @default("pending")
+  status        QuoteStatus    @default(PENDING)
+}
+
+type QuoteDetails {
+  description String
 }
 
 enum QuoteStatus {
