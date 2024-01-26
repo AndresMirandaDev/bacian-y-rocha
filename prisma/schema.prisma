@@ -37,6 +37,7 @@ model Quote {
 
 type QuoteDetails {
   description String
+  id          String
 }
 
 enum QuoteStatus {

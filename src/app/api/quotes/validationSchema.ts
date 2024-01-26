@@ -4,7 +4,7 @@ export const quoteValidationSchema = z.object({
     number:z.string().min(1).max(255),
     file:z.string().min(1).max(255).optional(),
     customer:z.string().min(1).max(255),
-    details:z.object({description:z.string().min(1).max(255)}).array(),
+    details:z.object({description:z.string().min(1).max(255), id:z.string()}).array(),
     quoteSent:z.date().optional(),
     status:z.string().optional()
 

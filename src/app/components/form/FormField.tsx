@@ -10,6 +10,7 @@ interface Props {
   label: string;
   type?: HTMLInputTypeAttribute;
   name: string;
+  required?: boolean;
 }
 
 const FormField = ({
@@ -20,6 +21,7 @@ const FormField = ({
   label,
   type,
   name,
+  required = true,
 }: Props) => {
   const errorMessageClassname = 'text-red-500 text-sm opacity-80';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
@@ -46,7 +48,7 @@ const FormField = ({
         <input
           className={inputClassname}
           type={type}
-          required
+          required={required}
           onChange={(e) => setValue(e.target.value)}
           value={value}
         />
