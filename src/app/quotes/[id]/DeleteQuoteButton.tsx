@@ -30,8 +30,8 @@ const DeleteQuoteButton = ({ id }: Props) => {
 
   return (
     <AlertDialog.Root>
-      <AlertDialog.Trigger color="red">
-        <Button disabled={isDeleting} color="red">
+      <AlertDialog.Trigger>
+        <Button disabled={isDeleting} variant="soft" color="red">
           {isDeleting && <Spinner />}
           Eliminar Cotización
         </Button>
