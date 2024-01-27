@@ -133,7 +133,7 @@ const QuoteForm = ({ quote }: Props) => {
           <Form.Submit asChild>
             <Button
               disabled={isSubmitting}
-              style={{ backgroundColor: quote ? '#2ebb45' : '3E63DD' }}
+              style={{ backgroundColor: quote ? '#2ebb45' : '#3E63DD' }}
             >
               {isSubmitting && <Spinner />}
               {quote && <UpdateIcon />}
