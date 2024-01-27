@@ -126,7 +126,7 @@ const QuoteDetails = async ({ quote }: Props) => {
             <Box className="p-5">
               {quote.details.map((item, index) => {
                 return (
-                  <Blockquote className="capitalize text-xl">
+                  <Blockquote className="capitalize text-xl" key={item.id}>
                     {index + 1}.-
                     {item.description}
                   </Blockquote>

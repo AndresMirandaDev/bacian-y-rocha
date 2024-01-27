@@ -16,19 +16,26 @@ import React, { useEffect, useState } from 'react';
 import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
   quote?: Quote;
 }
 
 const QuoteFormm = ({ quote }: Props) => {
+  const router = useRouter();
+
   const [number, setNumber] = useState('');
   const [requestedDate, setRequestedDate] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('PENDING');
   const [customer, setCustomer] = useState('');
   const [quoteSent, setQuoteSent] = useState('');
   const [file, setFile] = useState('');
   const [details, setDetails] = useState([{ description: '', id: '1' }]);
+
+  const [isSubmitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     if (quote) {
@@ -65,22 +72,48 @@ const QuoteFormm = ({ quote }: Props) => {
     ]);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       if (quote) {
-        console.log('actualizando');
-        console.log({
+        setSubmitting(true);
+        const updatedData: {
+          number: string;
+          requestedDate: string;
+          status: string;
+          customer: string;
+          file: string;
+          quoteSent?: string;
+          details: {
+            description: string;
+            id: string;
+          }[];
+        } = {
           number,
-          customer,
           requestedDate: new Date(requestedDate).toISOString(),
-          quoteSent: quoteSent ? new Date(requestedDate).toISOString() : null,
           status,
+          customer,
           file,
           details,
+        };
+        if (quoteSent !== '') {
+          updatedData.quoteSent = new Date(quoteSent).toISOString();
+        }
+        console.log(updatedData);
+        await axios.patch(`/api/quotes/${quote.id}`, updatedData);
+
+        router.refresh();
+        toast.success('Cotización ha sido actualizada.');
+      } else {
+        await axios.post('/api/quotes', {
+          number,
+          requestedDate: new Date(requestedDate).toISOString(),
+          status,
+          customer,
+          details,
         });
-      } else if (!quote) {
-        console.log('registrando');
+        router.push('/quotes');
+        toast.success('Se ha creado una nueva cotización.');
       }
     } catch (error) {
       console.log(error);
@@ -88,14 +121,17 @@ const QuoteFormm = ({ quote }: Props) => {
   };
 
   const labelStyle = 'text-lg font-light text-zinc-500';
+
   return (
     <Container className="p-3">
       <Form.Root onSubmit={handleSubmit}>
         <Box className="p-5">
-          <Button color={quote ? 'green' : 'indigo'}>
-            {quote && <UpdateIcon />}
-            {quote ? 'Actualizar' : 'Registrar nueva cotización'}
-          </Button>
+          <Form.Submit asChild>
+            <Button color={quote ? 'green' : 'indigo'}>
+              {quote && <UpdateIcon />}
+              {quote ? 'Actualizar' : 'Registrar nueva cotización'}
+            </Button>
+          </Form.Submit>
         </Box>
         <Grid columns={{ xs: '1', sm: '1', md: '1', lg: '2', xl: '2' }} gap="3">
           <Card>
@@ -129,18 +165,13 @@ const QuoteFormm = ({ quote }: Props) => {
                   <Text className={labelStyle}>Estado</Text>
                 </Box>
                 <Select.Root
-                  value={status}
                   onValueChange={(status) => setStatus(status)}
-                  defaultValue={quote ? quote.status : QuoteStatus.PENDING}
+                  defaultValue={quote ? quote.status : status}
                 >
                   <Select.Trigger />
                   <Select.Content>
-                    <Select.Item value={QuoteStatus.PENDING}>
-                      Pendiente
-                    </Select.Item>
-                    <Select.Item value={QuoteStatus.FINISHED}>
-                      Enviada
-                    </Select.Item>
+                    <Select.Item value="PENDING">Pendiente</Select.Item>
+                    <Select.Item value="FINISHED">Enviada</Select.Item>
                   </Select.Content>
                 </Select.Root>
               </Flex>
@@ -183,7 +214,14 @@ const QuoteFormm = ({ quote }: Props) => {
               <Text className={labelStyle}>
                 Cotización solicitada por los siguientes servicios:
               </Text>
-              <Button onClick={handleAddRow}>
+              <Button
+                type="button"
+                onClick={(e: React.FormEvent) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleAddRow();
+                }}
+              >
                 <PlusIcon />
                 Agregar
               </Button>
@@ -224,6 +262,7 @@ const QuoteFormm = ({ quote }: Props) => {
           </Flex>
         </Card>
       </Form.Root>
+      <Toaster />
     </Container>
   );
 };

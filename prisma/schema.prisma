@@ -26,7 +26,7 @@ enum Role {
 
 model Quote {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
-  number        String         @unique
+  number        String
   customer      String
   details       QuoteDetails[]
   requestedDate DateTime
