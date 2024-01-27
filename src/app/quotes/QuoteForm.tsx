@@ -19,6 +19,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
+import Spinner from '../components/Spinner';
 
 interface Props {
   quote?: Quote;
@@ -104,6 +105,7 @@ const QuoteForm = ({ quote }: Props) => {
 
         router.refresh();
         toast.success('Cotización ha sido actualizada.');
+        setSubmitting(false);
       } else {
         await axios.post('/api/quotes', {
           number,
@@ -115,6 +117,7 @@ const QuoteForm = ({ quote }: Props) => {
         router.push('/quotes');
         router.refresh();
         toast.success('Se ha creado una nueva cotización.');
+        setSubmitting(false);
       }
     } catch (error) {
       toast.error('Cotización no se pudo actualizar, inténtelo nuevamente.');
@@ -128,7 +131,8 @@ const QuoteForm = ({ quote }: Props) => {
       <Form.Root onSubmit={handleSubmit}>
         <Box className="p-5">
           <Form.Submit asChild>
-            <Button color={quote ? 'green' : 'indigo'}>
+            <Button color={quote ? 'green' : 'indigo'} disabled={isSubmitting}>
+              {isSubmitting && <Spinner />}
               {quote && <UpdateIcon />}
               {quote ? 'Actualizar' : 'Registrar nueva cotización'}
             </Button>
@@ -209,7 +213,7 @@ const QuoteForm = ({ quote }: Props) => {
             </Flex>
           </Card>
         </Grid>
-        <Card className="shadow-xl">
+        <Card className="shadow-xl mt-5">
           <Flex direction="column" gap="4">
             <Box className="flex justify-between">
               <Text className={labelStyle}>

@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation';
 import prisma from '../../../../../prisma/client';
 import dynamic from 'next/dynamic';
 import QuoteFormSkeleton from '@/app/quotes/_components/QuoteFormSkeleton';
-import QuoteFormm from '../../QuoteForm';
 
 const QuoteForm = dynamic(() => import('@/app/quotes/QuoteForm'), {
   ssr: false,
@@ -23,11 +22,9 @@ const QuoteDetails = async ({ params }: Props) => {
   if (!quote) return notFound();
   return (
     <Container className="p-3">
-      <Card>
-        <Box>
-          <QuoteFormm quote={quote} />
-        </Box>
-      </Card>
+      <Box>
+        <QuoteForm quote={quote} />
+      </Box>
     </Container>
   );
 };
