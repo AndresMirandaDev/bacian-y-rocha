@@ -19,7 +19,9 @@ const QuotesTable = ({ quotes }: Props) => {
 
   return (
     <>
-      <Text className="text-xl">Cotizaciones</Text>
+      <Box className="mb-5 pl-2">
+        <Text className="text-xl">Cotizaciones</Text>
+      </Box>
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>
