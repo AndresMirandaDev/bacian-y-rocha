@@ -229,6 +229,7 @@ const QuoteForm = ({ quote }: Props) => {
                   e.stopPropagation();
                   handleAddRow();
                 }}
+                style={{ backgroundColor: '#3E63DD' }}
               >
                 <PlusIcon />
                 Agregar
