@@ -3,16 +3,6 @@
 @tailwind components;
 @tailwind utilities;
 
-button,
-[type="button"],
-[type="reset"],
-[type="submit"] {
-  -webkit-appearance: button; /* 1 */
-  background-color: transparent; /* 2 */
-  background-image: none; /* 2 */
-}
-
-@import "@radix-ui/themes/styles.css";
 
 :root {
   --foreground-rgb: 0, 0, 0;
