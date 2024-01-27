@@ -15,8 +15,6 @@ const DeleteQuoteButton = ({ id }: Props) => {
   const [isDeleting, setDeleting] = useState(false);
   const router = useRouter();
 
-  console.log(id);
-
   const handleDelete = async () => {
     try {
       setDeleting(true);
@@ -31,7 +29,7 @@ const DeleteQuoteButton = ({ id }: Props) => {
   return (
     <AlertDialog.Root>
       <AlertDialog.Trigger>
-        <Button disabled={isDeleting} color="red">
+        <Button disabled={isDeleting} style={{ backgroundColor: '#e33131' }}>
           {isDeleting && <Spinner />}
           Eliminar Cotización
         </Button>
