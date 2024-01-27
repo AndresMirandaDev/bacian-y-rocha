@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import prisma from '../../../../../prisma/client';
 import dynamic from 'next/dynamic';
 import QuoteFormSkeleton from '@/app/quotes/_components/QuoteFormSkeleton';
-import QuoteFormm from '../../QuoteFormm';
+import QuoteFormm from '../../QuoteForm';
 
 const QuoteForm = dynamic(() => import('@/app/quotes/QuoteForm'), {
   ssr: false,

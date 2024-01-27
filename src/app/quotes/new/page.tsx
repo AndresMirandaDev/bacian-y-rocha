@@ -1,7 +1,8 @@
 import React from 'react';
+import QuoteForm from '../QuoteForm';
 
 const RegisterQuotePage = () => {
-  return <div>RegisterQuotePage</div>;
+  return <QuoteForm />;
 };
 
 export default RegisterQuotePage;
