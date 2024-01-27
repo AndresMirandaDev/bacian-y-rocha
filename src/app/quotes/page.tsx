@@ -20,7 +20,9 @@ const QuotesPage = async () => {
         <QuotesTable quotes={quotes} />
       </Card>
       <Card>
-        <QuoteWaitingTable quotes={quotes} />
+        <QuoteWaitingTable
+          quotes={quotes.filter((q) => q.status === 'PENDING')}
+        />
       </Card>
     </Grid>
   );

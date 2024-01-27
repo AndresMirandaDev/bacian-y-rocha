@@ -43,7 +43,6 @@ const QuoteWaitingTable = ({ quotes }: Props) => {
         </Table.Header>
         <Table.Body>
           {quotes
-            .filter((quote) => quote.status === 'PENDING')
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
             .map((quote) => {
               const daysDifference = calculateDaysDifference(
