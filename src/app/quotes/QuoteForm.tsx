@@ -131,7 +131,10 @@ const QuoteForm = ({ quote }: Props) => {
       <Form.Root onSubmit={handleSubmit}>
         <Box className="p-5">
           <Form.Submit asChild>
-            <Button disabled={isSubmitting}>
+            <Button
+              disabled={isSubmitting}
+              style={{ backgroundColor: quote ? '#2ebb45' : '3E63DD' }}
+            >
               {isSubmitting && <Spinner />}
               {quote && <UpdateIcon />}
               {quote ? 'Actualizar' : 'Registrar nueva cotización'}
