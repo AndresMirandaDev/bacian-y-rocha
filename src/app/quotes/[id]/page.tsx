@@ -1,13 +1,6 @@
-import React from 'react';
-import DetailsSkeleton from './DetailsSkeleton';
-import dynamic from 'next/dynamic';
-import prisma from '../../../../prisma/client';
 import { notFound } from 'next/navigation';
-
-const QuoteDetails = dynamic(() => import('@/app/quotes/[id]/QuoteDetails'), {
-  ssr: false,
-  loading: () => <DetailsSkeleton />,
-});
+import prisma from '../../../../prisma/client';
+import QuoteDetails from './QuoteDetails';
 
 interface Params {
   params: { id: string };
