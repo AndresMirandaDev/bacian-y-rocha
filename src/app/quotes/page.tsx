@@ -1,7 +1,6 @@
 import { Card, Grid } from '@radix-ui/themes';
 import prisma from '../../../prisma/client';
 import QuotesTable from './QuotesTable';
-import QuoteForm from './QuoteForm';
 
 const QuotesPage = async () => {
   const quotes = await prisma.quote.findMany();

@@ -1,5 +1,5 @@
 'use client';
-import { Quote, QuoteStatus } from '@prisma/client';
+import { Quote } from '@prisma/client';
 import * as Form from '@radix-ui/react-form';
 import { PlusIcon, TrashIcon, UpdateIcon } from '@radix-ui/react-icons';
 import {
@@ -12,13 +12,13 @@ import {
   Select,
   Text,
 } from '@radix-ui/themes';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
-import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
   quote?: Quote;
@@ -99,7 +99,7 @@ const QuoteFormm = ({ quote }: Props) => {
         if (quoteSent !== '') {
           updatedData.quoteSent = new Date(quoteSent).toISOString();
         }
-        console.log(updatedData);
+
         await axios.patch(`/api/quotes/${quote.id}`, updatedData);
 
         router.refresh();
@@ -116,7 +116,7 @@ const QuoteFormm = ({ quote }: Props) => {
         toast.success('Se ha creado una nueva cotización.');
       }
     } catch (error) {
-      console.log(error);
+      toast.error('Cotización no se pudo actualizar, inténtelo nuevamente.');
     }
   };
 
