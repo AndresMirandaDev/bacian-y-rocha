@@ -107,6 +107,7 @@ const QuoteForm = ({ quote }: Props) => {
         toast.success('Cotización ha sido actualizada.');
         setSubmitting(false);
       } else {
+        setSubmitting(true);
         await axios.post('/api/quotes', {
           number,
           requestedDate: new Date(requestedDate).toISOString(),

@@ -2,6 +2,7 @@ import { Box, Card, Grid } from '@radix-ui/themes';
 import prisma from '../../../prisma/client';
 import QuotesTable from './QuotesTable';
 import QuoteActions from './QuoteActions';
+import QuoteWaitingTable from './QuoteWaitingTable';
 
 const QuotesPage = async () => {
   const quotes = await prisma.quote.findMany();
@@ -17,6 +18,9 @@ const QuotesPage = async () => {
       </Box>
       <Card>
         <QuotesTable quotes={quotes} />
+      </Card>
+      <Card>
+        <QuoteWaitingTable quotes={quotes} />
       </Card>
     </Grid>
   );
