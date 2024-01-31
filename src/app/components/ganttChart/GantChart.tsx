@@ -1,4 +1,4 @@
-import { Table } from '@radix-ui/themes';
+import { Table, Tooltip } from '@radix-ui/themes';
 import React from 'react';
 
 interface Task {
@@ -61,7 +61,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex min-h-full">
       <div className="w-3/4 min-h-full overflow-auto">
         <Table.Root variant="surface" className="h-full">
           <Table.Header>
@@ -113,7 +113,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       </div>
       <div
         className="gantt-container overflow-x-auto"
-        style={{ width: '90%', height: '400px' }}
+        style={{ width: '100%' }}
       >
         <div className="gantt-chart bg-gray-200 flex">
           {months.map((month, index) => (
@@ -139,12 +139,22 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
           const monthStart = t.month * 50 * 31;
           return (
             <>
-              <div
-                className="bg-blue-200 rounded-sm text-center items-center flex justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover:text-xl hover:text-white hover:bg-blue-500"
-                style={{ width, marginLeft: monthStart }}
+              <Tooltip
+                content={
+                  <div className="tooltip-content">
+                    <div>Duración: {t.duration} días</div>
+                    <div>Progreso: {t.progress}</div>
+                    <div>Asignación: {t.asignee}</div>
+                  </div>
+                }
               >
-                {t.name}
-              </div>
+                <div
+                  className="bg-blue-200 rounded-sm text-center items-center flex justify-center hover:scale-110 transition-all duration-300 cursor-pointer hover:text-xl hover:text-white hover:bg-blue-500"
+                  style={{ width, marginLeft: monthStart }}
+                >
+                  {t.name}
+                </div>
+              </Tooltip>
             </>
           );
         })}
