@@ -80,3 +80,19 @@ model WorkOrder {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
   assignedMaterials AssignedMaterials[]
 }
+
+model Task {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  start       Int
+  duration    Int
+  month       Int
+  asignee     String
+  otherFields OtherFields[]
+  progress    Int
+}
+
+type OtherFields {
+  name  String
+  value String
+}

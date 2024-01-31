@@ -113,7 +113,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
       </div>
       <div
         className="gantt-container overflow-x-auto"
-        style={{ width: '100%' }}
+        style={{ width: '100%', height: 'calc(100vh - 5rem)' }}
       >
         <div className="gantt-chart bg-gray-200 flex">
           {months.map((month, index) => (

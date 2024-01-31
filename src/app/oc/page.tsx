@@ -1,4 +1,4 @@
-import React from 'react';
+import { Box, Container } from '@radix-ui/themes';
 import GanttChart from '../components/ganttChart/GantChart';
 
 const OCPage = () => {
@@ -33,7 +33,11 @@ const OCPage = () => {
       progress: 50,
     },
   ];
-  return <GanttChart tasks={tasks} />;
+  return (
+    <Box>
+      <GanttChart tasks={tasks} />
+    </Box>
+  );
 };
 
 export default OCPage;

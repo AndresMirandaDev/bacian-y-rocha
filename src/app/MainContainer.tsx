@@ -11,7 +11,7 @@ const MainContainer = ({ children }: PropsWithChildren) => {
     <Container
       className={classNames({
         'ml-16': status === 'authenticated',
-        'bg-slate-200 ': true,
+        'bg-slate-200': true,
       })}
     >
       {children}
