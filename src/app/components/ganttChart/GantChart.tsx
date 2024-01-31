@@ -2,6 +2,7 @@ import { Table, Tooltip } from '@radix-ui/themes';
 import React from 'react';
 
 interface Task {
+  id: string;
   name: string;
   start: number;
   duration: number;
@@ -75,9 +76,9 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
                   return task.otherFields;
                 })
                 .map((task) => {
-                  return task.otherFields!.map((field) => {
+                  return task.otherFields!.map((field, index) => {
                     return (
-                      <Table.ColumnHeaderCell>
+                      <Table.ColumnHeaderCell key={index}>
                         {field.name}
                       </Table.ColumnHeaderCell>
                     );
@@ -88,7 +89,7 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
           <Table.Body>
             {tasks.map((t) => {
               return (
-                <Table.Row>
+                <Table.Row key={t.id}>
                   <Table.Cell>{t.name}</Table.Cell>
                   <Table.Cell>{t.duration} días</Table.Cell>
                   <Table.Cell>{t.asignee}</Table.Cell>
@@ -103,7 +104,11 @@ const GanttChart: React.FC<GanttChartProps> = ({ tasks }) => {
                     </div>
                   </Table.Cell>
                   {t.otherFields?.map((field) => {
-                    return <Table.Cell>{field.value}</Table.Cell>;
+                    return (
+                      <Table.Cell key={field.value + field.name}>
+                        {field.value}
+                      </Table.Cell>
+                    );
                   })}
                 </Table.Row>
               );

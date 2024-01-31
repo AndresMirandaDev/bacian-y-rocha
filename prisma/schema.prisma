@@ -89,7 +89,7 @@ model Task {
   month       Int
   asignee     String
   otherFields OtherFields[]
-  progress    Int
+  progress    Int           @default(0)
 }
 
 type OtherFields {
