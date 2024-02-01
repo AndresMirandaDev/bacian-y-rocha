@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
-import { bold } from "@cloudinary/url-gen/qualifiers/fontWeight";
 import { updateReceivedSaleOrderSchema } from "../validationSchema";
+
 
 interface Params {
     params:{ id: string}
@@ -57,7 +57,7 @@ export async function DELETE(request:NextRequest, { params }: Params){
         await prisma.receivedSaleOrder.delete({
             where:{ id : data.id}
         })
-        return NextResponse.json({message:'success'})    
+        return NextResponse.json({ message:'success' })    
     } catch (error) {
         console.log(error)
         return NextResponse.json({ message:'An unexpected error occurred', error})
