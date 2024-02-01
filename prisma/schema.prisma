@@ -52,10 +52,24 @@ enum QuoteStatus {
 
 model SaleOrder {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
+  number            String
+  date              DateTime
+  customerName      String
+  customerAddress   String
+  customerLine      String
+  customerEmail     String
+  customerRut       String
+  customerCity      String
+  customerPhone     String
+  customerContact   String
+  accordingToQuote  String
+  requestedBy       String
+  emittedBy         String
+  approvedBy        String
   materials         Material[]
   receptionGuide    String
   status            Status              @default(PENDING)
-  assignedMaterials AssignedMaterials[]
+  AssignedMaterials AssignedMaterials[]
 }
 
 model ReceivedSaleOrder {
@@ -81,6 +95,7 @@ type Material {
   name      String
   unitPrice Int
   quantity  Int
+  code      String
 }
 
 enum Status {
