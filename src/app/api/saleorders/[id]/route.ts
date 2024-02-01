@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../prisma/client";
-import { patchSaleOrderSchema } from "../validationSchema";
+import { updateSaleOrderSchema } from "../validationSchema";
 
 interface Params {
     params : { id : string}
@@ -32,7 +32,7 @@ export async function GET (request:NextRequest, { params }: Params){
 
 export async function PATCH (request:NextRequest, { params }: Params){
     const body = await request.json()
-    const isValid = await patchSaleOrderSchema.safeParse(body)
+    const isValid = await updateSaleOrderSchema.safeParse(body)
     
     try {
        
@@ -43,11 +43,42 @@ export async function PATCH (request:NextRequest, { params }: Params){
         if(!saleOrder)
             return NextResponse.json({ message:'Invalid id' } , { status: 404 })
 
-        const {materials, receptionGuide, status} = body
+        const {
+               number,
+               date,
+               customerName,
+               customerAddress,
+               customerLine,
+               customerEmail,
+               customerRut,
+               customerCity,
+               customerPhone,
+               customerContact,
+               accordingToQuote,
+               requestedBy,
+               emittedBy,
+               approvedBy,
+               materials,
+               receptionGuide,
+               status } = body
 
         const updatedSaleOrder = await prisma.saleOrder.update({
             where: { id: params.id},
             data:{
+                number,
+                date,
+                customerName,
+                customerAddress,
+                customerLine,
+                customerEmail,
+                customerRut,
+                customerCity,
+                customerContact,
+                customerPhone,
+                accordingToQuote,
+                requestedBy,
+                emittedBy,
+                approvedBy,
                 materials,
                 receptionGuide,
                 status

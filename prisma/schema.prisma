@@ -51,25 +51,25 @@ enum QuoteStatus {
 // sale orders received and sent-----------------
 
 model SaleOrder {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  number            String
-  date              DateTime
-  customerName      String
-  customerAddress   String
-  customerLine      String
-  customerEmail     String
-  customerRut       String
-  customerCity      String
-  customerPhone     String
-  customerContact   String
-  accordingToQuote  String
-  requestedBy       String
-  emittedBy         String
-  approvedBy        String
-  materials         Material[]
-  receptionGuide    String
-  status            Status              @default(PENDING)
-  AssignedMaterials AssignedMaterials[]
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  number           String
+  date             DateTime
+  customerName     String
+  customerAddress  String
+  customerLine     String
+  customerEmail    String
+  customerRut      String
+  customerCity     String
+  customerPhone    String
+  customerContact  String
+  accordingToQuote String
+  requestedBy      String
+  emittedBy        String
+  approvedBy       String
+  materials        Material[]
+  receptionGuide   String
+  status           Status     @default(PENDING)
+  // AssignedMaterials AssignedMaterials[]
 }
 
 model ReceivedSaleOrder {
@@ -81,15 +81,15 @@ model ReceivedSaleOrder {
 
 //----------------------------
 
-model AssignedMaterials {
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  material         Material
-  assignedQuantity Int
-  workOrderId      String    @db.ObjectId
-  saleOrderId      String    @db.ObjectId
-  workOrder        WorkOrder @relation(fields: [workOrderId], references: [id])
-  saleOrder        SaleOrder @relation(fields: [saleOrderId], references: [id])
-}
+// model AssignedMaterials {
+//   id               String    @id @default(auto()) @map("_id") @db.ObjectId
+//   material         Material
+//   assignedQuantity Int
+//   workOrderId      String    @db.ObjectId
+//   saleOrderId      String    @db.ObjectId
+//   workOrder        WorkOrder @relation(fields: [workOrderId], references: [id])
+//   saleOrder        SaleOrder @relation(fields: [saleOrderId], references: [id])
+// }
 
 type Material {
   name      String
@@ -105,7 +105,7 @@ enum Status {
   ARRIVED
 }
 
-model WorkOrder {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  assignedMaterials AssignedMaterials[]
-}
+// model WorkOrder {
+//   id                String              @id @default(auto()) @map("_id") @db.ObjectId
+//   assignedMaterials AssignedMaterials[]
+// }
