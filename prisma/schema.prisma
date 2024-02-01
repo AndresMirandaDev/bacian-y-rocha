@@ -24,6 +24,7 @@ enum Role {
   admin
 }
 
+//quotes ------------------------------------------
 model Quote {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   number        String
@@ -45,6 +46,10 @@ enum QuoteStatus {
   FINISHED
 }
 
+//------------------------------------------------
+
+// sale orders received and sent-----------------
+
 model SaleOrder {
   id                String              @id @default(auto()) @map("_id") @db.ObjectId
   materials         Material[]
@@ -52,6 +57,15 @@ model SaleOrder {
   status            Status              @default(PENDING)
   assignedMaterials AssignedMaterials[]
 }
+
+model ReceivedSaleOrder {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  file         String
+  number       Int
+  receivedDate DateTime
+}
+
+//----------------------------
 
 model AssignedMaterials {
   id               String    @id @default(auto()) @map("_id") @db.ObjectId
