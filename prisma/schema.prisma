@@ -54,14 +54,14 @@ model SaleOrder {
   id               String     @id @default(auto()) @map("_id") @db.ObjectId
   number           String
   date             DateTime
-  customerName     String
-  customerAddress  String
-  customerLine     String
-  customerEmail    String
-  customerRut      String
-  customerCity     String
-  customerPhone    String
-  customerContact  String
+  providerName     String
+  providerAddress  String
+  providerLine     String
+  providerEmail    String
+  providerRut      String
+  providerCity     String
+  providerPhone    String
+  providerContact  String
   accordingToQuote String
   requestedBy      String
   emittedBy        String

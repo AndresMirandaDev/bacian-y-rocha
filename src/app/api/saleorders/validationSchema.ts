@@ -18,21 +18,21 @@ import { Material } from '@prisma/client'
 
   date: z.string(),
 
-  customerName: z.string().min(1).max(255),
+  providerName: z.string().min(1).max(255),
 
-  customerAddress: z.string().min(1).max(255),
+  providerAddress: z.string().min(1).max(255),
 
-  customerLine: z.string().min(1).max(255),
+  providerLine: z.string().min(1).max(255),
 
-  customerEmail: z.string().min(1).max(255),
+  providerEmail: z.string().min(1).max(255),
 
-  customerRut: z.string().min(1).max(255),
+  providerRut: z.string().min(1).max(255),
 
-  customerCity: z.string().min(1).max(255),
+  providerCity: z.string().min(1).max(255),
 
-  customerPhone: z.string().min(1).max(255),
+  providerPhone: z.string().min(1).max(255),
 
-  customerContact: z.string().min(1).max(255),
+  providerContact: z.string().min(1).max(255),
 
   accordingToQuote: z.string().min(1).max(255),
 
@@ -59,21 +59,21 @@ export const updateSaleOrderSchema = z.object({
 
   date: z.string().optional(),
 
-  customerName: z.string().min(1).max(255).optional(),
+  providerName: z.string().min(1).max(255).optional(),
 
-  customerAddress: z.string().min(1).max(255).optional(),
+  providerAddress: z.string().min(1).max(255).optional(),
 
-  customerLine: z.string().min(1).max(255).optional(),
+  providerLine: z.string().min(1).max(255).optional(),
 
-  customerEmail: z.string().min(1).max(255).optional(),
+  providerEmail: z.string().min(1).max(255).optional(),
 
-  customerRut: z.string().min(1).max(255).optional(),
+  providerRut: z.string().min(1).max(255).optional(),
 
-  customerCity: z.string().min(1).max(255).optional(),
+  providerCity: z.string().min(1).max(255).optional(),
 
-  customerPhone: z.string().min(1).max(255).optional(),
+  providerPhone: z.string().min(1).max(255).optional(),
 
-  customerContact: z.string().min(1).max(255).optional(),
+  providerContact: z.string().min(1).max(255).optional(),
 
   accordingToQuote: z.string().min(1).max(255).optional(),
 

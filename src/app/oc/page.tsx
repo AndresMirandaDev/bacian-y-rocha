@@ -1,7 +1,57 @@
 import React from 'react';
+import prisma from '../../../prisma/client';
+import SaleOrdersOverview from './SaleOrdersOverview';
+import { Box, Card, Grid } from '@radix-ui/themes';
+import ReceivedOCTable from './ocTables/ReceivedOCTable';
+import Pagination from '../components/Pagination';
+import EmittedOCTable from './ocTables/EmittedOCTable';
+import DeliveredOcTable from './ocTables/DeliveredOcTable';
 
-const OCPage = () => {
-  return <div>OCPage</div>;
+const OCPage = async () => {
+  const saleOrders = await prisma.saleOrder.findMany();
+  const receivedSaleOrders = await prisma.receivedSaleOrder.findMany();
+
+  return (
+    <Grid gap="4">
+      <Box>
+        <SaleOrdersOverview
+          saleOrders={saleOrders}
+          saleOrdersReceived={receivedSaleOrders}
+        />
+      </Box>
+      <Card>
+        <Grid
+          columns={{
+            initial: '1',
+            xs: '1',
+            sm: '1',
+            md: '1',
+            lg: '2',
+            xl: '2',
+          }}
+          gap="3"
+        >
+          <Box>
+            <EmittedOCTable saleOrders={saleOrders} />
+          </Box>
+          <Box>
+            <ReceivedOCTable receivedSaleOrders={receivedSaleOrders} />
+          </Box>
+        </Grid>
+      </Card>
+      <Card>
+        <Grid>
+          <Box>
+            <DeliveredOcTable
+              saleOrders={saleOrders.filter(
+                (order) => order.status === 'ARRIVED'
+              )}
+            />
+          </Box>
+        </Grid>
+      </Card>
+    </Grid>
+  );
 };
 
 export default OCPage;
