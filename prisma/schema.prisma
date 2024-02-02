@@ -96,6 +96,7 @@ type Material {
   unitPrice Int
   quantity  Int
   code      String
+  id        String
 }
 
 enum Status {

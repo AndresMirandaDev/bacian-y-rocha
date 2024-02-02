@@ -7,12 +7,22 @@ import qualitySeal from '../../../public/assets/images/sellocalidad.jpg';
 
 import Image from 'next/image';
 import FormField from '../components/form/FormField';
-import { SaleOrder } from '@prisma/client';
+import { SaleOrder, Status } from '@prisma/client';
 import { formatDate } from '../helpers/formatDate';
+import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 
 interface Props {
   saleOrder?: SaleOrder;
 }
+
+type Material = {
+  name: string;
+  unitPrice: number;
+  quantity: number;
+  code: string;
+  id: string;
+  [key: string]: string | number; // Index signature
+};
 
 const SaleOrderForm = ({ saleOrder }: Props) => {
   const [number, setNumber] = useState('');
@@ -29,7 +39,10 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
   const [requestedBy, setRequestedBy] = useState('');
   const [emittedBy, setEmittedBy] = useState('');
   const [approvedBy, setApprovedBy] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState<Status>('PENDING');
+  const [materials, setMaterials] = useState<Material[]>([
+    { code: '', name: '', quantity: 0, unitPrice: 0, id: '1' },
+  ]);
 
   useEffect(() => {
     if (saleOrder) {
@@ -62,6 +75,31 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
     } catch (error) {
       console.log('error');
     }
+  };
+
+  const handleDetailsChange = (
+    e: React.FormEvent<HTMLInputElement>,
+    rowIndex: number,
+    fieldName: string
+  ) => {
+    const updatedMaterials = [...materials];
+    updatedMaterials[rowIndex][fieldName] = (
+      e.target as HTMLInputElement
+    ).value;
+    setMaterials(updatedMaterials);
+  };
+
+  const handleAddRow = () => {
+    setMaterials([
+      ...materials,
+      {
+        name: '',
+        code: '',
+        quantity: 0,
+        unitPrice: 0,
+        id: (Math.random() * 1000).toString(),
+      },
+    ]);
   };
 
   const fieldNameStyle = 'font-bold';
@@ -283,7 +321,126 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
 
           {/* Tabla de materiales */}
           <Box>
-            <Text>aca van los materiales</Text>
+            <Grid columns="5">
+              <Box className="border border-black">
+                <Text className="font-bold">CANTIDAD</Text>
+              </Box>
+              <Box className="border border-black">
+                <Text className="font-bold">CÓDIGO</Text>
+              </Box>
+              <Box className="border border-black">
+                <Text className="font-bold">ARTÍCULO</Text>
+              </Box>
+              <Box className="border border-black">
+                <Text className="font-bold">VALOR UNIT.</Text>
+              </Box>
+              <Box className="border border-black">
+                <Text className="font-bold">VALOR TOTAL</Text>
+              </Box>
+            </Grid>
+            <Box className="mt-5">
+              <Button onClick={handleAddRow}>
+                <PlusIcon />
+                Agregar Insumo
+              </Button>
+            </Box>
+            {materials.map((m, index) => {
+              return (
+                <Grid columns="5" align="center">
+                  <Box>
+                    <Form.Field name="description">
+                      <Box className="flex items-center mt-3">
+                        <Box className="flex items-baseline justify-between flex-col flex-grow">
+                          <Form.Control asChild>
+                            <input
+                              className="input input-bordered w-[95%] bg-transparent"
+                              type="text"
+                              required
+                              onChange={(e) =>
+                                handleDetailsChange(e, index, 'quantity')
+                              }
+                              value={m.quantity}
+                            />
+                          </Form.Control>
+                        </Box>
+                      </Box>
+                    </Form.Field>
+                  </Box>
+                  <Box>
+                    <Form.Field name="description">
+                      <Box className="flex items-center mt-3">
+                        <Box className="flex items-baseline justify-between flex-col flex-grow">
+                          <Form.Control asChild>
+                            <input
+                              className="input input-bordered w-[95%] bg-transparent"
+                              type="text"
+                              required
+                              onChange={(e) =>
+                                handleDetailsChange(e, index, 'code')
+                              }
+                              value={m.code}
+                            />
+                          </Form.Control>
+                        </Box>
+                      </Box>
+                    </Form.Field>
+                  </Box>
+                  <Box>
+                    <Form.Field name="description">
+                      <Box className="flex items-center mt-3">
+                        <Box className="flex items-baseline justify-between flex-col flex-grow">
+                          <Form.Control asChild>
+                            <input
+                              className="input input-bordered w-[95%] bg-transparent"
+                              type="text"
+                              required
+                              onChange={(e) =>
+                                handleDetailsChange(e, index, 'name')
+                              }
+                              value={m.name}
+                            />
+                          </Form.Control>
+                        </Box>
+                      </Box>
+                    </Form.Field>
+                  </Box>
+                  <Box>
+                    <Form.Field name="description">
+                      <Box className="flex items-center mt-3">
+                        <Box className="flex items-baseline justify-between flex-col flex-grow">
+                          <Form.Control asChild>
+                            <input
+                              className="input input-bordered w-[95%] bg-transparent"
+                              type="text"
+                              required
+                              onChange={(e) =>
+                                handleDetailsChange(e, index, 'unitPrice')
+                              }
+                              value={m.unitPrice}
+                            />
+                          </Form.Control>
+                        </Box>
+                      </Box>
+                    </Form.Field>
+                  </Box>
+                  <Flex justify="between">
+                    <Text>$ {m.quantity * m.unitPrice}</Text>
+                    <Box
+                      className="flex items-center rounded-full bg-red-400 p-2 cursor-pointer"
+                      onClick={() => {
+                        setMaterials(
+                          materials.filter((field) => {
+                            return field.id !== m.id;
+                          })
+                        );
+                      }}
+                    >
+                      <TrashIcon color="white" />
+                    </Box>
+                  </Flex>
+                </Grid>
+              );
+            })}
           </Box>
           {/* Tabla de materiales */}
 
