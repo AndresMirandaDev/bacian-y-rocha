@@ -17,6 +17,7 @@ import useMonth from '@/app/hooks/useMonth';
 import useWeekDay from '@/app/hooks/useWeekDay';
 import CloudImage from '@/app/components/cloud/CloudImage';
 import classNames from 'classnames';
+import Link from 'next/link';
 
 interface Props {
   saleOrder: SaleOrder;
@@ -58,7 +59,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             />
           )}
           {saleOrder.receptionGuide === 'pending' && (
-            <Text className="font-bold bg-yellow-400 p-2 rounded-3xl ml-2">
+            <Text className=" bg-yellow-300 p-2 rounded-xl ml-2">
               Pendiente
             </Text>
           )}
@@ -73,8 +74,8 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
           </Box>
           <Text
             className={classNames({
-              'font-bold rounded-3xl p-2 h-fit w-fit': true,
-              'bg-yellow-400': saleOrder.status === 'PENDING',
+              'rounded-xl p-2 h-fit w-fit': true,
+              'bg-yellow-200': saleOrder.status === 'PENDING',
               'bg-indigo-500': saleOrder.status === 'IN_PROCESS',
               'bg-red-500': saleOrder.status === 'NOT_MATCHING',
               'bg-green-500': saleOrder.status === 'ARRIVED',
@@ -89,7 +90,9 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
               : 'Pendiente'}
           </Text>
           <Flex direction="column" gap="4">
-            <Button>Actualizar orden de compra</Button>
+            <Button>
+              <Link href={`/oc/edit/${saleOrder.id}`}>Actualizar</Link>
+            </Button>
             <Button color="red">Eliminar orden de compra</Button>
           </Flex>
         </Flex>
