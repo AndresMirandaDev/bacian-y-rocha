@@ -69,6 +69,7 @@ model SaleOrder {
   materials        Material[]
   receptionGuide   String     @default("pending")
   status           Status     @default(PENDING)
+  discount         Int
   // AssignedMaterials AssignedMaterials[]
 }
 

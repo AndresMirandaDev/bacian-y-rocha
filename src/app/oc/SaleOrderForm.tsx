@@ -40,9 +40,14 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
   const [emittedBy, setEmittedBy] = useState('');
   const [approvedBy, setApprovedBy] = useState('');
   const [status, setStatus] = useState<Status>('PENDING');
+  const [discount, setDiscount] = useState('');
   const [materials, setMaterials] = useState<Material[]>([
     { code: '', name: '', quantity: 0, unitPrice: 0, id: '1' },
   ]);
+
+  //totales de orden de compra
+  const [netTotal, setNetTotal] = useState(0);
+  const [fullTotal, setFullTotal] = useState(0);
 
   useEffect(() => {
     if (saleOrder) {
@@ -61,8 +66,13 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       setEmittedBy(saleOrder.emittedBy);
       setApprovedBy(saleOrder.approvedBy);
       setStatus(saleOrder.status);
+      setDiscount(saleOrder.discount.toString());
     }
   }, [saleOrder]);
+
+  useEffect(() => {
+    recalculateTotals();
+  }, []);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,6 +97,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       e.target as HTMLInputElement
     ).value;
     setMaterials(updatedMaterials);
+    recalculateTotals();
   };
 
   const handleAddRow = () => {
@@ -100,9 +111,19 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
         id: (Math.random() * 1000).toString(),
       },
     ]);
+    recalculateTotals();
+  };
+
+  const recalculateTotals = () => {
+    const netTotal = materials.reduce((accumulator, m) => {
+      return accumulator + m.quantity * m.unitPrice;
+    }, 0);
+    setNetTotal(netTotal);
   };
 
   const fieldNameStyle = 'font-bold';
+
+  console.log('discount', discount);
   return (
     <Form.Root onSubmit={handleSubmit}>
       <Box className="bg-white rounded-md p-5">
@@ -474,23 +495,58 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                   <Text>TOTAL</Text>
                 </Flex>
                 <Flex grow="1" justify="end">
-                  <Text>$ a</Text>
+                  <Text>$ {netTotal}</Text>
                 </Flex>
               </Flex>
-              <Flex gap="6" className="border border-black">
+              <Flex gap="6" className="border border-black" align="center">
                 <Flex grow="1">
                   <Text>DESCTO.</Text>
                 </Flex>
-                <Flex grow="1" justify="end">
-                  <Text>$ 123123</Text>
+                <Flex grow="1" justify="end" className="w-20">
+                  <Form.Field className="rounded-md" name="discount">
+                    <div
+                      style={{
+                        display: 'flex',
+                        alignItems: 'baseline',
+                        justifyContent: 'space-between',
+                        flexDirection: 'column',
+                      }}
+                    ></div>
+                    <Form.Control asChild>
+                      <input
+                        className="input input-bordered w-full bg-transparent"
+                        type="number"
+                        required
+                        onChange={(e) => {
+                          const inputValue = e.target.value || '';
+                          if (
+                            inputValue === '0' ||
+                            (!isNaN(Number(inputValue)) && inputValue !== '')
+                          ) {
+                            setDiscount(
+                              inputValue === '0'
+                                ? '0'
+                                : String(Number(inputValue))
+                            );
+                          } else {
+                            setDiscount('0');
+                          }
+                        }}
+                        value={discount}
+                      />
+                    </Form.Control>
+                  </Form.Field>
                 </Flex>
+                %
               </Flex>
               <Flex gap="6" className="border border-black">
                 <Flex grow="1">
                   <Text>TOTAL NETO</Text>
                 </Flex>
                 <Flex grow="1" justify="end">
-                  <Text>$ 123123</Text>
+                  <Text>
+                    $ {netTotal - netTotal * (parseInt(discount) / 100)}
+                  </Text>
                 </Flex>
               </Flex>
               <Flex gap="6" className="border border-black">
@@ -498,7 +554,10 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                   <Text>IVA 19%</Text>
                 </Flex>
                 <Flex grow="1" justify="end">
-                  <Text>$ a</Text>
+                  <Text>
+                    ${' '}
+                    {(netTotal - netTotal * (parseInt(discount) / 100)) * 0.19}
+                  </Text>
                 </Flex>
               </Flex>
               <Flex gap="6" className="border border-black p-2">
@@ -506,7 +565,14 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                   <Text className="font-bold">TOTAL</Text>
                 </Flex>
                 <Flex grow="1" justify="end">
-                  <Text>$ a</Text>
+                  <Text>
+                    ${' '}
+                    {(
+                      netTotal -
+                      netTotal * (parseInt(discount) / 100) +
+                      (netTotal - netTotal * (parseInt(discount) / 100)) * 0.19
+                    ).toFixed(4)}
+                  </Text>
                 </Flex>
               </Flex>
             </Flex>

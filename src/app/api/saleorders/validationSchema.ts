@@ -41,6 +41,7 @@ import { Material } from '@prisma/client'
   emittedBy: z.string().min(1).max(255),
 
   approvedBy: z.string().min(1).max(255),
+  discount:z.number()
 });
 
 
@@ -83,7 +84,8 @@ export const updateSaleOrderSchema = z.object({
 
   approvedBy: z.string().min(1).max(255).optional(),
 
-  status: z.string().min(1).max(255).optional()
+  status: z.string().min(1).max(255).optional(),
+  discount:z.number().optional()
 });
 
 

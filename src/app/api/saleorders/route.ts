@@ -10,7 +10,7 @@ export async function POST(request:NextRequest) {
         if(!isValid.success)
             return NextResponse.json({message: isValid.error.format()}, { status:400 })
         
-        const { number, date, providerName, providerAddress, providerLine, providerEmail,providerRut,providerCity,providerPhone,providerContact, accordingToQuote, requestedBy, emittedBy, approvedBy, materials, receptionGuide, status } = body    
+        const { number, date, providerName, providerAddress, providerLine, providerEmail,providerRut,providerCity,providerPhone,providerContact, accordingToQuote, requestedBy, emittedBy, approvedBy, materials, receptionGuide, status,discount } = body    
         const newSaleOrder =  await prisma.saleOrder.create({
             data:{
                 number,
@@ -29,7 +29,7 @@ export async function POST(request:NextRequest) {
                 approvedBy,
                 materials,
                 receptionGuide,
-
+                discount
             }
         })
         

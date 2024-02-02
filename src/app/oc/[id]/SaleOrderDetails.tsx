@@ -266,10 +266,10 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Flex>
             <Flex gap="6" className="border border-black">
               <Flex grow="1">
-                <Text>DESCTO.</Text>
+                <Text>DESCTO.{saleOrder.discount}%</Text>
               </Flex>
               <Flex grow="1" justify="end">
-                <Text>$ 123123</Text>
+                <Text>{orderTotal * (saleOrder.discount / 100)}</Text>
               </Flex>
             </Flex>
             <Flex gap="6" className="border border-black">
@@ -277,7 +277,9 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 <Text>TOTAL NETO</Text>
               </Flex>
               <Flex grow="1" justify="end">
-                <Text>$ 123123</Text>
+                <Text>
+                  $ {orderTotal - orderTotal * (saleOrder.discount / 100)}
+                </Text>
               </Flex>
             </Flex>
             <Flex gap="6" className="border border-black">
@@ -285,7 +287,11 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 <Text>IVA 19%</Text>
               </Flex>
               <Flex grow="1" justify="end">
-                <Text>$ {orderTotal * 0.19}</Text>
+                <Text>
+                  $
+                  {(orderTotal - orderTotal * (saleOrder.discount / 100)) *
+                    0.19}
+                </Text>
               </Flex>
             </Flex>
             <Flex gap="6" className="border border-black p-2">
@@ -293,7 +299,13 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 <Text className="font-bold">TOTAL</Text>
               </Flex>
               <Flex grow="1" justify="end">
-                <Text>$ {orderTotal + orderTotal * 0.19}</Text>
+                <Text>
+                  $ ${' '}
+                  {orderTotal -
+                    orderTotal * (saleOrder.discount / 100) +
+                    (orderTotal - orderTotal * (saleOrder.discount / 100)) *
+                      0.19}
+                </Text>
               </Flex>
             </Flex>
           </Flex>

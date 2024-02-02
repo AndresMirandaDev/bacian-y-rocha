@@ -60,7 +60,7 @@ export async function PATCH (request:NextRequest, { params }: Params){
                approvedBy,
                materials,
                receptionGuide,
-               status } = body
+               status,discount } = body
 
         const updatedSaleOrder = await prisma.saleOrder.update({
             where: { id: params.id},
@@ -81,7 +81,8 @@ export async function PATCH (request:NextRequest, { params }: Params){
                 approvedBy,
                 materials,
                 receptionGuide,
-                status
+                status,
+                discount
             }
         })    
         return NextResponse.json({
