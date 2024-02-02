@@ -67,7 +67,7 @@ model SaleOrder {
   emittedBy        String
   approvedBy       String
   materials        Material[]
-  receptionGuide   String
+  receptionGuide   String     @default("pending")
   status           Status     @default(PENDING)
   // AssignedMaterials AssignedMaterials[]
 }

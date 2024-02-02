@@ -1,11 +1,22 @@
 import { SaleOrder } from '@prisma/client';
-import { Box, Flex, Grid, Separator, Table, Text } from '@radix-ui/themes';
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  Separator,
+  Table,
+  Text,
+} from '@radix-ui/themes';
 import React from 'react';
 import logo from '../../../../public/assets/images/byrs.png';
 import qualitySeal from '../../../../public/assets/images/sellocalidad.jpg';
 import Image from 'next/image';
 import useMonth from '@/app/hooks/useMonth';
 import useWeekDay from '@/app/hooks/useWeekDay';
+import CloudImage from '@/app/components/cloud/CloudImage';
+import classNames from 'classnames';
 
 interface Props {
   saleOrder: SaleOrder;
@@ -25,6 +36,64 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
   }, 0);
   return (
     <Box className="bg-white rounded-md p-5">
+      <Flex
+        className="mb-5"
+        direction={{
+          initial: 'column',
+          xs: 'column',
+          sm: 'column',
+          md: 'column',
+          lg: 'row',
+          xl: 'row',
+        }}
+      >
+        <Box className="border border-black w-1/2 p-2">
+          <Text className="text-xl">Guía de recepción</Text>
+          {saleOrder.receptionGuide !== 'pending' && (
+            <CloudImage
+              alt="receptionguide"
+              src={saleOrder.receptionGuide}
+              width={200}
+              height={200}
+            />
+          )}
+          {saleOrder.receptionGuide === 'pending' && (
+            <Text className="font-bold bg-yellow-400 p-2 rounded-3xl ml-2">
+              Pendiente
+            </Text>
+          )}
+        </Box>
+        <Flex
+          className="p-2 border border-black w-1/2"
+          gap="3"
+          direction="column"
+        >
+          <Box>
+            <Text className="text-xl">Estado de orden de compra</Text>
+          </Box>
+          <Text
+            className={classNames({
+              'font-bold rounded-3xl p-2 h-fit w-fit': true,
+              'bg-yellow-400': saleOrder.status === 'PENDING',
+              'bg-indigo-500': saleOrder.status === 'IN_PROCESS',
+              'bg-red-500': saleOrder.status === 'NOT_MATCHING',
+              'bg-green-500': saleOrder.status === 'ARRIVED',
+            })}
+          >
+            {saleOrder.status === 'ARRIVED'
+              ? 'Entregada'
+              : saleOrder.status === 'IN_PROCESS'
+              ? 'En camino'
+              : saleOrder.status === 'NOT_MATCHING'
+              ? 'No concuerda'
+              : 'Pendiente'}
+          </Text>
+          <Flex direction="column" gap="4">
+            <Button>Actualizar orden de compra</Button>
+            <Button color="red">Eliminar orden de compra</Button>
+          </Flex>
+        </Flex>
+      </Flex>
       <Box className="border-black border-2 p-5">
         {/* Cabecera de documento */}
         <Flex className="justify-around" gap="9" align="center">
