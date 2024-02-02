@@ -1,14 +1,20 @@
 'use client';
 import { Box, Flex, Button, Table, Grid, Text } from '@radix-ui/themes';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import logo from '../../../public/assets/images/byrs.png';
 import qualitySeal from '../../../public/assets/images/sellocalidad.jpg';
 
 import Image from 'next/image';
 import FormField from '../components/form/FormField';
+import { SaleOrder } from '@prisma/client';
+import { formatDate } from '../helpers/formatDate';
 
-const SaleOrderForm = () => {
+interface Props {
+  saleOrder?: SaleOrder;
+}
+
+const SaleOrderForm = ({ saleOrder }: Props) => {
   const [number, setNumber] = useState('');
   const [date, setDate] = useState('');
   const [providerName, setProviderName] = useState('');
@@ -25,9 +31,42 @@ const SaleOrderForm = () => {
   const [approvedBy, setApprovedBy] = useState('');
   const [status, setStatus] = useState('');
 
+  useEffect(() => {
+    if (saleOrder) {
+      setNumber(saleOrder.number);
+      setDate(formatDate(saleOrder.date.toISOString()));
+      setProviderName(saleOrder.providerName);
+      setProviderAddress(saleOrder.providerAddress);
+      setProviderLine(saleOrder.providerLine);
+      setProviderEmail(saleOrder.providerEmail);
+      setProviderRut(saleOrder.providerRut);
+      setProviderCity(saleOrder.providerCity);
+      setProviderPhone(saleOrder.providerPhone);
+      setProviderContact(saleOrder.providerContact);
+      setAccordingToQuote(saleOrder.accordingToQuote);
+      setRequestedBy(saleOrder.requestedBy);
+      setEmittedBy(saleOrder.emittedBy);
+      setApprovedBy(saleOrder.approvedBy);
+      setStatus(saleOrder.status);
+    }
+  }, [saleOrder]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      if (saleOrder) {
+        console.log('actualizando');
+      } else {
+        console.log('creando');
+      }
+    } catch (error) {
+      console.log('error');
+    }
+  };
+
   const fieldNameStyle = 'font-bold';
   return (
-    <Form.Root>
+    <Form.Root onSubmit={handleSubmit}>
       <Box className="bg-white rounded-md p-5">
         <Flex
           className="mb-5"
@@ -50,7 +89,9 @@ const SaleOrderForm = () => {
             </Box>
 
             <Flex direction="column" gap="4">
-              <Button>Actualizar</Button>
+              <Form.Submit asChild>
+                <Button>Actualizar</Button>
+              </Form.Submit>
             </Flex>
           </Flex>
         </Flex>
@@ -68,7 +109,7 @@ const SaleOrderForm = () => {
                   value={number}
                   setValue={setNumber}
                   typeMismatch="número inválido"
-                  type="number"
+                  type="text"
                   name="number"
                   required
                 />
@@ -210,7 +251,7 @@ const SaleOrderForm = () => {
                     value={providerPhone}
                     setValue={setProviderPhone}
                     typeMismatch="Número inválido"
-                    type="number"
+                    type="text"
                     name="providerPhone"
                     required
                   />

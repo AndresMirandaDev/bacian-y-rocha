@@ -12,7 +12,7 @@ const EditSaleOrderPage = async ({ params }: Params) => {
     where: { id: params.id },
   });
   if (!saleOrder) return notFound();
-  return <SaleOrderForm />;
+  return <SaleOrderForm saleOrder={saleOrder} />;
 };
 
 export default EditSaleOrderPage;
