@@ -316,6 +316,18 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
         </Grid>
         {/* Informacion sobre soliciud y aprobacion */}
 
+        {/* Email de contactos */}
+        <Flex className="justify-evenly mt-5" gap="9">
+          <Flex direction="column" justify="center" align="center">
+            <Text className="font-bold">Bacianproduccion@gmail.com</Text>
+            <Text>57/ 254 2883</Text>
+          </Flex>
+          <Flex direction="column" justify="center" align="center">
+            <Text className="font-bold">mbacian@bacianyrocha.cl</Text>
+            <Text>57/ 542883</Text>
+          </Flex>
+        </Flex>
+
         {/* Pie de documento con sello */}
         <Flex className="mt-40 relative" direction="column">
           <Box height="4" width={'100%'} className="bg-yellow-300"></Box>
