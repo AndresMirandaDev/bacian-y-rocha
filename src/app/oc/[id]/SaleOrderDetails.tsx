@@ -1,7 +1,8 @@
 import { SaleOrder } from '@prisma/client';
-import { Box, Flex, Separator, Table, Text } from '@radix-ui/themes';
+import { Box, Flex, Grid, Separator, Table, Text } from '@radix-ui/themes';
 import React from 'react';
 import logo from '../../../../public/assets/images/byrs.png';
+import qualitySeal from '../../../../public/assets/images/sellocalidad.jpg';
 import Image from 'next/image';
 import useMonth from '@/app/hooks/useMonth';
 import useWeekDay from '@/app/hooks/useWeekDay';
@@ -25,6 +26,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
   return (
     <Box className="bg-white rounded-md p-5">
       <Box className="border-black border-2 p-5">
+        {/* Cabecera de documento */}
         <Flex className="justify-around" gap="9" align="center">
           <Box>
             <Image src={logo} alt="logo" height={200} width={200} />
@@ -39,6 +41,9 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Box>
           </Flex>
         </Flex>
+        {/* Cabecera de documento */}
+
+        {/* Informacion del proveedor */}
         <Flex
           className="border border-black p-2"
           direction={{
@@ -121,11 +126,15 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Flex>
           </Flex>
         </Flex>
+        {/* Informacion del proveedor */}
+
         <Box className="p-3">
           <Text className="font-bold">
             * Según Cotización Nr {saleOrder.accordingToQuote}
           </Text>
         </Box>
+
+        {/* Tabla de materiales */}
         <Box>
           <Table.Root variant="ghost" className="border border-black">
             <Table.Header>
@@ -156,7 +165,10 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Table.Body>
           </Table.Root>
         </Box>
-        <Flex className="p-2" justify="between">
+        {/* Tabla de materiales */}
+
+        {/* PIE DE TABLA */}
+        <Flex className="p-2 " justify="between">
           <Flex
             gap="4"
             direction={{
@@ -213,6 +225,112 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
               </Flex>
             </Flex>
           </Flex>
+        </Flex>
+        {/* PIE DE TABLA */}
+
+        {/* Disclaimer  */}
+        <Flex className="p-5">
+          <Box>
+            <Text className="font-bold">
+              AL FACTURAR NO OLVIDE HACER REFERENCIA AL NÚMERO DE ORDEN DE
+              COMPRA, PARA UNA CANCELACIÓN MAS EXPEDITA.
+            </Text>
+          </Box>
+        </Flex>
+        {/* Disclaimer  */}
+
+        {/* Informacion sobre donde facturar    */}
+        <Flex direction="column">
+          <Flex>
+            <Flex className="w-1/3 mb-3">
+              <Text className="font-bold underline">FACTURAR A :</Text>
+            </Flex>
+          </Flex>
+          <Flex>
+            <Flex className="w-1/3">
+              <Text className="font-bold">RAZÓN SOCIAL</Text>
+            </Flex>
+            <Flex grow="1">
+              <Text>MAESTRANZA BACIAN Y ROCHA LTDA.</Text>
+            </Flex>
+          </Flex>
+          <Flex>
+            <Flex className="w-1/3">
+              <Text className="font-bold">RUT</Text>
+            </Flex>
+            <Flex grow="1">
+              <Text>79.863.750-9</Text>
+            </Flex>
+          </Flex>
+          <Flex>
+            <Flex className="w-1/3">
+              <Text className="font-bold">DIRECCIÓN</Text>
+            </Flex>
+            <Flex grow="1">
+              <Text>AV. LAS PARCELAS MANZANA "D" SITIO 7 ALTO HOSPICIO</Text>
+            </Flex>
+          </Flex>
+          <Flex>
+            <Flex className="w-1/3">
+              <Text className="font-bold">GIRO</Text>
+            </Flex>
+            <Flex grow="1">
+              <Text>MAESTRANZA</Text>
+            </Flex>
+          </Flex>
+        </Flex>
+        {/* Informacion sobre donde facturar    */}
+
+        {/* Informacion sobre soliciud y aprobacion */}
+        <Grid columns="3" className="mt-5" justify="center">
+          <Flex
+            className="border border-black"
+            justify="center"
+            direction="column"
+          >
+            <Text className="font-bold text-center">SOLICITADO POR</Text>
+            <Text className="capitalize text-center">
+              {saleOrder.requestedBy}
+            </Text>
+          </Flex>
+          <Flex
+            className="border border-black"
+            justify="center"
+            direction="column"
+          >
+            <Text className="font-bold text-center">EMITIDO POR</Text>
+            <Text className="capitalize text-center">
+              {saleOrder.emittedBy}
+            </Text>
+          </Flex>
+          <Flex
+            className="border border-black"
+            justify="center"
+            direction="column"
+          >
+            <Text className="font-bold text-center">AUTORIZADO POR</Text>
+            <Text className="capitalize text-center">
+              {saleOrder.approvedBy}
+            </Text>
+          </Flex>
+        </Grid>
+        {/* Informacion sobre soliciud y aprobacion */}
+
+        {/* Pie de documento con sello */}
+        <Flex className="mt-40 relative" direction="column">
+          <Box height="4" width={'100%'} className="bg-yellow-300"></Box>
+          <Box
+            height="6"
+            width={'100%'}
+            className="bg-gradient-to-b from-blue-500"
+          ></Box>
+          <Image
+            src={qualitySeal}
+            alt="quality"
+            className="self-end absolute bottom-1"
+            height={100}
+            width={100}
+          />
         </Flex>
       </Box>
     </Box>
