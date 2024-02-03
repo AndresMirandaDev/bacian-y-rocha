@@ -76,9 +76,9 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             className={classNames({
               'rounded-xl p-2 h-fit w-fit': true,
               'bg-yellow-200': saleOrder.status === 'PENDING',
-              'bg-indigo-500': saleOrder.status === 'IN_PROCESS',
-              'bg-red-500': saleOrder.status === 'NOT_MATCHING',
-              'bg-green-500': saleOrder.status === 'ARRIVED',
+              'bg-indigo-500 text-white': saleOrder.status === 'IN_PROCESS',
+              'bg-red-500 text-white': saleOrder.status === 'NOT_MATCHING',
+              'bg-green-500 text-white': saleOrder.status === 'ARRIVED',
             })}
           >
             {saleOrder.status === 'ARRIVED'

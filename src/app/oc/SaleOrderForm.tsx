@@ -14,6 +14,7 @@ import Spinner from '../components/Spinner';
 import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import FileUploader from '../components/cloud/FileUploader';
 
 interface Props {
   saleOrder?: SaleOrder;
@@ -57,7 +58,6 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
 
   //totales de orden de compra
   const [netTotal, setNetTotal] = useState(0);
-  const [fullTotal, setFullTotal] = useState(0);
 
   useEffect(() => {
     if (saleOrder) {
@@ -138,6 +138,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
         };
 
         await axios.patch(`/api/saleorders/${saleOrder.id}`, updatedData);
+        router.refresh();
         toast.success('Orden de compra actualizada.');
         setSubmitting(false);
       } else {
@@ -168,7 +169,9 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       }
     } catch (error) {
       setSubmitting(false);
-      console.log(error);
+      toast.error(
+        'No se pudo actualizar orden de compra, inténtelo nuevamente.'
+      );
     }
   };
 
@@ -221,9 +224,10 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
             lg: 'row',
             xl: 'row',
           }}
+          gap="3"
         >
           <Flex
-            className="p-2 border border-black w-1/2"
+            className="p-2 border border-slate-300 w-1/2 rounded-lg"
             gap="3"
             direction="column"
           >
@@ -253,6 +257,17 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                 </Button>
               </Form.Submit>
             </Flex>
+          </Flex>
+          <Flex
+            direction="column"
+            justify="between"
+            className="p-2 border border-slate-300 rounded-lg w-1/2"
+          >
+            <Text className="text-xl">Guía de Recepción</Text>
+            <FileUploader
+              publicId={receptionGuide}
+              setPublicId={setReceptionGuide}
+            />
           </Flex>
         </Flex>
         <Box className="border-black border-2 p-5">
