@@ -1,5 +1,5 @@
 'use client';
-import { Box, Flex, Button, Table, Grid, Text } from '@radix-ui/themes';
+import { Box, Flex, Button, Table, Grid, Text, Select } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import logo from '../../../public/assets/images/byrs.png';
@@ -9,7 +9,11 @@ import Image from 'next/image';
 import FormField from '../components/form/FormField';
 import { SaleOrder, Status } from '@prisma/client';
 import { formatDate } from '../helpers/formatDate';
-import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
+import { PlusIcon, TrashIcon, UpdateIcon } from '@radix-ui/react-icons';
+import Spinner from '../components/Spinner';
+import axios from 'axios';
+import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   saleOrder?: SaleOrder;
@@ -25,6 +29,8 @@ type Material = {
 };
 
 const SaleOrderForm = ({ saleOrder }: Props) => {
+  const router = useRouter();
+
   const [number, setNumber] = useState('');
   const [date, setDate] = useState('');
   const [providerName, setProviderName] = useState('');
@@ -39,11 +45,15 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
   const [requestedBy, setRequestedBy] = useState('');
   const [emittedBy, setEmittedBy] = useState('');
   const [approvedBy, setApprovedBy] = useState('');
-  const [status, setStatus] = useState<Status>('PENDING');
+  const [status, setStatus] = useState('PENDING');
   const [discount, setDiscount] = useState('');
+  const [receptionGuide, setReceptionGuide] = useState('pending');
   const [materials, setMaterials] = useState<Material[]>([
     { code: '', name: '', quantity: 0, unitPrice: 0, id: '1' },
   ]);
+
+  //estados de loading
+  const [isSubmitting, setSubmitting] = useState(false);
 
   //totales de orden de compra
   const [netTotal, setNetTotal] = useState(0);
@@ -67,6 +77,8 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       setApprovedBy(saleOrder.approvedBy);
       setStatus(saleOrder.status);
       setDiscount(saleOrder.discount.toString());
+      setMaterials(saleOrder.materials);
+      setReceptionGuide(saleOrder.receptionGuide);
     }
   }, [saleOrder]);
 
@@ -74,16 +86,89 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
     recalculateTotals();
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      setSubmitting(true);
       if (saleOrder) {
-        console.log('actualizando');
+        const updatedData: {
+          number: string;
+          date: string;
+          providerName: string;
+          providerAddress: string;
+          providerLine: string;
+          providerEmail: string;
+          providerRut: string;
+          providerCity: string;
+          providerPhone: string;
+          providerContact: string;
+          accordingToQuote: string;
+          requestedBy: string;
+          emittedBy: string;
+          approvedBy: string;
+          materials: {
+            id: string;
+            name: string;
+            code: string;
+            unitPrice: number;
+            quantity: number;
+          }[];
+          receptionGuide: string;
+          status: string;
+          discount: number;
+        } = {
+          number,
+          date: new Date(date).toISOString(),
+          providerName,
+          providerAddress,
+          providerLine,
+          providerEmail,
+          providerRut,
+          providerCity,
+          providerPhone,
+          providerContact,
+          accordingToQuote,
+          requestedBy,
+          emittedBy,
+          approvedBy,
+          materials,
+          receptionGuide,
+          status,
+          discount: parseInt(discount),
+        };
+
+        await axios.patch(`/api/saleorders/${saleOrder.id}`, updatedData);
+        toast.success('Orden de compra actualizada.');
+        setSubmitting(false);
       } else {
-        console.log('creando');
+        setSubmitting(true);
+        await axios.post('/api/saleorders', {
+          number,
+          date: new Date(date).toISOString(),
+          providerName,
+          providerAddress,
+          providerLine,
+          providerEmail,
+          providerRut,
+          providerCity,
+          providerPhone,
+          providerContact,
+          accordingToQuote,
+          requestedBy,
+          emittedBy,
+          approvedBy,
+          materials,
+          receptionGuide,
+          status,
+          discount: parseInt(discount),
+        });
+        router.push('/oc');
+        setSubmitting(false);
+        toast.success('Nueva orden de compra ha sido creada.');
       }
     } catch (error) {
-      console.log('error');
+      setSubmitting(false);
+      console.log(error);
     }
   };
 
@@ -123,7 +208,6 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
 
   const fieldNameStyle = 'font-bold';
 
-  console.log('discount', discount);
   return (
     <Form.Root onSubmit={handleSubmit}>
       <Box className="bg-white rounded-md p-5">
@@ -146,10 +230,27 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
             <Box>
               <Text className="text-xl">Estado de orden de compra</Text>
             </Box>
-
+            <Box>
+              <Select.Root
+                onValueChange={(status) => setStatus(status)}
+                defaultValue={saleOrder ? saleOrder.status : status}
+              >
+                <Select.Trigger />
+                <Select.Content>
+                  <Select.Item value="PENDING">Pendiente</Select.Item>
+                  <Select.Item value="IN_PROCESS">En camino</Select.Item>
+                  <Select.Item value="ARRIVED">Entregada</Select.Item>
+                  <Select.Item value="NOT_MATCHING">No concuerda</Select.Item>
+                </Select.Content>
+              </Select.Root>
+            </Box>
             <Flex direction="column" gap="4">
               <Form.Submit asChild>
-                <Button>Actualizar</Button>
+                <Button disabled={isSubmitting}>
+                  {isSubmitting && <Spinner />}
+                  <UpdateIcon />
+                  Actualizar O.C
+                </Button>
               </Form.Submit>
             </Flex>
           </Flex>
@@ -707,6 +808,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
           </Flex>
         </Box>
       </Box>
+      <Toaster />
     </Form.Root>
   );
 };
