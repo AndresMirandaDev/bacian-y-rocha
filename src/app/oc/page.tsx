@@ -7,6 +7,7 @@ import Pagination from '../components/Pagination';
 import EmittedOCTable from './ocTables/EmittedOCTable';
 import DeliveredOcTable from './ocTables/DeliveredOcTable';
 import { Toaster } from 'react-hot-toast';
+import SaleOrderActions from './SaleOrderActions';
 
 const OCPage = async () => {
   const saleOrders = await prisma.saleOrder.findMany();
@@ -20,6 +21,9 @@ const OCPage = async () => {
             saleOrders={saleOrders}
             saleOrdersReceived={receivedSaleOrders}
           />
+        </Box>
+        <Box>
+          <SaleOrderActions />
         </Box>
         <Card>
           <Grid

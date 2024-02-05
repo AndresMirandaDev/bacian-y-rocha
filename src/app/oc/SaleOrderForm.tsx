@@ -47,7 +47,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
   const [emittedBy, setEmittedBy] = useState('');
   const [approvedBy, setApprovedBy] = useState('');
   const [status, setStatus] = useState('PENDING');
-  const [discount, setDiscount] = useState('');
+  const [discount, setDiscount] = useState('0');
   const [receptionGuide, setReceptionGuide] = useState('pending');
   const [materials, setMaterials] = useState<Material[]>([
     { code: '', name: '', quantity: 0, unitPrice: 0, id: '1' },
@@ -168,6 +168,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
         toast.success('Nueva orden de compra ha sido creada.');
       }
     } catch (error) {
+      console.log(error);
       setSubmitting(false);
       toast.error(
         'No se pudo actualizar orden de compra, inténtelo nuevamente.'
@@ -181,9 +182,19 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
     fieldName: string
   ) => {
     const updatedMaterials = [...materials];
-    updatedMaterials[rowIndex][fieldName] = (
-      e.target as HTMLInputElement
-    ).value;
+    const inputValue = (e.target as HTMLInputElement).value;
+
+    if (fieldName === 'quantity' || fieldName === 'unitPrice') {
+      // Check if the input value is a valid number or empty string and set it to the corresponding field
+      const parsedValue =
+        inputValue === '' || isNaN(Number(inputValue))
+          ? 0
+          : parseFloat(inputValue);
+      updatedMaterials[rowIndex][fieldName] = parsedValue;
+    } else {
+      updatedMaterials[rowIndex][fieldName] = inputValue;
+    }
+
     setMaterials(updatedMaterials);
     recalculateTotals();
   };
@@ -252,8 +263,9 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
               <Form.Submit asChild>
                 <Button disabled={isSubmitting}>
                   {isSubmitting && <Spinner />}
-                  <UpdateIcon />
-                  Actualizar O.C
+                  {saleOrder && <UpdateIcon />}
+                  {!saleOrder && <PlusIcon />}
+                  {saleOrder ? 'Actualizar O.C' : 'Registrar O.C'}
                 </Button>
               </Form.Submit>
             </Flex>
@@ -453,7 +465,14 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
           {/* Informacion del proveedor */}
 
           <Box className="p-3">
-            <Text className="font-bold">* Según Cotización Nr a</Text>
+            <Text className="font-bold">* Según Cotización Nr </Text>
+            <FormField
+              value={accordingToQuote}
+              valueMissing="Ingrese Número de cotización"
+              setValue={setAccordingToQuote}
+              name="accordingToQuote"
+              typeMismatch="numero inválido"
+            />
           </Box>
 
           {/* Tabla de materiales */}
@@ -491,12 +510,12 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                           <Form.Control asChild>
                             <input
                               className="input input-bordered w-[95%] bg-transparent"
-                              type="text"
+                              type="number"
                               required
                               onChange={(e) =>
                                 handleDetailsChange(e, index, 'quantity')
                               }
-                              value={m.quantity}
+                              value={String(Number(m.quantity))}
                             />
                           </Form.Control>
                         </Box>
@@ -548,12 +567,12 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                           <Form.Control asChild>
                             <input
                               className="input input-bordered w-[95%] bg-transparent"
-                              type="text"
+                              type="number"
                               required
                               onChange={(e) =>
                                 handleDetailsChange(e, index, 'unitPrice')
                               }
-                              value={m.unitPrice}
+                              value={String(Number(m.unitPrice))}
                             />
                           </Form.Control>
                         </Box>
