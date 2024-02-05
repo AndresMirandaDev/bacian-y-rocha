@@ -262,7 +262,10 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
             </Box>
             <Flex direction="column" gap="4">
               <Form.Submit asChild>
-                <Button disabled={isSubmitting}>
+                <Button
+                  disabled={isSubmitting}
+                  style={{ backgroundColor: saleOrder ? '#2ebb45' : '#3E63DD' }}
+                >
                   {isSubmitting && <Spinner />}
                   {saleOrder && <UpdateIcon />}
                   {!saleOrder && <PlusIcon />}
