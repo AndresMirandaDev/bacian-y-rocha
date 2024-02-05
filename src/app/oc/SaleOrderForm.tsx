@@ -82,6 +82,13 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
     }
   }, [saleOrder]);
 
+  const recalculateTotals = () => {
+    const netTotal = materials.reduce((accumulator, m) => {
+      return accumulator + m.quantity * m.unitPrice;
+    }, 0);
+    setNetTotal(netTotal);
+  };
+
   useEffect(() => {
     recalculateTotals();
   }, []);
@@ -212,13 +219,6 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       },
     ]);
     recalculateTotals();
-  };
-
-  const recalculateTotals = () => {
-    const netTotal = materials.reduce((accumulator, m) => {
-      return accumulator + m.quantity * m.unitPrice;
-    }, 0);
-    setNetTotal(netTotal);
   };
 
   const fieldNameStyle = 'font-bold';
