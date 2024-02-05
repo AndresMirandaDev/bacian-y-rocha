@@ -508,7 +508,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
             </Box>
             {materials.map((m, index) => {
               return (
-                <Grid columns="5" align="center">
+                <Grid columns="5" align="center" key={m.id}>
                   <Box>
                     <Form.Field name="description">
                       <Box className="flex items-center mt-3">

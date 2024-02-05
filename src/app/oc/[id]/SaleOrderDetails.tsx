@@ -240,7 +240,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
               <Table.Body>
                 {saleOrder.materials.map((m) => {
                   return (
-                    <Table.Row key={m.code}>
+                    <Table.Row key={m.id}>
                       <Table.Cell>{m.quantity}</Table.Cell>
                       <Table.Cell>{m.code}</Table.Cell>
                       <Table.Cell>{m.name}</Table.Cell>
