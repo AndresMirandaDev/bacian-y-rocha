@@ -95,7 +95,12 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
           <Text className="text-zinc-500">Archivo PDF</Text>
           <FileUploader publicId={file} setPublicId={setFile} />
           <Form.Submit asChild>
-            <Button disabled={isSubmitting}>
+            <Button
+              disabled={isSubmitting}
+              style={{
+                backgroundColor: receivedSaleOrder ? '#2ebb45' : '#3E63DD',
+              }}
+            >
               {isSubmitting && <Spinner />}
               {receivedSaleOrder
                 ? 'Actualizar Orden de Compra'
