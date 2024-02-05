@@ -1,7 +1,7 @@
 import React from 'react';
 import prisma from '../../../prisma/client';
 import SaleOrdersOverview from './SaleOrdersOverview';
-import { Box, Card, Grid } from '@radix-ui/themes';
+import { Box, Card, Flex, Grid } from '@radix-ui/themes';
 import ReceivedOCTable from './ocTables/ReceivedOCTable';
 import Pagination from '../components/Pagination';
 import EmittedOCTable from './ocTables/EmittedOCTable';
@@ -22,9 +22,19 @@ const OCPage = async () => {
             saleOrdersReceived={receivedSaleOrders}
           />
         </Box>
-        <Box>
+        <Flex
+          gap="4"
+          direction={{
+            initial: 'column',
+            xs: 'column',
+            sm: 'column',
+            md: 'column',
+            lg: 'row',
+            xl: 'row',
+          }}
+        >
           <SaleOrderActions />
-        </Box>
+        </Flex>
         <Card>
           <Grid
             columns={{

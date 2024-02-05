@@ -75,7 +75,7 @@ model SaleOrder {
 
 model ReceivedSaleOrder {
   id           String   @id @default(auto()) @map("_id") @db.ObjectId
-  file         String
+  file         String   @default("pending")
   number       String
   receivedDate DateTime
 }

@@ -1,8 +1,11 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import { cloudinaryBaseUrl } from '@/cloud/config';
 import { ReceivedSaleOrder, SaleOrder } from '@prisma/client';
-import { Box, Table, Text } from '@radix-ui/themes';
+import { Box, IconButton, Table, Text } from '@radix-ui/themes';
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { FaFilePdf } from 'react-icons/fa6';
 
 interface Props {
   receivedSaleOrders: ReceivedSaleOrder[];
@@ -30,8 +33,28 @@ const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
             .map((order) => {
               return (
                 <Table.Row key={order.id}>
-                  <Table.Cell className="font-bold">#{order.number}</Table.Cell>
-                  <Table.Cell>{order.file}</Table.Cell>
+                  <Table.Cell className="font-bold">
+                    <Link href={`/oc/receivedoc/${order.id}`}>
+                      #{order.number}
+                    </Link>
+                  </Table.Cell>
+                  <Table.Cell>
+                    {order.file !== 'pending' && (
+                      <IconButton
+                        size="1"
+                        color="gray"
+                        onClick={() => {
+                          window.open(
+                            `${cloudinaryBaseUrl}/image/upload/${order.file}`,
+                            '_blank'
+                          );
+                        }}
+                      >
+                        <FaFilePdf />
+                      </IconButton>
+                    )}
+                    {order.file === 'pending' && 'No hay archivo'}
+                  </Table.Cell>
                   <Table.Cell>
                     {new Date(order.receivedDate).toLocaleDateString()}
                   </Table.Cell>

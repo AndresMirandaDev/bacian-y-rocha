@@ -164,6 +164,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
           discount: parseInt(discount),
         });
         router.push('/oc');
+        router.refresh();
         setSubmitting(false);
         toast.success('Nueva orden de compra ha sido creada.');
       }
@@ -495,7 +496,12 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
               </Box>
             </Grid>
             <Box className="mt-5">
-              <Button onClick={handleAddRow}>
+              <Button
+                onClick={(e: React.FormEvent) => {
+                  e.preventDefault(), e.stopPropagation();
+                  handleAddRow();
+                }}
+              >
                 <PlusIcon />
                 Agregar Insumo
               </Button>

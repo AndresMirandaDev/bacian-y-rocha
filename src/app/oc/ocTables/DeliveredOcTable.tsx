@@ -1,8 +1,11 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import { cloudinaryBaseUrl } from '@/cloud/config';
 import { SaleOrder } from '@prisma/client';
-import { Badge, Box, Table, Text } from '@radix-ui/themes';
+import { Badge, Box, IconButton, Table, Text } from '@radix-ui/themes';
+import Link from 'next/link';
 import React, { useState } from 'react';
+import { FaFilePdf } from 'react-icons/fa6';
 
 interface Props {
   saleOrders: SaleOrder[];
@@ -31,9 +34,27 @@ const DeliveredOcTable = ({ saleOrders }: Props) => {
             .map((order) => {
               return (
                 <Table.Row key={order.id}>
-                  <Table.Cell>{order.number}</Table.Cell>
+                  <Table.Cell className="font-bold">
+                    <Link href={`/oc/${order.id}`}>#{order.number}</Link>
+                  </Table.Cell>
                   <Table.Cell>{order.providerName}</Table.Cell>
-                  <Table.Cell>{order.receptionGuide}</Table.Cell>
+                  <Table.Cell>
+                    {order.receptionGuide !== 'pending' && (
+                      <IconButton
+                        size="1"
+                        color="gray"
+                        onClick={() => {
+                          window.open(
+                            `${cloudinaryBaseUrl}/image/upload/${order.receptionGuide}`,
+                            '_blank'
+                          );
+                        }}
+                      >
+                        <FaFilePdf />
+                      </IconButton>
+                    )}
+                    {order.receptionGuide === 'pending' && 'No hay archivo'}
+                  </Table.Cell>
                   <Table.Cell>
                     <Badge color="green">
                       {order.status === 'ARRIVED' && 'Entregada'}
