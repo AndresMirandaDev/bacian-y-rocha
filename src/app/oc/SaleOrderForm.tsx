@@ -759,7 +759,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                 <Text className="font-bold">DIRECCIÓN</Text>
               </Flex>
               <Flex grow="1">
-                <Text>AV. LAS PARCELAS MANZANA "D" SITIO 7 ALTO HOSPICIO</Text>
+                <Text>AV. LAS PARCELAS MANZANA D SITIO 7 ALTO HOSPICIO</Text>
               </Flex>
             </Flex>
             <Flex>
