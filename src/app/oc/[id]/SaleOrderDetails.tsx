@@ -231,7 +231,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Box>
 
             {/* Tabla de materiales */}
-            {/* <Box>
+            <Box>
               <Table.Root variant="ghost" className="border border-black">
                 <Table.Header>
                   <Table.Row>
@@ -260,7 +260,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                   })}
                 </Table.Body>
               </Table.Root>
-            </Box> */}
+            </Box>
             {/* Tabla de materiales */}
 
             {/* PIE DE TABLA */}

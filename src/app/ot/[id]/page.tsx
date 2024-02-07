@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Grid, Text } from '@radix-ui/themes';
+import { Box, Flex, Grid, Table, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import logo from '../../../../public/assets/images/byrs.png';
@@ -15,9 +15,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
 
   if (!workOrder) return notFound();
 
+  const orderTotal = workOrder.materials.reduce((accumulator, m) => {
+    return m.quantity * m.unitPrice + accumulator;
+  }, 0);
+
   return (
     <>
       <Box className="bg-white rounded-md p-5">
+        {/* cabecera  */}
         <Flex
           className="border border-slate-300 rounded-md"
           gap="4"
@@ -36,7 +41,6 @@ const WorkOrderDetails = async ({ params }: Params) => {
           <Flex
             direction="column"
             justify="center"
-            align="center"
             className="bg-[#013564] p-3"
           >
             <Box>
@@ -68,6 +72,195 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Box>
           </Grid>
         </Flex>
+        {/* cabecera  */}
+
+        {/* datos de orden de trabajo */}
+        <Flex
+          className="border border-slate-500 mt-10 p-3"
+          direction={{
+            initial: 'column',
+            xs: 'column',
+            sm: 'column',
+            md: 'row',
+            lg: 'row',
+            xl: 'row',
+          }}
+        >
+          <Flex className="flex-grow" direction="column">
+            <Box>
+              <Text className="font-bold">Orden de trabajo N°</Text>
+            </Box>
+            <Box>
+              <Text>{workOrder.number}</Text>
+            </Box>
+          </Flex>
+          <Flex direction="column" className="flex-grow">
+            <Box>
+              <Text className="font-bold">Asunto:</Text>
+            </Box>
+            <Box>
+              <Text>{workOrder.description}</Text>
+            </Box>
+          </Flex>
+        </Flex>
+        {/* datos de orden de trabajo */}
+
+        {/* Datos generales */}
+
+        <Flex direction="column">
+          <Box className="bg-[#013564] w-full p-1 mt-10">
+            <Text className="text-slate-100 font-bold">1. DATOS GENERALES</Text>
+          </Box>
+          <Grid
+            columns={{
+              initial: '1',
+              xs: '1',
+              sm: '1',
+              md: '1',
+              lg: '2',
+              xl: '2',
+            }}
+            className="p-1"
+            gap={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '0', xl: '0' }}
+          >
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Cliente</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.client}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Fecha inicio</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.startDate.toLocaleDateString()}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Fecha Entrega</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.endDate.toLocaleDateString()}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Requiere placa</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.requiresPlaque}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">N° cotización</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.quoteNumber}</Text>
+              </Box>
+            </Flex>
+          </Grid>
+        </Flex>
+
+        {/* Datos generales */}
+
+        {/* Datos de componente */}
+        <Flex direction="column">
+          <Box className="bg-[#013564] w-full p-1 mt-10">
+            <Text className="text-slate-100 font-bold">
+              2. DATOS DE COMPONENTE
+            </Text>
+          </Box>
+          <Grid
+            columns={{
+              initial: '1',
+              xs: '1',
+              sm: '1',
+              md: '1',
+              lg: '2',
+              xl: '2',
+            }}
+            className="p-1"
+            gap={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '0', xl: '0' }}
+          >
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Componente</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.componentName}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Modelo</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.model}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Equipo</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.componentDevice}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">N° de parte</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.deviceNumber}</Text>
+              </Box>
+            </Flex>
+          </Grid>
+        </Flex>
+        {/* Datos de componente */}
+        {/* Materiales      */}
+        <Flex direction="column">
+          <Box className="bg-[#013564] w-full p-1 mt-10">
+            <Text className="text-slate-100 font-bold">
+              3. MATERIALES A UTILIZAR O COMPRAR/ REPUESTOS
+            </Text>
+          </Box>
+          <Box>
+            <Table.Root variant="ghost" className="border border-black">
+              <Table.Header>
+                <Table.Row>
+                  <Table.ColumnHeaderCell>CANTIDAD</Table.ColumnHeaderCell>
+
+                  <Table.ColumnHeaderCell>CÓDIGO</Table.ColumnHeaderCell>
+
+                  <Table.ColumnHeaderCell>ARTÍCULO</Table.ColumnHeaderCell>
+
+                  <Table.ColumnHeaderCell>VALOR UNIT.</Table.ColumnHeaderCell>
+
+                  <Table.ColumnHeaderCell>TOTAL</Table.ColumnHeaderCell>
+                </Table.Row>
+              </Table.Header>
+              <Table.Body>
+                {workOrder.materials.map((m) => {
+                  return (
+                    <Table.Row key={m.id}>
+                      <Table.Cell>{m.quantity}</Table.Cell>
+                      <Table.Cell>{m.code}</Table.Cell>
+                      <Table.Cell>{m.name}</Table.Cell>
+                      <Table.Cell>$ {m.unitPrice}</Table.Cell>
+                      <Table.Cell>$ {m.quantity * m.unitPrice}</Table.Cell>
+                    </Table.Row>
+                  );
+                })}
+              </Table.Body>
+            </Table.Root>
+          </Box>
+        </Flex>
+        {/* Materiales      */}
       </Box>
     </>
   );
