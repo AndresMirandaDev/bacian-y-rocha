@@ -1,23 +1,36 @@
+'use client';
+import Pagination from '@/app/components/Pagination';
 import { WorkOrder } from '@prisma/client';
-import { Table } from '@radix-ui/themes';
+import { Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
-import React from 'react';
+import React, { use, useState } from 'react';
 
 interface Props {
   workOrders: WorkOrder[];
 }
 
 const WorkOrdersTable = ({ workOrders }: Props) => {
+  const [pageSize, setPageSize] = useState(5);
+  const [currentPage, setCurrentPage] = useState(0);
   return (
     <>
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>
-            <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Cliente</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Componente</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Fecha inicio</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Fecha estimada</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Orden de trabajo</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell">
+              Cliente
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>
+              <Text className="hidden md:block">Componente</Text>
+              <Text className="block md:hidden">Descripción</Text>
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell">
+              Fecha inicio
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className="hidden md:table-cell">
+              Fecha estimada
+            </Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
@@ -27,12 +40,23 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
                 <Table.Cell className="font-bold">
                   <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
                 </Table.Cell>
-                <Table.Cell>{wo.client}</Table.Cell>
-                <Table.Cell>{wo.componentName}</Table.Cell>
-                <Table.Cell>
-                  {new Date(wo.startDate).toLocaleDateString()}
+                <Table.Cell className="hidden md:table-cell">
+                  {wo.client}
                 </Table.Cell>
                 <Table.Cell>
+                  <div className="block md:hidden text-slate-500 italic ">
+                    Componente
+                  </div>
+                  <div>{wo.componentName}</div>
+                  <div className="block md:hidden text-slate-500 italic ">
+                    Cliente
+                  </div>
+                  <div className="block md:hidden">{wo.client}</div>
+                </Table.Cell>
+                <Table.Cell className="hidden md:table-cell">
+                  {new Date(wo.startDate).toLocaleDateString()}
+                </Table.Cell>
+                <Table.Cell className="hidden md:table-cell">
                   {new Date(wo.estimatedDate).toLocaleDateString()}
                 </Table.Cell>
               </Table.Row>
@@ -40,6 +64,12 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
           })}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        itemCount={workOrders.length}
+        currentPage={currentPage}
+        setPage={setCurrentPage}
+        pageSize={pageSize}
+      />
     </>
   );
 };
