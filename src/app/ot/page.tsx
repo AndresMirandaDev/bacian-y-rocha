@@ -9,7 +9,7 @@ const WorkOrderPage = async () => {
 
   if (!workOrders) return notFound();
   return (
-    <Grid>
+    <Grid className="p-3">
       <Card>
         <WorkOrdersTable workOrders={workOrders} />
       </Card>

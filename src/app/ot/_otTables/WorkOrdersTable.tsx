@@ -1,7 +1,7 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
 import { WorkOrder } from '@prisma/client';
-import { Table, Text } from '@radix-ui/themes';
+import { Box, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
 import React, { use, useState } from 'react';
 
@@ -14,6 +14,9 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
   return (
     <>
+      <Box className="mb-5 pl-2">
+        <Text className="text-xl">Ordenes de trabajo</Text>
+      </Box>
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>
