@@ -233,13 +233,17 @@ const WorkOrderDetails = async ({ params }: Params) => {
             <Table.Root variant="ghost" className="border border-black">
               <Table.Header>
                 <Table.Row>
-                  <Table.ColumnHeaderCell>CANTIDAD</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell className="hidden md:table-cell">
+                    CANTIDAD
+                  </Table.ColumnHeaderCell>
 
                   <Table.ColumnHeaderCell>CÓDIGO</Table.ColumnHeaderCell>
 
                   <Table.ColumnHeaderCell>ARTÍCULO</Table.ColumnHeaderCell>
 
-                  <Table.ColumnHeaderCell>VALOR UNIT.</Table.ColumnHeaderCell>
+                  <Table.ColumnHeaderCell className="hidden md:table-cell">
+                    VALOR UNIT.
+                  </Table.ColumnHeaderCell>
 
                   <Table.ColumnHeaderCell>TOTAL</Table.ColumnHeaderCell>
                 </Table.Row>
@@ -248,10 +252,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
                 {workOrder.materials.map((m) => {
                   return (
                     <Table.Row key={m.id}>
-                      <Table.Cell>{m.quantity}</Table.Cell>
+                      <Table.Cell className="hidden md:table-cell">
+                        {m.quantity}
+                      </Table.Cell>
                       <Table.Cell>{m.code}</Table.Cell>
                       <Table.Cell>{m.name}</Table.Cell>
-                      <Table.Cell>$ {m.unitPrice}</Table.Cell>
+                      <Table.Cell className="hidden md:table-cell">
+                        $ {m.unitPrice}
+                      </Table.Cell>
                       <Table.Cell>$ {m.quantity * m.unitPrice}</Table.Cell>
                     </Table.Row>
                   );
@@ -260,6 +268,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Table.Root>
           </Box>
         </Flex>
+        {/* AGREGAR TOTALES CON DESCUENTO,TRAER DESCUENTO DE ORDEN DE COMPRA DE MATERIAL */}
         {/* Materiales      */}
       </Box>
     </>
