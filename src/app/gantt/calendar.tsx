@@ -1,7 +1,5 @@
-// WeeklyCalendar.tsx
-import React, { useState, useEffect } from 'react';
-import { addDays, format, startOfWeek } from 'date-fns';
-import { Locale } from 'date-fns';
+import React, { useState } from 'react';
+import { addDays, format, startOfWeek, differenceInCalendarDays, Locale } from 'date-fns';
 import esLocale from 'date-fns/locale/es';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
@@ -17,85 +15,68 @@ interface Task {
 
 interface WeeklyCalendarProps {
   tasks: Task[];
-  rows: string[]; // Nombres de las filas
+  rows: string[];
 }
 
 const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ tasks, rows }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
 
-  const getWeekDays = (startDate: Date) => {
-    const days = [];
-    for (let i = 0; i < 365; i++) {
-      const day = addDays(startDate, i);
-      days.push(
-        <div key={i} className="day">
-          <div className="day-label">{format(day, 'EEEE', { locale: esLocale as unknown as Locale })}</div>
-          <div className="date mt-4 z">{format(day, 'd')}</div>
-
-          {rows.map(row => (
-            <div key={row} className="row-label">
-         
-            </div>
-          ))}
-
-          {tasks.map((task) => {
-            const taskStartDate = new Date(task.startDate);
-            const taskEndDate = addDays(taskStartDate, task.durationInDays - 1);
-
-            if (day >= taskStartDate && day <= taskEndDate) {
-              const dayIndex = format(day, 'd');
-              const isStartDay = dayIndex === format(taskStartDate, 'd');
-              const isEndDay = dayIndex === format(taskEndDate, 'd');
-
-              return (
-                <div
-                  key={task.id}
-                  className={`task${isStartDay ? ' start-day' : ''}${isEndDay ? ' end-day' : ''}`}
-                >
-                  <span className="chips h-[15px] cursor-pointer items-center justify-between rounded-[15px] bg-[#dc2626] px-[40px] py-0 text-[13px] font-normal normal-case leading-loose text-[#4f4f4f] shadow-none transition-[opacity] duration-300 ease-linear hover:!shadow-none active:bg-[#cacfd1] dark:bg-neutral-600 dark:text-neutral-200">
-                    {task.description}
-                  </span>
-                </div>
-              );
-            }
-
-            return null;
-          })}
-        </div>
-      );
-    }
-    return days;
-  };
-
   const handlePrevWeek = () => {
-    setCurrentDate((prevDate) => addDays(startOfWeek(prevDate), -7));
+    setCurrentDate((prevDate) => addDays(prevDate, -7));
   };
 
   const handleNextWeek = () => {
-    setCurrentDate((prevDate) => addDays(startOfWeek(prevDate), 7));
+    setCurrentDate((prevDate) => addDays(prevDate, 7));
   };
+
+  const startDateOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
+  const endDateOfWeek = addDays(startDateOfWeek, 6);
 
   return (
     <TransformWrapper>
-      <div className="weekly-calendar  max-w-screen-md mx-auto">
-        <TransformComponent>
-          <div className="flex space-x-8">{getWeekDays(startOfWeek(currentDate))}</div>
-        </TransformComponent>
-
-        <div className="flex items-center justify-between mt-11">
-          <button className="btn mr-11" onClick={handlePrevWeek}>
-            Semana Anterior
-          </button>
-
-          <button className="btn ml-11" onClick={handleNextWeek}>
-            Próxima Semana
-          </button>
-
-          <h2 className="text-center font-bold ml-10 ">
-            {format(startOfWeek(currentDate), 'd/MM/yyyy', { locale: esLocale as unknown as Locale })}
-          </h2>
+      <TransformComponent>
+        <div className="flex flex-col items-center">
+          <div className="flex mb-4">
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={handlePrevWeek}>
+              Semana Anterior
+            </button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleNextWeek}>
+              Próxima Semana
+            </button>
+          </div>
+          <div className="weekly-calendar max-w-screen-md mx-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', backgroundColor: 'black' }}>
+            {Array.from({ length: 7 }).map((_, i) => (
+              <div key={i} style={{ backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
+                {format(addDays(startDateOfWeek, i), 'EEEE, d MMM', { locale: esLocale as unknown as Locale })}
+              </div>
+            ))}
+            {tasks.map((task, index) => {
+              const startDayIndex = differenceInCalendarDays(new Date(task.startDate), startDateOfWeek);
+              const endDayIndex = startDayIndex + task.durationInDays - 1;
+              if (startDayIndex >= 0 && startDayIndex < 7) { // Asegurarse de que la tarea comience en la semana actual
+                return (
+                  <div key={task.id} style={{
+                    gridColumnStart: startDayIndex + 1,
+                    gridColumnEnd: endDayIndex + 2,
+                    gridRow: index + 2, // Evitar solapamiento con los encabezados de días
+                    backgroundColor: '#3498db',
+                    color: 'white',
+                    padding: '10px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    margin: '2px',
+                    borderRadius: '4px',
+                  }}>
+                    {task.description}
+                  </div>
+                );
+              }
+              return null;
+            })}
+          </div>
         </div>
-      </div>
+      </TransformComponent>
     </TransformWrapper>
   );
 };
