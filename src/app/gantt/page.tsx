@@ -24,8 +24,8 @@ const GanttChart: React.FC = () => {
         category: 'Categoria A',
         assignedTo: 'Usuario 1',
         progress: 30,
-        startDate: '2024-01-31',
-        durationInDays: 7,
+        startDate: '2024-02-06',
+        durationInDays:3,
       },
       {
         id: 1,
@@ -33,7 +33,7 @@ const GanttChart: React.FC = () => {
         category: 'Categoria A',
         assignedTo: 'Usuario 1',
         progress: 30,
-        startDate: '2024-01-31',
+        startDate: '2024-02-07',
         durationInDays: 8,
       },
       {
@@ -109,7 +109,7 @@ const GanttChart: React.FC = () => {
           ))}
         </div>
 
-        <div className='ml-5'>
+        <div className='ml-3'>
           <WeeklyCalendar tasks={tasks} rows={rows} />
         </div>
       </div>
