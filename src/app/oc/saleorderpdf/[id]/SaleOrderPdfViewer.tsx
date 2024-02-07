@@ -173,6 +173,10 @@ const SaleOrderPDF = ({ saleOrder }: Props) => {
         </View>
         {/* Informacion del proveedor */}
 
+        <View style={{ marginVertical: 15 }}>
+          <Text>* Segun Cotización {saleOrder.accordingToQuote}</Text>
+        </View>
+
         {/* Tabla de materiales */}
         <View style={{ border: '1 solid black', marginBottom: 15 }}>
           {/* Table Header */}
@@ -180,6 +184,7 @@ const SaleOrderPDF = ({ saleOrder }: Props) => {
             style={{
               flexDirection: 'row',
               borderBottom: '1 solid black',
+              fontSize: 12,
             }}
           >
             <Text
