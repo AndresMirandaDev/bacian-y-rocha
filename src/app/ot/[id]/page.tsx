@@ -42,6 +42,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
             direction="column"
             justify="center"
             className="bg-[#013564] p-3"
+            align={{
+              initial: 'start',
+              xs: 'start',
+              sm: 'start',
+              md: 'start',
+              lg: 'center',
+              xl: 'center',
+            }}
           >
             <Box>
               <Text className="text-slate-100 font-bold">INFORME TÉCNICO</Text>
