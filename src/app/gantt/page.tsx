@@ -29,6 +29,24 @@ const GanttChart: React.FC = () => {
       },
       {
         id: 1,
+        description: 'Hito8',
+        category: 'Categoria A',
+        assignedTo: 'Usuario 1',
+        progress: 30,
+        startDate: '2024-02-07',
+        durationInDays: 8,
+      },
+      {
+        id: 1,
+        description: 'Hito4',
+        category: 'Categoria A',
+        assignedTo: 'Usuario 1',
+        progress: 30,
+        startDate: '2024-02-11',
+        durationInDays:3,
+      },
+      {
+        id: 1,
         description: 'Hito3',
         category: 'Categoria A',
         assignedTo: 'Usuario 1',
@@ -38,11 +56,11 @@ const GanttChart: React.FC = () => {
       },
       {
         id: 2,
-        description: 'Hito2',
+        description: 'Hito7',
         category: 'Categoria B',
         assignedTo: 'Usuario 2',
         progress: 50,
-        startDate: '2024-02-10',
+        startDate: '2024-02-7',
         durationInDays: 6,
       },
     ];

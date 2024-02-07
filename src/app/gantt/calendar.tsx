@@ -30,43 +30,41 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ tasks, rows }) => {
   };
 
   const startDateOfWeek = startOfWeek(currentDate, { weekStartsOn: 1 });
-  const endDateOfWeek = addDays(startDateOfWeek, 6);
+
+  // Definir un arreglo de colores para los hitos
+  const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6', '#34495e', '#1abc9c'];
+
+  // Función para obtener un color basado en el índice o alguna propiedad del hito
+  const getColorForTask = (index: number) => colors[index % colors.length];
 
   return (
     <TransformWrapper>
       <TransformComponent>
         <div className="flex flex-col items-center">
-          <div className="flex mb-4">
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" onClick={handlePrevWeek}>
-              Semana Anterior
-            </button>
-            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleNextWeek}>
-              Próxima Semana
-            </button>
-          </div>
-          <div className="weekly-calendar max-w-screen-md mx-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '1px', backgroundColor: 'black' }}>
+          <div className="weekly-calendar max-w-screen-md mx-auto" style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
             {Array.from({ length: 7 }).map((_, i) => (
-              <div key={i} style={{ backgroundColor: 'white', padding: '10px', border: '1px solid black' }}>
-                {format(addDays(startDateOfWeek, i), 'EEEE, d MMM', { locale: esLocale as unknown as Locale })}
+              <div key={i} style={{ padding: '5px' }}>
+                {format(addDays(startDateOfWeek, i), 'EEEE, d', { locale: esLocale as unknown as Locale })}
               </div>
             ))}
             {tasks.map((task, index) => {
               const startDayIndex = differenceInCalendarDays(new Date(task.startDate), startDateOfWeek);
               const endDayIndex = startDayIndex + task.durationInDays - 1;
-              if (startDayIndex >= 0 && startDayIndex < 7) { // Asegurarse de que la tarea comience en la semana actual
+              const taskColor = getColorForTask(index); // Obtener el color para este hito
+              if (startDayIndex >= 0 && startDayIndex < 7) {
                 return (
                   <div key={task.id} style={{
                     gridColumnStart: startDayIndex + 1,
                     gridColumnEnd: endDayIndex + 2,
-                    gridRow: index + 2, // Evitar solapamiento con los encabezados de días
-                    backgroundColor: '#3498db',
+                    gridRow: index + 2,
+                    backgroundColor: taskColor, // Usar el color seleccionado
                     color: 'white',
-                    padding: '10px',
+                    padding: '1px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    margin: '2px',
-                    borderRadius: '4px',
+                    margin: '1px',
+                    borderRadius: '10px',
                   }}>
                     {task.description}
                   </div>
@@ -77,6 +75,14 @@ const WeeklyCalendar: React.FC<WeeklyCalendarProps> = ({ tasks, rows }) => {
           </div>
         </div>
       </TransformComponent>
+      <div className="flex mt-10 ">
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded mr-14" onClick={handlePrevWeek}>
+          Semana Anterior
+        </button>
+        <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-10 rounded" onClick={handleNextWeek}>
+          Próxima Semana
+        </button>
+      </div>
     </TransformWrapper>
   );
 };
