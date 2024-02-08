@@ -47,11 +47,12 @@ const WeeklyCalendar = ({ tasks }: {tasks:any}) => {
                     position: 'absolute',
                     left: `${startDayIndex * 30}px`,
                     width: `${taskWidth}px`,
-                    top: `${index * 22}px`, // Asegura que cada hito esté en una línea diferente
+                    top: `${index * 30}px`, // Asegura que cada hito esté en una línea diferente
                     backgroundColor: getColorForTask(index),
                     color: 'white',
                     textAlign: 'center',
-                    padding: '2px',
+                    padding: '1px',
+                    borderRadius:'20px'
                 }}>
                     {task.description}
                 </div>

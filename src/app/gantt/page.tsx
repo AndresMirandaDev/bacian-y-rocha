@@ -71,7 +71,7 @@ const GanttChart: React.FC = () => {
   const rows = ['Fila 1', 'Fila 2'];
 
   return (
-    <div className="container bg-gray-200 p-4">
+    <div className="container bg-gray-200 p-4 ml-60">
       <div className="grid grid-cols-12">
         <div className="col-span-2">
           <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Descripción del hito</div>
