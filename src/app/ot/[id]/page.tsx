@@ -149,6 +149,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Flex>
             <Flex>
               <Box className="w-1/2">
+                <Text className="font-bold">N° cotización</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.quoteNumber}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
                 <Text className="font-bold">Fecha Entrega</Text>
               </Box>
               <Box className="w-1/2">
@@ -165,10 +173,10 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Flex>
             <Flex>
               <Box className="w-1/2">
-                <Text className="font-bold">N° cotización</Text>
+                <Text className="font-bold">Fecha estimada de entrega </Text>
               </Box>
               <Box className="w-1/2">
-                <Text>{workOrder.quoteNumber}</Text>
+                <Text>{workOrder.estimatedDate.toLocaleDateString()}</Text>
               </Box>
             </Flex>
           </Grid>
@@ -268,7 +276,12 @@ const WorkOrderDetails = async ({ params }: Params) => {
                       <Table.Cell className="hidden md:table-cell">
                         $ {m.unitPrice}
                       </Table.Cell>
-                      <Table.Cell>$ {m.quantity * m.unitPrice}</Table.Cell>
+                      <Table.Cell>
+                        $
+                        {m.quantity * m.unitPrice -
+                          m.quantity * m.unitPrice * (m.discount / 100)}
+                        (dcto. {m.discount}%)
+                      </Table.Cell>
                     </Table.Row>
                   );
                 })}
@@ -276,7 +289,25 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Table.Root>
           </Box>
         </Flex>
-        {/* AGREGAR TOTALES CON DESCUENTO,TRAER DESCUENTO DE ORDEN DE COMPRA DE MATERIAL */}
+        <Flex justify="end" className="border border-slate-500 p-3">
+          <Flex gap="4">
+            <Box>
+              <Text className="text-xl font-bold">TOTAL</Text>
+            </Box>
+            <Box>
+              <Text className="text-xl">
+                $
+                {workOrder.materials.reduce((accumulator, m) => {
+                  return (
+                    m.quantity * m.unitPrice -
+                    m.quantity * m.unitPrice * (m.discount / 100) +
+                    accumulator
+                  );
+                }, 0)}
+              </Text>
+            </Box>
+          </Flex>
+        </Flex>
         {/* Materiales      */}
       </Box>
     </>

@@ -20,8 +20,11 @@ export const workOrderValidationSchema = z.object({
         unitPrice:z.number(),
         quantity:z.number(),
         code:z.string().min(1).max(255),
-        id:z.string().min(1).max(255)
+        id:z.string().min(1).max(255),
+        discount:z.number(),
+        saleOrderNumber: z.string().min(1).max(255)
     }).array()
+
 })
 
 
@@ -45,6 +48,8 @@ export const updateWorkOrderValidationSchema = z.object({
         unitPrice:z.number(),
         quantity:z.number(),
         code:z.string().min(1).max(255),
-        id:z.string().min(1).max(255)
+        id:z.string().min(1).max(255),
+        discount:z.number(),
+        saleOrderNumber: z.string().min(1).max(255)
     }).array().optional()
 })

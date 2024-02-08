@@ -128,5 +128,15 @@ model WorkOrder {
   model           String
   deviceNumber    String
 
-  materials Material[]
+  materials WorkOrderMaterial[]
+}
+
+type WorkOrderMaterial {
+  name            String
+  unitPrice       Int
+  quantity        Int
+  code            String
+  id              String
+  discount        Int
+  saleOrderNumber String
 }
