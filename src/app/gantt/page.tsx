@@ -128,7 +128,7 @@ const GanttChart: React.FC = () => {
         </div>
 
         <div className='ml-3'>
-          <WeeklyCalendar tasks={tasks} rows={rows} />
+          <WeeklyCalendar tasks={tasks}/>
         </div>
       </div>
     </div>
