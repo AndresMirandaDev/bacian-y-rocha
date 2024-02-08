@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Box, Flex, Grid, Select, Table, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import logo from '../../../public/assets/images/byrs.png';
-import { SaleOrder, WorkOrder } from '@prisma/client';
+import { SaleOrder, WorkOrder, WorkOrderMaterial } from '@prisma/client';
 import FormField from '../components/form/FormField';
 import * as Form from '@radix-ui/react-form';
 import { TrashIcon } from '@radix-ui/react-icons';
@@ -38,22 +38,19 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       id: '1',
       discount: 0,
       saleOrderNumber: '',
+      options: [
+        {
+          name: 'Material',
+          unitPrice: 0,
+          quantity: 0,
+          code: '',
+          id: 'placeholder',
+          discount: 0,
+          saleOrderNumber: '',
+        },
+      ],
     },
   ]);
-  const [saleOrderId, setSaleOrderId] = useState('none');
-  const [selectedSO, setSelectedSO] = useState<SaleOrder>();
-
-  const getSelectedSO = async () => {
-    const saleOrder = await axios.get(`/api/saleorders/${saleOrderId}`);
-    setSelectedSO(saleOrder.data.body);
-  };
-
-  useEffect(() => {
-    console.log('effect');
-    if (saleOrderId !== 'none') {
-      getSelectedSO();
-    }
-  }, [saleOrderId]);
 
   return (
     <>
@@ -399,8 +396,16 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                       <Box className="flex items-baseline justify-between flex-col flex-grow">
                         <Form.Control asChild>
                           <Select.Root
-                            onValueChange={(e) => {
-                              setSaleOrderId(e);
+                            size="3"
+                            onValueChange={async (e) => {
+                              const NewMaterials = (
+                                await axios.get(`/api/saleorders/${e}`)
+                              ).data.body.materials;
+                              const updatedMaterials = [...materials];
+                              updatedMaterials[index].options = [
+                                ...NewMaterials,
+                              ];
+                              setMaterials(updatedMaterials);
                             }}
                             defaultValue="none"
                           >
@@ -430,57 +435,51 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     <Box className="flex items-center mt-3">
                       <Box className="flex items-baseline justify-between flex-col flex-grow">
                         <Form.Control asChild>
-                          <input
-                            className="input input-bordered w-[95%] bg-transparent"
-                            type="text"
-                            required
-                            //   onChange={(e) =>
-                            //     handleDetailsChange(e, index, 'code')
-                            //   }
-                            value={m.code}
-                          />
+                          <Select.Root
+                            defaultValue="none"
+                            size="3"
+                            onValueChange={(e) => {
+                              const selectedMaterial = m.options.filter(
+                                (o) => o.id === e
+                              );
+                              const updatedMaterials = [...materials];
+
+                              updatedMaterials[index].quantity =
+                                selectedMaterial[0].quantity;
+                              updatedMaterials[index].unitPrice =
+                                selectedMaterial[0].unitPrice;
+                              setMaterials(updatedMaterials);
+                            }}
+                          >
+                            <Select.Trigger />
+                            <Select.Content>
+                              <Select.Item value="none" disabled>
+                                <Text className="text-slate-400">Material</Text>
+                              </Select.Item>
+                              {m.options.map((o) => {
+                                if (o.id !== 'placeholder')
+                                  return (
+                                    <Select.Item value={o.id} key={o.id}>
+                                      {o.name}
+                                    </Select.Item>
+                                  );
+                              })}
+                            </Select.Content>
+                          </Select.Root>
                         </Form.Control>
                       </Box>
                     </Box>
                   </Form.Field>
                 </Box>
                 <Box>
-                  <Form.Field name="description">
-                    <Box className="flex items-center mt-3">
-                      <Box className="flex items-baseline justify-between flex-col flex-grow">
-                        <Form.Control asChild>
-                          <input
-                            className="input input-bordered w-[95%] bg-transparent"
-                            type="text"
-                            required
-                            //   onChange={(e) =>
-                            //     handleDetailsChange(e, index, 'name')
-                            //   }
-                            value={m.name}
-                          />
-                        </Form.Control>
-                      </Box>
-                    </Box>
-                  </Form.Field>
+                  <Box className="flex items-baseline justify-between flex-col flex-grow">
+                    <Text>{m.quantity}</Text>
+                  </Box>
                 </Box>
                 <Box>
-                  <Form.Field name="description">
-                    <Box className="flex items-center mt-3">
-                      <Box className="flex items-baseline justify-between flex-col flex-grow">
-                        <Form.Control asChild>
-                          <input
-                            className="input input-bordered w-[95%] bg-transparent"
-                            type="number"
-                            required
-                            //   onChange={(e) =>
-                            //     handleDetailsChange(e, index, 'unitPrice')
-                            //   }
-                            value={String(Number(m.unitPrice))}
-                          />
-                        </Form.Control>
-                      </Box>
-                    </Box>
-                  </Form.Field>
+                  <Box className="flex items-baseline justify-between flex-col flex-grow">
+                    <Text>${m.unitPrice}</Text>
+                  </Box>
                 </Box>
                 <Flex justify="between">
                   <Text>$ {m.quantity * m.unitPrice}</Text>
