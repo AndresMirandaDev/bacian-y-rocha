@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
 import WeeklyCalendar from './calendar';
 
@@ -15,121 +15,74 @@ interface Task {
 
 const GanttChart: React.FC = () => {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState({
+    description: '',
+    category: '',
+    assignedTo: '',
+    progress: 0,
+    startDate: '',
+    durationInDays: 0,
+  });
 
-  useEffect(() => {
-    const mockData: Task[] = [
-      {
-        id: 1,
-        description: 'Hito1',
-        category: 'Categoria A',
-        assignedTo: 'Usuario 1',
-        progress: 30,
-        startDate: '2024-02-06',
-        durationInDays:3,
-      },
-      {
-        id: 1,
-        description: 'Hito8',
-        category: 'Categoria A',
-        assignedTo: 'Usuario 1',
-        progress: 30,
-        startDate: '2024-02-07',
-        durationInDays: 8,
-      },
-      {
-        id: 1,
-        description: 'Hito4',
-        category: 'Categoria A',
-        assignedTo: 'Usuario 1',
-        progress: 30,
-        startDate: '2024-02-11',
-        durationInDays:3,
-      },
-      {
-        id: 1,
-        description: 'Hito3',
-        category: 'Categoria A',
-        assignedTo: 'Usuario 1',
-        progress: 30,
-        startDate: '2024-02-07',
-        durationInDays: 8,
-      },
-      {
-        id: 2,
-        description: 'Hito7',
-        category: 'Categoria B',
-        assignedTo: 'Usuario 2',
-        progress: 50,
-        startDate: '2024-02-7',
-        durationInDays: 6,
-      },
-    ];
+  const addTask = () => {
+    const newTaskWithId = { ...newTask, id: Date.now() }; // Agregar ID a la nueva tarea
+    setTasks([...tasks, newTaskWithId]); // Añadir nueva tarea al inicio del array
+    setNewTask({ // Resetear campos del formulario
+      description: '',
+      category: '',
+      assignedTo: '',
+      progress: 0,
+      startDate: '',
+      durationInDays: 0,
+    });
+  };
 
-    setTasks(mockData);
-  }, []);
-
-  const rows = ['Fila 1', 'Fila 2'];
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, field: keyof Task) => {
+    setNewTask({ ...newTask, [field]: e.target.value });
+  };
 
   return (
-    <div className="container bg-gray-200 p-4 ml-60">
-      <div className="grid grid-cols-12">
-        <div className="col-span-2">
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Descripción del hito</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2">
-              {task.description}
-            </div>
-          ))}
+    <div className="flex">
+      <div className=" ml-20">
+        {/* Encabezados */}
+        <div className="grid grid-cols-6 gap-2 mb-4 text-white bg-blue-500 p-2">
+          <div>Descripción</div>
+          <div>Categoría</div>
+          <div>Asignado</div>
+          <div>Progreso (%)</div>
+          <div>Inicio</div>
+          <div>Días</div>
+          
         </div>
 
-        <div className="col-span-1">
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Categoría</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2">
-              {task.category}
-            </div>
-          ))}
-        </div>
+        {/* Listado de tareas */}
+        {tasks.map((task, index) => (
+          <div key={index} className="grid grid-cols-7 gap-2 mb-2">
+            <div>{task.description}</div>
+            <div>{task.category}</div>
+            <div>{task.assignedTo}</div>
+            <div>{task.progress}</div>
+            <div>{task.startDate}</div>
+            <div>{task.durationInDays}</div>
+            <button onClick={() => setTasks(tasks.filter(t => t.id !== task.id))} className="bg-red-500 rounded-full  text-white">-</button>
+          </div>
+        ))}
 
-        <div className="col-span-1">
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Asignado</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2">
-              {task.assignedTo}
-            </div>
-          ))}
+        {/* Inputs para añadir nueva tarea */}
+        <div className="grid grid-cols-7 gap-2">
+          <input type="text" value={newTask.description} onChange={(e) => handleInputChange(e, 'description')} />
+          <input type="text" value={newTask.category} onChange={(e) => handleInputChange(e, 'category')} />
+          <input type="text" value={newTask.assignedTo} onChange={(e) => handleInputChange(e, 'assignedTo')} />
+          <input type="number" value={newTask.progress} onChange={(e) => handleInputChange(e, 'progress')} />
+          <input type="date" value={newTask.startDate} onChange={(e) => handleInputChange(e, 'startDate')} />
+          <input type="number" value={newTask.durationInDays} onChange={(e) => handleInputChange(e, 'durationInDays')} />
+          
         </div>
+        <button onClick={addTask} className="bg-blue-500 rounded-full  text-white mt-5"> + </button>
+      </div>
 
-        <div>
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Progreso</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2">
-              {task.progress}%
-            </div>
-          ))}
-        </div>
-
-        <div className="col-span-1">
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Inicio</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2">
-              {task.startDate}
-            </div>
-          ))}
-        </div>
-
-        <div className="col-span-1">
-          <div className="font-bold mb-4 text-white" style={{ background: '#3498db' }}>Días</div>
-          {tasks.map((task) => (
-            <div key={task.id} className="mb-2 ml-5">
-              {task.durationInDays}
-            </div>
-          ))}
-        </div>
-
-        <div className='ml-3'>
-          <WeeklyCalendar tasks={tasks}/>
-        </div>
+      <div className="w-1 p-4 ml-10">
+        <WeeklyCalendar tasks={tasks} />
       </div>
     </div>
   );
