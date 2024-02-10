@@ -2,7 +2,7 @@
 const nextConfig = {
   headers: () => [
     {
-      source: '/oc*',
+      source: '/:oc*',
       headers: [
         {
           key: 'Cache-Control',
