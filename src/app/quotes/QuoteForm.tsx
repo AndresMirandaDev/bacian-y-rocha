@@ -124,6 +124,7 @@ const QuoteForm = ({ quote }: Props) => {
         setSubmitting(false);
       }
     } catch (error) {
+      console.log(error);
       toast.error('Cotización no se pudo actualizar, inténtelo nuevamente.');
     }
   };
