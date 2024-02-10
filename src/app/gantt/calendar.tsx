@@ -1,5 +1,5 @@
-import React from 'react';
-import { format, startOfYear, endOfYear, eachDayOfInterval, isSameDay, parseISO, Locale } from 'date-fns';
+import React, { useState } from 'react';
+import { format, parseISO, startOfYear, endOfYear, eachDayOfInterval, isWithinInterval, Locale } from 'date-fns';
 import esLocale from 'date-fns/locale/es';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 
@@ -13,11 +13,20 @@ interface Task {
   durationInDays: number;
 }
 
-const WeeklyCalendar = ({ tasks }: {tasks: Task[]}) => {
+const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
   const currentDate = new Date();
-  const startOfTheYear = startOfYear(currentDate);
-  const endOfTheYear = endOfYear(currentDate);
-  const daysOfYear = eachDayOfInterval({ start: startOfTheYear, end: endOfTheYear });
+  const [selectedStartDate, setSelectedStartDate] = useState(startOfYear(currentDate));
+  const [selectedEndDate, setSelectedEndDate] = useState(endOfYear(currentDate));
+
+  const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedStartDate(parseISO(e.target.value));
+  };
+
+  const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSelectedEndDate(parseISO(e.target.value));
+  };
+
+  const daysInRange = eachDayOfInterval({ start: selectedStartDate, end: selectedEndDate });
 
   const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6', '#34495e', '#1abc9c'];
   const getColorForTask = (index: number) => colors[index % colors.length];
@@ -26,50 +35,48 @@ const WeeklyCalendar = ({ tasks }: {tasks: Task[]}) => {
     <TransformWrapper
       initialScale={1}
       minScale={0.1}
-      maxScale={20} // Aumenta para permitir un zoom más significativo
-      limitToBounds={false}
-      wheel={{
-        step: 0.5, // Ajusta la sensibilidad del zoom con el scroll del mouse
-      }}
-      pinch={{
-        disabled: false,
-      }}
-      doubleClick={{
-        disabled: true, // Opcional: Deshabilita el zoom con doble clic si lo prefieres
-      }}
+      maxScale={4}
+      limitToBounds={true}
+      wheel={{ step: 0.2 }}
     >
       <TransformComponent>
-        <div style={{ width: '90%', overflowX: 'auto' }}>
-          <div style={{ display: 'flex', minWidth: `${daysOfYear.length * 30}px` }}>
-            {daysOfYear.map((day, index) => (
+        <div className="overflow-x-auto">
+          <div className="flex justify-start mb-4">
+            <input type="date" value={format(selectedStartDate, 'yyyy-MM-dd')} onChange={handleStartDateChange} className="mr-2" />
+            <input type="date" value={format(selectedEndDate, 'yyyy-MM-dd')} onChange={handleEndDateChange} />
+          </div>
+          <div style={{ display: 'flex', minWidth: `${daysInRange.length * 30}px` }}>
+            {daysInRange.map((day, index) => (
               <div key={index} style={{ width: '30px', display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: '10px', borderRight: '1px solid #ddd', padding: '2px' }}>
-                <span>{format(day, 'EEE', { locale: esLocale as unknown as Locale})}</span>
-                <span className='mb-2'>{format(day, 'd')}</span>
+                <span>{format(day, 'EEE', { locale: esLocale as unknown as Locale })}</span>
+                <span>{format(day, 'd')}</span>
               </div>
             ))}
           </div>
           <div style={{ position: 'relative', minHeight: '150px' }}>
-            {tasks.map((task, index) => {
-              const taskStartDate = parseISO(task.startDate);
-              const startDayIndex = daysOfYear.findIndex(day => isSameDay(day, taskStartDate));
-              
-              const taskWidth = task.durationInDays * 30; // Asume 30px por día
-              return (
-                <div key={task.id} style={{
-                  position: 'absolute',
-                  left: `${startDayIndex * 30}px`,
-                  width: `${taskWidth}px`,
-                  top: `${index * 30}px`, // Posiciona las tareas en filas separadas
-                  backgroundColor: getColorForTask(index),
-                  color: 'white',
-                  textAlign: 'center',
-                  padding: '1px',
-                  borderRadius: '20px',
-                }}>
-                  {task.description}
-                </div>
-              );
-            })}
+            {tasks.filter(task => isWithinInterval(parseISO(task.startDate), { start: selectedStartDate, end: selectedEndDate }))
+              .map((task, index) => {
+                const taskStart = parseISO(task.startDate);
+                const startDayIndex = daysInRange.findIndex(day => format(day, 'yyyy-MM-dd') === format(taskStart, 'yyyy-MM-dd'));
+                if (startDayIndex === -1) return null; // Si la tarea no está dentro del rango, no se renderiza
+
+                const taskWidth = task.durationInDays * 30; // Asume 30px por día
+                return (
+                  <div key={task.id} style={{
+                    position: 'absolute',
+                    left: `${startDayIndex * 30}px`,
+                    width: `${taskWidth}px`,
+                    top: `${index * 30}px`,
+                    backgroundColor: getColorForTask(index),
+                    color: 'white',
+                    textAlign: 'center',
+                    padding: '1px',
+                    borderRadius: '4px',
+                  }}>
+                    {task.description}
+                  </div>
+                );
+              })}
           </div>
         </div>
       </TransformComponent>
