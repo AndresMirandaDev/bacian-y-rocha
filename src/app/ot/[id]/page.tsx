@@ -3,6 +3,7 @@ import { Box, Flex, Grid, Table, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import logo from '../../../../public/assets/images/byrs.png';
+import WorkOrderActions from './WorkOrderActions';
 
 interface Params {
   params: { id: string };
@@ -23,6 +24,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
     <>
       <Box className="bg-white rounded-md p-5">
         {/* cabecera  */}
+        <WorkOrderActions id={workOrder.id} />
         <Flex
           className="border border-slate-300 rounded-md"
           gap="4"
@@ -85,14 +87,8 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* datos de orden de trabajo */}
         <Flex
           className="border border-slate-500 mt-10 p-3"
-          direction={{
-            initial: 'column',
-            xs: 'column',
-            sm: 'column',
-            md: 'row',
-            lg: 'row',
-            xl: 'row',
-          }}
+          direction="column"
+          gap="3"
         >
           <Flex className="flex-grow" direction="column">
             <Box>

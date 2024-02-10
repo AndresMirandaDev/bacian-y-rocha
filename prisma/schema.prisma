@@ -132,11 +132,11 @@ model WorkOrder {
 }
 
 type WorkOrderMaterial {
-  name            String
-  unitPrice       Int
-  quantity        Int
-  code            String
-  id              String
-  discount        Int
-  saleOrderNumber String
+  name        String
+  unitPrice   Int
+  quantity    Int
+  code        String
+  id          String
+  discount    Int
+  saleOrderId String
 }

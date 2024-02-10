@@ -14,6 +14,25 @@ interface Props {
   saleOrders: SaleOrder[];
 }
 
+type Material = {
+  name: string;
+  unitPrice: number;
+  quantity: number;
+  code: string;
+  id: string;
+  discount: number;
+  saleOrderId: string;
+  options?: {
+    name: string;
+    unitPrice: number;
+    quantity: number;
+    code: string;
+    id: string;
+    discount: number;
+    saleOrderId: string;
+  }[];
+};
+
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [revision, setRevision] = useState('');
   const [code, setCode] = useState('');
@@ -29,7 +48,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [componentDevice, setComponentDevice] = useState('');
   const [model, setModel] = useState('');
   const [deviceNumber, setDeviceNumber] = useState('');
-  const [materials, setMaterials] = useState([
+  const [materialsToSend, setMaterialsToSend] = useState([
     {
       name: '',
       unitPrice: 0,
@@ -37,7 +56,18 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       code: '',
       id: '1',
       discount: 0,
-      saleOrderNumber: '',
+      saleOrderId: '',
+    },
+  ]);
+  const [materials, setMaterials] = useState<Material[]>([
+    {
+      name: '',
+      unitPrice: 0,
+      quantity: 0,
+      code: '',
+      id: '1',
+      discount: 0,
+      saleOrderId: '',
       options: [
         {
           name: 'Material',
@@ -46,11 +76,31 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           code: '',
           id: 'placeholder',
           discount: 0,
-          saleOrderNumber: '',
+          saleOrderId: '',
         },
       ],
     },
   ]);
+
+  useEffect(() => {
+    if (workOrder) {
+      setRevision(workOrder.revision);
+      setCode(workOrder.code);
+      setNumber(workOrder.number);
+      setDescription(workOrder.description);
+      setClient(workOrder.client);
+      setStartDate(workOrder.startDate.toLocaleDateString());
+      setEndDate(workOrder.endDate.toLocaleDateString());
+      setEstimatedDate(workOrder.estimatedDate.toLocaleDateString());
+      setQuoteNumber(workOrder.quoteNumber);
+      setRequiresPlaque(workOrder.requiresPlaque);
+      setComponentName(workOrder.componentName);
+      setComponentDevice(workOrder.componentDevice);
+      setModel(workOrder.model);
+      setDeviceNumber(workOrder.deviceNumber);
+      setMaterials(workOrder.materials);
+    }
+  }, [workOrder]);
 
   const handleAddRow = () => {
     setMaterials([
@@ -62,7 +112,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
         code: '',
         id: (Math.random() * 1000).toString(),
         discount: 0,
-        saleOrderNumber: '',
+        saleOrderId: '',
         options: [
           {
             name: 'Material',
@@ -71,7 +121,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             code: '',
             id: (Math.random() * 1000).toString(),
             discount: 0,
-            saleOrderNumber: '',
+            saleOrderId: '',
           },
         ],
       },
@@ -492,16 +542,30 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                             <Select.Root
                               size="3"
                               onValueChange={async (e) => {
+                                const saleOrderSelected = (
+                                  await axios.get(`/api/saleorders/${e}`)
+                                ).data.body;
+
                                 const NewMaterials = (
                                   await axios.get(`/api/saleorders/${e}`)
                                 ).data.body.materials;
+
+                                const updatedMaterialsToSend = [
+                                  ...materialsToSend,
+                                ];
+
+                                updatedMaterialsToSend[index].discount =
+                                  saleOrderSelected.discount;
+                                updatedMaterialsToSend[index].saleOrderId =
+                                  saleOrderSelected.id;
+
                                 const updatedMaterials = [...materials];
                                 updatedMaterials[index].options = [
                                   ...NewMaterials,
                                 ];
                                 setMaterials(updatedMaterials);
+                                setMaterialsToSend(updatedMaterialsToSend);
                               }}
-                              defaultValue="none"
                             >
                               <Select.Trigger />
                               <Select.Content>
@@ -545,16 +609,30 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                               defaultValue="none"
                               size="3"
                               onValueChange={(e) => {
-                                const selectedMaterial = m.options.filter(
+                                const selectedMaterial = m.options!.filter(
                                   (o) => o.id === e
                                 );
                                 const updatedMaterials = [...materials];
+                                const updatedMaterialsToSend = [
+                                  ...materialsToSend,
+                                ];
+
+                                updatedMaterialsToSend[index].quantity =
+                                  selectedMaterial[0].quantity;
+                                updatedMaterialsToSend[index].unitPrice =
+                                  selectedMaterial[0].unitPrice;
+                                updatedMaterialsToSend[index].name =
+                                  selectedMaterial[0].name;
+                                updatedMaterialsToSend[index].code =
+                                  selectedMaterial[0].code;
 
                                 updatedMaterials[index].quantity =
                                   selectedMaterial[0].quantity;
                                 updatedMaterials[index].unitPrice =
                                   selectedMaterial[0].unitPrice;
+
                                 setMaterials(updatedMaterials);
+                                setMaterialsToSend(updatedMaterialsToSend);
                               }}
                             >
                               <Select.Trigger />
@@ -564,7 +642,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                                     Material
                                   </Text>
                                 </Select.Item>
-                                {m.options.map((o) => {
+                                {m.options?.map((o) => {
                                   if (o.id !== 'placeholder')
                                     return (
                                       <Select.Item value={o.id} key={o.id}>

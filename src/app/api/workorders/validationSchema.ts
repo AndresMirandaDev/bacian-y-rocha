@@ -4,7 +4,7 @@ export const workOrderValidationSchema = z.object({
     revision:z.string().min(1).max(255),
     code:z.string().min(1).max(255),
     number:z.string().min(1).max(255),
-    description:z.string().min(1).max(255),
+    description:z.string().min(1),
     client:z.string().min(1).max(255),
     startDate:z.string(),
     endDate:z.string(),
@@ -22,7 +22,7 @@ export const workOrderValidationSchema = z.object({
         code:z.string().min(1).max(255),
         id:z.string().min(1).max(255),
         discount:z.number(),
-        saleOrderNumber: z.string().min(1).max(255)
+        saleOrderId: z.string().min(1).max(255)
     }).array()
 
 })
@@ -32,7 +32,7 @@ export const updateWorkOrderValidationSchema = z.object({
     revision:z.string().min(1).max(255).optional(),
     code:z.string().min(1).max(255).optional(),
     number:z.string().min(1).max(255).optional(),
-    description:z.string().min(1).max(255).optional(),
+    description:z.string().min(1).optional(),
     client:z.string().min(1).max(255).optional(),
     startDate:z.string().optional(),
     endDate:z.string().optional(),
@@ -50,6 +50,6 @@ export const updateWorkOrderValidationSchema = z.object({
         code:z.string().min(1).max(255),
         id:z.string().min(1).max(255),
         discount:z.number(),
-        saleOrderNumber: z.string().min(1).max(255)
+        saleOrderId: z.string().min(1).max(255)
     }).array().optional()
 })
