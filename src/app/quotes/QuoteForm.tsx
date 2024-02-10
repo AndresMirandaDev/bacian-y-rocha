@@ -20,6 +20,7 @@ import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
 import Spinner from '../components/Spinner';
+import { revalidatePath, revalidateTag } from 'next/cache';
 
 interface Props {
   quote?: Quote;
@@ -103,6 +104,8 @@ const QuoteForm = ({ quote }: Props) => {
 
         await axios.patch(`/api/quotes/${quote.id}`, updatedData);
 
+        revalidatePath('/quotes');
+        router.push('/quotes');
         router.refresh();
         toast.success('Cotización ha sido actualizada.');
         setSubmitting(false);
