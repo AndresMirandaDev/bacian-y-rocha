@@ -104,7 +104,7 @@ const QuoteForm = ({ quote }: Props) => {
 
         await axios.patch(`/api/quotes/${quote.id}`, updatedData);
 
-        revalidatePath('/quotes', 'layout');
+        revalidatePath('/quotes', 'page');
         router.push('/quotes');
         router.refresh();
         toast.success('Cotización ha sido actualizada.');
