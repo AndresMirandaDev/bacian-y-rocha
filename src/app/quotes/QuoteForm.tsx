@@ -20,6 +20,7 @@ import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
 import Spinner from '../components/Spinner';
+import { revalidatePath } from 'next/cache';
 
 interface Props {
   quote?: Quote;
@@ -103,9 +104,10 @@ const QuoteForm = ({ quote }: Props) => {
 
         await axios.patch(`/api/quotes/${quote.id}`, updatedData);
 
-        router.refresh();
+        router.push('/quotes');
         toast.success('Cotización ha sido actualizada.');
         setSubmitting(false);
+        router.refresh();
       } else {
         setSubmitting(true);
         await axios.post('/api/quotes', {
@@ -116,9 +118,9 @@ const QuoteForm = ({ quote }: Props) => {
           details,
         });
         router.push('/quotes');
-        router.refresh();
         toast.success('Se ha creado una nueva cotización.');
         setSubmitting(false);
+        router.refresh();
       }
     } catch (error) {
       toast.error('Cotización no se pudo actualizar, inténtelo nuevamente.');

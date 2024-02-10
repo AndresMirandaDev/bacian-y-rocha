@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import prisma from '../../../prisma/client';
 import SaleOrdersOverview from './SaleOrdersOverview';
 import { Box, Card, Flex, Grid } from '@radix-ui/themes';
