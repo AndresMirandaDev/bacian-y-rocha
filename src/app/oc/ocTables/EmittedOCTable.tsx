@@ -42,20 +42,20 @@ const EmittedOCTable = ({ saleOrders }: Props) => {
                   <Table.Cell>
                     <Badge
                       color={
-                        order.status === 'ARRIVED'
+                        order.status == 'ARRIVED'
                           ? 'green'
-                          : order.status === 'IN_PROCESS'
+                          : order.status == 'IN_PROCESS'
                           ? 'yellow'
-                          : order.status === 'NOT_MATCHING'
+                          : order.status == 'NOT_MATCHING'
                           ? 'tomato'
                           : 'indigo'
                       }
                     >
-                      {order.status === 'ARRIVED'
+                      {order.status == 'ARRIVED'
                         ? 'Entregada'
-                        : order.status === 'IN_PROCESS'
+                        : order.status == 'IN_PROCESS'
                         ? 'En camino'
-                        : order.status === 'NOT_MATCHING'
+                        : order.status == 'NOT_MATCHING'
                         ? 'No concuerda'
                         : 'Pendiente'}
                     </Badge>
