@@ -58,7 +58,7 @@ const QuotesTable = ({ quotes }: Props) => {
                     {quote.file === 'pending' && 'No hay archivo'}
                   </Table.Cell>
                   <Table.Cell>
-                    {quote.requestedDate.toLocaleDateString()}
+                    {new Date(quote.requestedDate).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
                     <Badge
