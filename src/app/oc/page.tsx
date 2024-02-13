@@ -8,10 +8,35 @@ import EmittedOCTable from './ocTables/EmittedOCTable';
 import DeliveredOcTable from './ocTables/DeliveredOcTable';
 import { Toaster } from 'react-hot-toast';
 import SaleOrderActions from './SaleOrderActions';
+import { SaleOrder } from '@prisma/client';
+
+const getSaleOrders = async () => {
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/saleorders`,
+    {
+      cache: 'no-store',
+    }
+  );
+  const quotes = await res.json();
+
+  return quotes.body;
+};
+
+const getReceivedSaleOrders = async () => {
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/receivedSaleOrders`,
+    {
+      cache: 'no-store',
+    }
+  );
+  const quotes = await res.json();
+
+  return quotes.body;
+};
 
 const OCPage = async () => {
-  const saleOrders = await prisma.saleOrder.findMany();
-  const receivedSaleOrders = await prisma.receivedSaleOrder.findMany();
+  const saleOrders = await getSaleOrders();
+  const receivedSaleOrders = await getReceivedSaleOrders();
 
   return (
     <>
@@ -60,7 +85,7 @@ const OCPage = async () => {
             <Box>
               <DeliveredOcTable
                 saleOrders={saleOrders.filter(
-                  (order) => order.status === 'ARRIVED'
+                  (order: SaleOrder) => order.status === 'ARRIVED'
                 )}
               />
             </Box>
