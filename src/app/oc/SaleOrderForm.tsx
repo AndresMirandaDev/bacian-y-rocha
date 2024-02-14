@@ -50,7 +50,13 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
   const [discount, setDiscount] = useState('0');
   const [receptionGuide, setReceptionGuide] = useState('pending');
   const [materials, setMaterials] = useState<Material[]>([
-    { code: '', name: '', quantity: 0, unitPrice: 0, id: '1' },
+    {
+      code: '',
+      name: '',
+      quantity: 0,
+      unitPrice: 0,
+      id: (Math.random() * 1000).toString(),
+    },
   ]);
 
   //estados de loading

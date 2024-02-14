@@ -543,6 +543,9 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                             <Text as="label" key={m.id}>
                               <Flex align="center" gap="2">
                                 <Checkbox
+                                  defaultChecked={materialsToSubmit?.some(
+                                    (material) => material.id === m.id
+                                  )}
                                   onCheckedChange={(checked) => {
                                     if (checked) {
                                       const updatedMaterials = [
