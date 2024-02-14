@@ -8,6 +8,7 @@ import FormField from '../components/form/FormField';
 import * as Form from '@radix-ui/react-form';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
 import axios from 'axios';
+import AutoCompleteSelect from '../components/AutoCompleteSelect';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -48,17 +49,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [componentDevice, setComponentDevice] = useState('');
   const [model, setModel] = useState('');
   const [deviceNumber, setDeviceNumber] = useState('');
-  const [materialsToSend, setMaterialsToSend] = useState([
-    {
-      name: '',
-      unitPrice: 0,
-      quantity: 0,
-      code: '',
-      id: '1',
-      discount: 0,
-      saleOrderId: '',
-    },
-  ]);
+
   const [materials, setMaterials] = useState<Material[]>([
     {
       name: '',
@@ -68,19 +59,12 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       id: '1',
       discount: 0,
       saleOrderId: '',
-      options: [
-        {
-          name: 'Material',
-          unitPrice: 0,
-          quantity: 0,
-          code: '',
-          id: 'placeholder',
-          discount: 0,
-          saleOrderId: '',
-        },
-      ],
     },
   ]);
+
+  const [showMaterialForm, setMaterialForm] = useState(false);
+  const [saleOrderForm, setSaleOrderForm] = useState(false);
+  const [receiptForm, setReceiptForm] = useState(false);
 
   useEffect(() => {
     if (workOrder) {
@@ -101,32 +85,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       setMaterials(workOrder.materials);
     }
   }, [workOrder]);
-
-  const handleAddRow = () => {
-    setMaterials([
-      ...materials,
-      {
-        name: '',
-        unitPrice: 0,
-        quantity: 0,
-        code: '',
-        id: (Math.random() * 1000).toString(),
-        discount: 0,
-        saleOrderId: '',
-        options: [
-          {
-            name: 'Material',
-            unitPrice: 0,
-            quantity: 0,
-            code: '',
-            id: (Math.random() * 1000).toString(),
-            discount: 0,
-            saleOrderId: '',
-          },
-        ],
-      },
-    ]);
-  };
 
   return (
     <>
@@ -453,6 +411,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             </Grid>
           </Flex>
           {/* Datos de componente */}
+
           {/* Materiales      */}
           <Flex direction="column">
             <Box className="bg-[#013564] w-full p-1 mt-10">
@@ -466,298 +425,74 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               onClick={(e: React.FormEvent) => {
                 e.preventDefault();
                 e.stopPropagation();
-                handleAddRow();
+                setMaterialForm(true);
+                setTimeout(() => {
+                  window.scrollTo({ top: 1000, behavior: 'smooth' });
+                }, 200);
               }}
             >
               <PlusIcon />
-              Agregar material
+              Agregar materiales
             </Button>
           </Flex>
-          <Grid
-            columns="6"
-            display={{
-              initial: 'none',
-              xs: 'none',
-              sm: 'none',
-              md: 'none',
-              lg: 'grid',
-              xl: 'grid',
-            }}
-            className="mt-5 border-b-2"
-          >
-            <Box>
-              <Text className="font-bold">ORDEN DE COMPRA</Text>
-            </Box>
-            <Box>
-              <Text className="font-bold">MATERIAL</Text>
-            </Box>
-            <Box>
-              <Text className="font-bold">CANTIDAD</Text>
-            </Box>
-            <Box>
-              <Text className="font-bold">VALOR UNIT.</Text>
-            </Box>
-            <Box>
-              <Text className="font-bold">DESCUENTO</Text>
-            </Box>
-            <Box>
-              <Text className="font-bold">VALOR TOTAL</Text>
-            </Box>
-          </Grid>
-          <Flex direction="column">
-            {materials.map((m, index) => {
-              return (
-                <Grid
-                  columns={{
-                    initial: '1',
-                    xs: '1',
-                    sm: '1',
-                    md: '1',
-                    lg: '6',
-                    xl: '6',
-                  }}
-                  align="center"
-                  key={m.id}
-                  className="border-b-2 border-slate-300 rounded-md p-2 mt-5"
-                >
-                  <Box>
-                    <Form.Field name="description">
-                      <Box className="flex items-center mt-3">
-                        <Box className="flex items-baseline justify-between flex-col">
-                          <Box
-                            display={{
-                              initial: 'block',
-                              xs: 'block',
-                              sm: 'block',
-                              md: 'block',
-                              lg: 'none',
-                              xl: 'none',
-                            }}
-                          >
-                            <Text className="font-bold">
-                              Numero de orden de compra
-                            </Text>
-                          </Box>
-                          <Form.Control asChild>
-                            <Select.Root
-                              size="3"
-                              onValueChange={async (e) => {
-                                const saleOrderSelected = (
-                                  await axios.get(`/api/saleorders/${e}`)
-                                ).data.body;
-
-                                const NewMaterials = (
-                                  await axios.get(`/api/saleorders/${e}`)
-                                ).data.body.materials;
-
-                                const updatedMaterialsToSend = [
-                                  ...materialsToSend,
-                                ];
-
-                                updatedMaterialsToSend[index].discount =
-                                  saleOrderSelected.discount;
-                                updatedMaterialsToSend[index].saleOrderId =
-                                  saleOrderSelected.id;
-
-                                const updatedMaterials = [...materials];
-                                updatedMaterials[index].options = [
-                                  ...NewMaterials,
-                                ];
-                                setMaterials(updatedMaterials);
-                                setMaterialsToSend(updatedMaterialsToSend);
-                              }}
-                            >
-                              <Select.Trigger />
-                              <Select.Content>
-                                <Select.Item value="none" disabled>
-                                  <Text className="text-slate-400">
-                                    Orden de Compra
-                                  </Text>
-                                </Select.Item>
-                                {saleOrders.map((so) => {
-                                  return (
-                                    <Select.Item key={so.id} value={so.id}>
-                                      {so.number}
-                                    </Select.Item>
-                                  );
-                                })}
-                              </Select.Content>
-                            </Select.Root>
-                          </Form.Control>
-                        </Box>
-                      </Box>
-                    </Form.Field>
-                  </Box>
-                  <Box>
-                    <Form.Field name="description">
-                      <Box className="flex items-center mt-3">
-                        <Box className="flex items-baseline justify-between flex-col ">
-                          <Box
-                            display={{
-                              initial: 'block',
-                              xs: 'block',
-                              sm: 'block',
-                              md: 'block',
-                              lg: 'none',
-                              xl: 'none',
-                            }}
-                          >
-                            <Text className="font-bold">Material</Text>
-                          </Box>
-                          <Form.Control asChild>
-                            <Select.Root
-                              defaultValue="none"
-                              size="3"
-                              onValueChange={(e) => {
-                                const selectedMaterial = m.options!.filter(
-                                  (o) => o.id === e
-                                );
-                                const updatedMaterials = [...materials];
-                                const updatedMaterialsToSend = [
-                                  ...materialsToSend,
-                                ];
-
-                                updatedMaterialsToSend[index].quantity =
-                                  selectedMaterial[0].quantity;
-                                updatedMaterialsToSend[index].unitPrice =
-                                  selectedMaterial[0].unitPrice;
-                                updatedMaterialsToSend[index].name =
-                                  selectedMaterial[0].name;
-                                updatedMaterialsToSend[index].code =
-                                  selectedMaterial[0].code;
-
-                                updatedMaterials[index].quantity =
-                                  selectedMaterial[0].quantity;
-                                updatedMaterials[index].unitPrice =
-                                  selectedMaterial[0].unitPrice;
-
-                                setMaterials(updatedMaterials);
-                                setMaterialsToSend(updatedMaterialsToSend);
-                              }}
-                            >
-                              <Select.Trigger />
-                              <Select.Content>
-                                <Select.Item value="none" disabled>
-                                  <Text className="text-slate-400">
-                                    Material
-                                  </Text>
-                                </Select.Item>
-                                {m.options?.map((o) => {
-                                  if (o.id !== 'placeholder')
-                                    return (
-                                      <Select.Item value={o.id} key={o.id}>
-                                        {o.name}
-                                      </Select.Item>
-                                    );
-                                })}
-                              </Select.Content>
-                            </Select.Root>
-                          </Form.Control>
-                        </Box>
-                      </Box>
-                    </Form.Field>
-                  </Box>
-                  <Box>
-                    <Box className="flex items-baseline justify-between flex-col flex-grow">
-                      <Box
-                        display={{
-                          initial: 'block',
-                          xs: 'block',
-                          sm: 'block',
-                          md: 'block',
-                          lg: 'none',
-                          xl: 'none',
-                        }}
-                      >
-                        <Text className="font-bold">Cantidad</Text>
-                      </Box>
-                      <Text>{m.quantity}</Text>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Box
-                      display={{
-                        initial: 'block',
-                        xs: 'block',
-                        sm: 'block',
-                        md: 'block',
-                        lg: 'none',
-                        xl: 'none',
-                      }}
-                    >
-                      <Text className="font-bold">Valor unitario</Text>
-                    </Box>
-                    <Box className="flex items-baseline justify-between flex-col flex-grow">
-                      <Text>${m.unitPrice}</Text>
-                    </Box>
-                  </Box>
-                  <Box>
-                    <Box
-                      display={{
-                        initial: 'block',
-                        xs: 'block',
-                        sm: 'block',
-                        md: 'block',
-                        lg: 'none',
-                        xl: 'none',
-                      }}
-                    >
-                      <Text className="font-bold">Descuento</Text>
-                    </Box>
-                    <Box className="flex items-baseline justify-between flex-col flex-grow">
-                      <Text>{m.discount}%</Text>
-                    </Box>
-                  </Box>
-                  <Flex justify="between">
-                    <Box>
-                      <Box
-                        display={{
-                          initial: 'block',
-                          xs: 'block',
-                          sm: 'block',
-                          md: 'block',
-                          lg: 'none',
-                          xl: 'none',
-                        }}
-                      >
-                        <Text className="font-bold">Total</Text>
-                      </Box>
-                      <Text>$ {m.quantity * m.unitPrice}</Text>
-                    </Box>
-                    <Box
-                      className="flex items-center justify-center rounded-full bg-red-400 p-2 cursor-pointer w-20"
-                      onClick={() => {
-                        setMaterials(
-                          materials.filter((field) => {
-                            return field.id !== m.id;
-                          })
-                        );
-                      }}
-                    >
-                      <TrashIcon color="white" />
-                    </Box>
-                  </Flex>
-                </Grid>
-              );
-            })}
-            <Flex gap="4" justify="end" className="mr-20">
-              <Box>
-                <Text className="text-xl font-bold">TOTAL</Text>
-              </Box>
-              <Box>
-                <Text className="text-xl">
-                  $
-                  {materials.reduce((accumulator, m) => {
-                    return (
-                      m.quantity * m.unitPrice -
-                      m.quantity * m.unitPrice * (m.discount / 100) +
-                      accumulator
-                    );
-                  }, 0)}
-                </Text>
-              </Box>
-            </Flex>
-          </Flex>
+          <div className="m-5">
+            <AutoCompleteSelect items={saleOrders} dataKey={'number'} />
+          </div>
+          {showMaterialForm && (
+            <Grid
+              className="p-5"
+              columns={{
+                initial: '1',
+                xs: '1',
+                sm: '1',
+                md: '1',
+                lg: '2',
+                xl: '2',
+              }}
+            >
+              <Flex direction="column" gap="3" justify="center">
+                <Box>
+                  <Text className="text-slate-500">Tipo de compra</Text>
+                </Box>
+                <Box>
+                  <Select.Root
+                    size="3"
+                    defaultValue="none"
+                    onValueChange={(value) => {
+                      if (value === 'saleorder') {
+                        setReceiptForm(false);
+                        setSaleOrderForm(true);
+                      } else {
+                        setSaleOrderForm(false);
+                        setReceiptForm(true);
+                      }
+                      window.scrollTo({ top: 1000, behavior: 'smooth' });
+                    }}
+                  >
+                    <Select.Trigger />
+                    <Select.Content>
+                      <Select.Item value="none" disabled>
+                        <Text className="text-slate-500">Elegir...</Text>
+                      </Select.Item>
+                      <Select.Item value="saleorder">
+                        Orden de Compra
+                      </Select.Item>
+                      <Select.Item value="receipt">Boleta</Select.Item>
+                    </Select.Content>
+                  </Select.Root>
+                </Box>
+              </Flex>
+            </Grid>
+          )}
+          {saleOrderForm && (
+            <Grid>
+              <Flex>
+                <Box>
+                  <Text>N° O. de compra</Text>
+                </Box>
+              </Flex>
+            </Grid>
+          )}
           {/* Materiales      */}
         </Box>
       </Form.Root>
