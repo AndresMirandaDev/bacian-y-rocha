@@ -65,7 +65,8 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
         <ul
           className={classNames({
             hidden: !open,
-            'block transition-all duration-700 h-4/6  bg-slate-100': true,
+            'block transition-all duration-700 h-4/6  bg-slate-100 overflow-y-scroll':
+              true,
           })}
         >
           {data &&
@@ -73,7 +74,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
               return (
                 <li
                   key={index}
-                  className="px-3 hover:bg-blue-200 cursor-pointer"
+                  className="px-3 hover:bg-blue-200 cursor-pointer py-1"
                   onClick={() => {
                     setValue(item[dataKey]);
                     setOpen(false);
