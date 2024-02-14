@@ -40,7 +40,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   };
   return (
     <>
-      <div className="border border-slate-400 rounded-md">
+      <div className="border border-zinc-300 rounded-md">
         <div className="flex items-center p-2">
           <Box className="text-slate-500 pr-3 ">
             <FaSearch />
@@ -65,7 +65,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
         <ul
           className={classNames({
             hidden: !open,
-            'block transition-all duration-700 h-4/6  bg-slate-100 overflow-y-scroll':
+            'block transition-all duration-700 h-4/6 no-scrollbar overflow-y-scroll':
               true,
           })}
         >

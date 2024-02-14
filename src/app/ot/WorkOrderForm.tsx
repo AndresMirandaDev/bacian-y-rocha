@@ -435,9 +435,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               Agregar materiales
             </Button>
           </Flex>
-          <div className="m-5">
-            <AutoCompleteSelect items={saleOrders} dataKey={'number'} />
-          </div>
+
           {showMaterialForm && (
             <Grid
               className="p-5"
@@ -485,10 +483,23 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             </Grid>
           )}
           {saleOrderForm && (
-            <Grid>
-              <Flex>
+            <Grid
+              columns={{
+                initial: '1',
+                xs: '1',
+                sm: '1',
+                md: '1',
+                lg: '2',
+                xl: '2',
+              }}
+              className="p-5"
+            >
+              <Flex direction="column">
                 <Box>
                   <Text>N° O. de compra</Text>
+                </Box>
+                <Box>
+                  <AutoCompleteSelect items={saleOrders} dataKey={'number'} />
                 </Box>
               </Flex>
             </Grid>
