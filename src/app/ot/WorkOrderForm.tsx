@@ -70,17 +70,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [model, setModel] = useState('');
   const [deviceNumber, setDeviceNumber] = useState('');
 
-  const [materials, setMaterials] = useState<Material[]>([
-    {
-      name: '',
-      unitPrice: 0,
-      quantity: 0,
-      code: '',
-      id: '1',
-      discount: 0,
-      saleOrderId: '',
-    },
-  ]);
+  const [materials, setMaterials] = useState<Material[]>([]);
 
   const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>();
 
@@ -647,9 +637,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                         value={m.quantity}
                         onChange={(e) => {
                           const updatedMaterials = [...materialsToSubmit];
-                          updatedMaterials[index].quantity = parseInt(
-                            e.target.value
-                          );
+                          updatedMaterials[index].quantity =
+                            e.target.value === '' ? 0 : Number(e.target.value); //arreglar los ceros de la izquierda
                           setMaterialsToSubmit(updatedMaterials);
                         }}
                         type="number"
@@ -678,11 +667,23 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     <Box className="flex justify-center">
                       <Text>{m.saleOrderId}</Text>
                     </Box>
-                    <Box className="flex justify-center">
+                    <Box className="flex justify-center items-center gap-3">
                       <Text>
+                        $
                         {m.quantity * m.unitPrice -
                           m.quantity * m.unitPrice * (m.discount / 100)}
                       </Text>
+                      <Box
+                        className="rounded-full bg-red-400 p-2 text-slate-100 cursor-pointer hover:scale-110 transition-all"
+                        onClick={() => {
+                          const updatedMaterials = materialsToSubmit.filter(
+                            (sm) => sm.id !== m.id
+                          );
+                          setMaterialsToSubmit(updatedMaterials);
+                        }}
+                      >
+                        <TrashIcon />
+                      </Box>
                     </Box>
                   </Grid>
                   <Separator size="4" />
