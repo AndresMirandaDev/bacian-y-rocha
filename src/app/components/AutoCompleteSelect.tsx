@@ -3,7 +3,7 @@
 import { ChevronDownIcon, ChevronUpIcon } from '@radix-ui/react-icons';
 import { Box } from '@radix-ui/themes';
 import classNames from 'classnames';
-import React, { useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
 interface Item {
@@ -13,11 +13,15 @@ interface Item {
 interface Props<T extends Item, K extends keyof T> {
   items: T[]; // Data array of type T
   dataKey: K; // Key of the item in data array
+  dataToRetrieve: K;
+  getValue: Dispatch<SetStateAction<T[K]>>;
 }
 
 const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   items,
   dataKey,
+  dataToRetrieve,
+  getValue,
 }: Props<T, K>) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -78,6 +82,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
                   onClick={() => {
                     setValue(item[dataKey]);
                     setOpen(false);
+                    getValue(item[dataToRetrieve]);
                   }}
                 >
                   {item[dataKey]}

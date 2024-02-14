@@ -1,14 +1,34 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Box, Button, Flex, Grid, Select, Table, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Checkbox,
+  Flex,
+  Grid,
+  IconButton,
+  Select,
+  Separator,
+  Table,
+  Text,
+} from '@radix-ui/themes';
 import Image from 'next/image';
 import logo from '../../../public/assets/images/byrs.png';
 import { SaleOrder, WorkOrder, WorkOrderMaterial } from '@prisma/client';
 import FormField from '../components/form/FormField';
 import * as Form from '@radix-ui/react-form';
-import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
+import {
+  ArrowDownIcon,
+  ArrowUpIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  MinusIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@radix-ui/react-icons';
 import axios from 'axios';
 import AutoCompleteSelect from '../components/AutoCompleteSelect';
+import { sign } from 'crypto';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -62,9 +82,12 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
     },
   ]);
 
+  const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>();
+
   const [showMaterialForm, setMaterialForm] = useState(false);
   const [saleOrderForm, setSaleOrderForm] = useState(false);
   const [receiptForm, setReceiptForm] = useState(false);
+  const [selectedSaleOrder, setSelectedSaleOrder] = useState('');
 
   useEffect(() => {
     if (workOrder) {
@@ -435,75 +458,235 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               Agregar materiales
             </Button>
           </Flex>
+          <Box className="border border-zinc-200 rounded-lg mt-5">
+            {showMaterialForm && (
+              <Grid
+                className="p-5 "
+                columns={{
+                  initial: '1',
+                  xs: '1',
+                  sm: '1',
+                  md: '1',
+                  lg: '2',
+                  xl: '2',
+                }}
+              >
+                <Flex direction="column" gap="3" justify="center">
+                  <Box>
+                    <Text className="text-slate-500">Tipo de compra</Text>
+                  </Box>
+                  <Box>
+                    <Select.Root
+                      size="3"
+                      defaultValue="none"
+                      onValueChange={(value) => {
+                        if (value === 'saleorder') {
+                          setReceiptForm(false);
+                          setSaleOrderForm(true);
+                        } else {
+                          setSaleOrderForm(false);
+                          setReceiptForm(true);
+                        }
+                        setTimeout(() => {
+                          window.scrollTo({ top: 1000, behavior: 'smooth' });
+                        }, 200);
+                      }}
+                    >
+                      <Select.Trigger />
+                      <Select.Content>
+                        <Select.Item value="none" disabled>
+                          <Text className="text-slate-500">Elegir...</Text>
+                        </Select.Item>
+                        <Select.Item value="saleorder">
+                          Orden de Compra
+                        </Select.Item>
+                        <Select.Item value="receipt">Boleta</Select.Item>
+                      </Select.Content>
+                    </Select.Root>
+                  </Box>
+                </Flex>
+              </Grid>
+            )}
+            {saleOrderForm && (
+              <Flex direction="column" className="p-5 " gap="4">
+                <Flex
+                  direction="column"
+                  gap="3"
+                  className="border border-zinc-200 p-3 rounded-lg"
+                >
+                  <Box>
+                    <Text className="text-slate-500">N° O. de compra</Text>
+                  </Box>
+                  <Box>
+                    <AutoCompleteSelect
+                      items={saleOrders}
+                      dataKey={'number'}
+                      dataToRetrieve="id"
+                      getValue={setSelectedSaleOrder}
+                    />
+                  </Box>
+                </Flex>
 
-          {showMaterialForm && (
-            <Grid
-              className="p-5"
-              columns={{
-                initial: '1',
-                xs: '1',
-                sm: '1',
-                md: '1',
-                lg: '2',
-                xl: '2',
-              }}
-            >
-              <Flex direction="column" gap="3" justify="center">
-                <Box>
-                  <Text className="text-slate-500">Tipo de compra</Text>
-                </Box>
-                <Box>
-                  <Select.Root
-                    size="3"
-                    defaultValue="none"
-                    onValueChange={(value) => {
-                      if (value === 'saleorder') {
-                        setReceiptForm(false);
-                        setSaleOrderForm(true);
-                      } else {
-                        setSaleOrderForm(false);
-                        setReceiptForm(true);
-                      }
-                      window.scrollTo({ top: 1000, behavior: 'smooth' });
-                    }}
+                {selectedSaleOrder && (
+                  <Grid
+                    className="border border-zinc-200 rounded-lg p-3"
+                    justify="center"
+                    align="center"
+                    gap="2"
                   >
-                    <Select.Trigger />
-                    <Select.Content>
-                      <Select.Item value="none" disabled>
-                        <Text className="text-slate-500">Elegir...</Text>
-                      </Select.Item>
-                      <Select.Item value="saleorder">
-                        Orden de Compra
-                      </Select.Item>
-                      <Select.Item value="receipt">Boleta</Select.Item>
-                    </Select.Content>
-                  </Select.Root>
-                </Box>
+                    <Text className="text-zinc-500">Selecciona materiales</Text>
+                    {saleOrders
+                      .filter((so) => so.id == selectedSaleOrder)
+                      .map((so) =>
+                        so.materials.map((m, index) => {
+                          return (
+                            <Text as="label" key={m.id}>
+                              <Flex align="center" gap="2">
+                                <Checkbox
+                                  onCheckedChange={(checked) => {
+                                    if (checked) {
+                                      const updatedMaterials = [
+                                        ...materials,
+                                        {
+                                          id: m.id,
+                                          name: m.name,
+                                          unitPrice: m.unitPrice,
+                                          quantity: m.quantity,
+                                          code: m.code,
+                                          discount: so.discount,
+                                          saleOrderId: so.number,
+                                        },
+                                      ];
+                                      setMaterials(updatedMaterials);
+                                    } else {
+                                      const updatedMaterials = materials.filter(
+                                        (material) => {
+                                          return material.id != m.id;
+                                        }
+                                      );
+                                      setMaterials(updatedMaterials);
+                                    }
+                                  }}
+                                />{' '}
+                                {m.name}
+                              </Flex>
+                            </Text>
+                          );
+                        })
+                      )}
+                  </Grid>
+                )}
+                <Flex className="col-span-2">
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setMaterialsToSubmit(materials);
+                    }}
+                    className="w-full"
+                  >
+                    Agregar{' '}
+                  </Button>
+                </Flex>
               </Flex>
-            </Grid>
-          )}
-          {saleOrderForm && (
-            <Grid
-              columns={{
-                initial: '1',
-                xs: '1',
-                sm: '1',
-                md: '1',
-                lg: '2',
-                xl: '2',
-              }}
-              className="p-5"
-            >
-              <Flex direction="column">
-                <Box>
-                  <Text>N° O. de compra</Text>
-                </Box>
-                <Box>
-                  <AutoCompleteSelect items={saleOrders} dataKey={'number'} />
-                </Box>
-              </Flex>
-            </Grid>
-          )}
+              // aca
+            )}
+          </Box>
+          <Grid columns="7" className="mt-5 p-2 bg-[#013564]">
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">Material</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">Codigo</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">Cantidad</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">P. Unitario</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">Descuento</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">N° o. Compra</Text>
+            </Box>
+            <Box className="flex justify-center">
+              <Text className="font-bold text-slate-100">Total</Text>
+            </Box>
+          </Grid>
+          <Flex direction="column" gap="4">
+            {materialsToSubmit?.map((m, index) => {
+              return (
+                <>
+                  <Grid key={m.id} columns="7" className="mt-3">
+                    <Box className="flex justify-center">
+                      <Text>{m.name}</Text>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <Text>{m.code}</Text>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <IconButton
+                        size="1"
+                        color="gray"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          const updatedMaterials = [...materialsToSubmit];
+                          updatedMaterials[index].quantity = m.quantity - 1;
+                          setMaterialsToSubmit(updatedMaterials);
+                        }}
+                      >
+                        <MinusIcon />
+                      </IconButton>
+                      <input
+                        value={m.quantity}
+                        onChange={(e) => {
+                          const updatedMaterials = [...materialsToSubmit];
+                          updatedMaterials[index].quantity = parseInt(
+                            e.target.value
+                          );
+                          setMaterialsToSubmit(updatedMaterials);
+                        }}
+                        type="number"
+                        className="text-center w-[90%]"
+                      />
+                      <IconButton
+                        size="1"
+                        color="gray"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          const updatedMaterials = [...materialsToSubmit];
+                          updatedMaterials[index].quantity = m.quantity + 1;
+                          setMaterialsToSubmit(updatedMaterials);
+                        }}
+                      >
+                        <PlusIcon />
+                      </IconButton>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <Text>{m.unitPrice}</Text>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <Text>{m.discount} %</Text>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <Text>{m.saleOrderId}</Text>
+                    </Box>
+                    <Box className="flex justify-center">
+                      <Text>
+                        {m.quantity * m.unitPrice -
+                          m.quantity * m.unitPrice * (m.discount / 100)}
+                      </Text>
+                    </Box>
+                  </Grid>
+                  <Separator size="4" />
+                </>
+              );
+            })}
+          </Flex>
           {/* Materiales      */}
         </Box>
       </Form.Root>
