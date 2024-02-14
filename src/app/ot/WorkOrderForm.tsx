@@ -585,7 +585,18 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               // aca
             )}
           </Box>
-          <Grid columns="7" className="mt-5 p-2 bg-[#013564]">
+          <Grid
+            columns="7"
+            className="mt-5 p-2 bg-[#013564]"
+            display={{
+              initial: 'none',
+              xs: 'none',
+              sm: 'none',
+              md: 'none',
+              lg: 'grid',
+              xl: 'grid',
+            }}
+          >
             <Box className="flex justify-center">
               <Text className="font-bold text-slate-100">Material</Text>
             </Box>
@@ -612,69 +623,379 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             {materialsToSubmit?.map((m, index) => {
               return (
                 <>
-                  <Grid key={m.id} columns="7" className="mt-3">
-                    <Box className="flex justify-center">
+                  <Grid
+                    key={m.id}
+                    columns={{
+                      initial: '1',
+                      xs: '1',
+                      sm: '1',
+                      md: '1',
+                      lg: '7',
+                      xl: '7',
+                    }}
+                    className="mt-3"
+                  >
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">Material</Text>
+                      </Box>
                       <Text>{m.name}</Text>
-                    </Box>
-                    <Box className="flex justify-center">
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">Codigo</Text>
+                      </Box>
                       <Text>{m.code}</Text>
-                    </Box>
-                    <Box className="flex justify-center">
-                      <IconButton
-                        size="1"
-                        color="gray"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          const updatedMaterials = [...materialsToSubmit];
-                          updatedMaterials[index].quantity = m.quantity - 1;
-                          setMaterialsToSubmit(updatedMaterials);
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
                         }}
                       >
-                        <MinusIcon />
-                      </IconButton>
-                      <input
-                        value={m.quantity}
-                        onChange={(e) => {
-                          const updatedMaterials = [...materialsToSubmit];
-                          updatedMaterials[index].quantity =
-                            e.target.value === '' ? 0 : Number(e.target.value); //arreglar los ceros de la izquierda
-                          setMaterialsToSubmit(updatedMaterials);
-                        }}
-                        type="number"
-                        className="text-center w-[90%]"
-                      />
-                      <IconButton
-                        size="1"
-                        color="gray"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          e.stopPropagation();
-                          const updatedMaterials = [...materialsToSubmit];
-                          updatedMaterials[index].quantity = m.quantity + 1;
-                          setMaterialsToSubmit(updatedMaterials);
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
                         }}
                       >
-                        <PlusIcon />
-                      </IconButton>
-                    </Box>
-                    <Box className="flex justify-center">
-                      <Text>{m.unitPrice}</Text>
-                    </Box>
-                    <Box className="flex justify-center">
+                        <Text className="font-bold text-xl">Cantidad</Text>
+                      </Box>
+                      <Box className="flex justify-center" items-center>
+                        <IconButton
+                          size="1"
+                          color="gray"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const updatedMaterials = [...materialsToSubmit];
+                            updatedMaterials[index].quantity = m.quantity - 1;
+                            setMaterialsToSubmit(updatedMaterials);
+                          }}
+                        >
+                          <MinusIcon />
+                        </IconButton>
+                        <input
+                          value={m.quantity}
+                          onChange={(e) => {
+                            const updatedMaterials = [...materialsToSubmit];
+                            updatedMaterials[index].quantity =
+                              e.target.value === ''
+                                ? 0
+                                : Number(e.target.value); //arreglar los ceros de la izquierda
+                            setMaterialsToSubmit(updatedMaterials);
+                          }}
+                          type="number"
+                          className="text-center w-[90%]"
+                        />
+                        <IconButton
+                          size="1"
+                          color="gray"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const updatedMaterials = [...materialsToSubmit];
+                            updatedMaterials[index].quantity = m.quantity + 1;
+                            setMaterialsToSubmit(updatedMaterials);
+                          }}
+                        >
+                          <PlusIcon />
+                        </IconButton>
+                      </Box>
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">P.unitario</Text>
+                      </Box>
+                      <Text>${m.unitPrice}</Text>
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">Descuento</Text>
+                      </Box>
                       <Text>{m.discount} %</Text>
-                    </Box>
-                    <Box className="flex justify-center">
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">N° O. Compra</Text>
+                      </Box>
                       <Text>{m.saleOrderId}</Text>
-                    </Box>
-                    <Box className="flex justify-center items-center gap-3">
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                    </Flex>
+                    <Flex
+                      className="flex justify-center items-center"
+                      justify={{
+                        initial: 'start',
+                        xs: 'start',
+                        sm: 'start',
+                        md: 'start',
+                        lg: 'center',
+                        xl: 'center',
+                      }}
+                      direction={{
+                        initial: 'column',
+                        xs: 'column',
+                        sm: 'column',
+                        md: 'column',
+                        lg: 'row',
+                        xl: 'row',
+                      }}
+                    >
+                      <Box
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Text className="font-bold text-xl">Total</Text>
+                      </Box>
                       <Text>
                         $
                         {m.quantity * m.unitPrice -
                           m.quantity * m.unitPrice * (m.discount / 100)}
                       </Text>
                       <Box
-                        className="rounded-full bg-red-400 p-2 text-slate-100 cursor-pointer hover:scale-110 transition-all"
+                        display={{
+                          initial: 'block',
+                          xs: 'block',
+                          sm: 'block',
+                          md: 'block',
+                          lg: 'none',
+                          xl: 'none',
+                        }}
+                      >
+                        <Separator size="4" />
+                      </Box>
+                      <Box
+                        className="rounded-full bg-red-400 p-2 text-slate-100 cursor-pointer hover:scale-110 transition-all flex justify-center ml-2"
                         onClick={() => {
                           const updatedMaterials = materialsToSubmit.filter(
                             (sm) => sm.id !== m.id
@@ -684,9 +1005,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                       >
                         <TrashIcon />
                       </Box>
-                    </Box>
+                    </Flex>
                   </Grid>
-                  <Separator size="4" />
                 </>
               );
             })}
