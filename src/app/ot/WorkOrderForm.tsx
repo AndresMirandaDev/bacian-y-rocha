@@ -686,7 +686,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     }}
                     className="w-full"
                   >
-                    Agregar{' '}
+                    Ingresar{' '}
                   </Button>
                 </Flex>
               </Flex>
