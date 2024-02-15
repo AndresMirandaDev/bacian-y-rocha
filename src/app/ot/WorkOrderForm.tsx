@@ -29,6 +29,7 @@ import {
 import axios from 'axios';
 import AutoCompleteSelect from '../components/AutoCompleteSelect';
 import { sign } from 'crypto';
+import toast, { Toaster } from 'react-hot-toast';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -43,15 +44,6 @@ type Material = {
   id: string;
   discount: number;
   saleOrderId: string;
-  options?: {
-    name: string;
-    unitPrice: number;
-    quantity: number;
-    code: string;
-    id: string;
-    discount: number;
-    saleOrderId: string;
-  }[];
 };
 
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
@@ -72,12 +64,19 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
 
   const [materials, setMaterials] = useState<Material[]>([]);
 
-  const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>();
+  const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>([]);
 
   const [showMaterialForm, setMaterialForm] = useState(false);
   const [saleOrderForm, setSaleOrderForm] = useState(false);
   const [receiptForm, setReceiptForm] = useState(false);
   const [selectedSaleOrder, setSelectedSaleOrder] = useState('');
+
+  //new material
+  const [name, setName] = useState('');
+  const [unitPrice, setPrice] = useState('');
+  const [quantity, setQuantity] = useState('');
+  const [materialCode, setMaterialCode] = useState('');
+  const [discount, setDiscount] = useState('');
 
   useEffect(() => {
     if (workOrder) {
@@ -98,6 +97,28 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       setMaterials(workOrder.materials);
     }
   }, [workOrder]);
+
+  const onSubmitReceiptMaterial = () => {
+    setMaterialsToSubmit([
+      ...materialsToSubmit,
+      {
+        name,
+        unitPrice: parseInt(unitPrice),
+        quantity: parseInt(quantity),
+        code: materialCode,
+        id: (Math.random() * 1000).toString(),
+        discount: parseInt(discount),
+        saleOrderId: 'receipt',
+      },
+    ]);
+
+    setName('');
+    setDiscount('');
+    setMaterialCode('');
+    setQuantity('');
+    setPrice('');
+    toast.success('Material ha sido agregado.');
+  };
 
   return (
     <>
@@ -498,6 +519,84 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 </Flex>
               </Grid>
             )}
+            {receiptForm && (
+              <Grid
+                columns={{
+                  initial: '1',
+                  xs: '1',
+                  sm: '1',
+                  md: '1',
+                  lg: '2',
+                  xl: '2',
+                }}
+                gap="4"
+                className="p-3"
+              >
+                <Box>
+                  <FormField
+                    value={name}
+                    setValue={setName}
+                    valueMissing="Ingresa artículo"
+                    typeMismatch="Nombre invalido"
+                    label="Artículo"
+                    name="name"
+                  />
+                </Box>
+                <Box>
+                  <FormField
+                    value={materialCode}
+                    setValue={setMaterialCode}
+                    valueMissing="Ingresa código"
+                    typeMismatch="Código invalido"
+                    label="Código"
+                    name="code"
+                  />
+                </Box>
+                <Box>
+                  <FormField
+                    value={unitPrice}
+                    setValue={setPrice}
+                    valueMissing="Ingresa precio"
+                    typeMismatch="Precio invalido"
+                    label="Precio unitario"
+                    name="unitPrice"
+                    type="number"
+                  />
+                </Box>
+                <Box>
+                  <FormField
+                    value={quantity}
+                    setValue={setQuantity}
+                    valueMissing="Ingresa cantidad"
+                    typeMismatch="Cantidad invalida"
+                    label="Cantidad"
+                    name="quantity"
+                    type="number"
+                  />
+                </Box>
+                <Box>
+                  <FormField
+                    value={discount}
+                    setValue={setDiscount}
+                    valueMissing="Ingresa descuento"
+                    typeMismatch="descuento invalido"
+                    label="Descuento"
+                    name="discount"
+                    type="number"
+                  />
+                </Box>
+                <Box className="flex items-center justify-center">
+                  <Button
+                    onClick={(e) => {
+                      e.preventDefault(), e.stopPropagation();
+                      onSubmitReceiptMaterial();
+                    }}
+                  >
+                    Agregar Material
+                  </Button>
+                </Box>
+              </Grid>
+            )}
             {saleOrderForm && (
               <Flex direction="column" className="p-5 " gap="4">
                 <Flex
@@ -575,7 +674,10 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setMaterialsToSubmit(materials);
+                      setMaterialsToSubmit([
+                        ...materialsToSubmit,
+                        ...materials,
+                      ]);
                     }}
                     className="w-full"
                   >
@@ -1013,9 +1115,19 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               );
             })}
           </Flex>
+
           {/* Materiales      */}
+
+          {/* actividades */}
+          <Flex>
+            <Box className="bg-[#013564] w-full p-1 mt-10">
+              <Text className="text-slate-100 font-bold">4. Actividades</Text>
+            </Box>
+          </Flex>
+          {/* actividades */}
         </Box>
       </Form.Root>
+      <Toaster />
     </>
   );
 };
