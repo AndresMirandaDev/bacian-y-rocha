@@ -7,6 +7,7 @@ import {
   MinusIcon,
   PlusIcon,
   TrashIcon,
+  UpdateIcon,
 } from '@radix-ui/react-icons';
 import {
   Box,
@@ -27,6 +28,8 @@ import AutoCompleteSelect from '../components/AutoCompleteSelect';
 import FormField from '../components/form/FormField';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { formatDate } from '../helpers/formatDate';
+import { string } from 'zod';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -45,6 +48,7 @@ type Material = {
 
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const router = useRouter();
+  const [submitting, setSubmitting] = useState(false);
 
   const [revision, setRevision] = useState('');
   const [code, setCode] = useState('');
@@ -84,16 +88,20 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       setNumber(workOrder.number);
       setDescription(workOrder.description);
       setClient(workOrder.client);
-      setStartDate(workOrder.startDate.toLocaleDateString());
-      // setEndDate(workOrder.endDate.toLocaleDateString());
-      setEstimatedDate(workOrder.estimatedDate.toLocaleDateString());
+      setStartDate(formatDate(workOrder.startDate.toLocaleDateString()));
+      setEstimatedDate(
+        formatDate(workOrder.estimatedDate.toLocaleDateString())
+      );
       setQuoteNumber(workOrder.quoteNumber);
       setRequiresPlaque(workOrder.requiresPlaque);
       setComponentName(workOrder.componentName);
       setComponentDevice(workOrder.componentDevice);
       setModel(workOrder.model);
       setDeviceNumber(workOrder.deviceNumber);
-      setMaterials(workOrder.materials);
+      setMaterialsToSubmit(workOrder.materials);
+      if (workOrder.endDate) {
+        setEndDate(formatDate(workOrder.endDate.toLocaleDateString()));
+      }
     }
   }, [workOrder]);
 
@@ -123,27 +131,77 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
     e.preventDefault();
 
     try {
-      await axios.post('/api/workorders', {
-        revision,
-        code,
-        number,
-        description,
-        client,
-        quoteNumber,
-        requiresPlaque,
-        startDate: new Date(startDate).toISOString(),
-        estimatedDate: new Date(estimatedDate).toISOString(),
-        componentDevice,
-        deviceNumber,
-        model,
-        componentName,
-        materials: materialsToSubmit,
-      });
-      toast.success('Orden de trabajo registrada.');
-      router.push('/ot');
-      router.refresh();
+      if (workOrder) {
+        setSubmitting(true);
+        const updatedData: {
+          revision: string;
+          code: string;
+          number: string;
+          description: string;
+          client: string;
+          quoteNumber: string;
+          requiresPlaque: string;
+          startDate: string;
+          endDate?: string;
+          estimatedDate: string;
+          componentDevice: string;
+          deviceNumber: string;
+          model: string;
+          componentName: string;
+          materials: Material[];
+        } = {
+          revision,
+          code,
+          number,
+          description,
+          client,
+          quoteNumber,
+          requiresPlaque,
+          startDate: new Date(startDate).toISOString(),
+          estimatedDate: new Date(estimatedDate).toISOString(),
+          componentDevice,
+          deviceNumber,
+          model,
+          componentName,
+          materials: materialsToSubmit,
+        };
+        if (endDate !== '') {
+          updatedData.endDate === new Date(endDate).toISOString();
+        }
+
+        console.log(updatedData);
+
+        await axios.patch(`/api/workorders/${workOrder.id}`, updatedData);
+        toast.success('Orden de trabajo actualizada.');
+        router.push('/ot');
+        setSubmitting(false);
+        router.refresh();
+      } else {
+        setSubmitting(true);
+        await axios.post('/api/workorders', {
+          revision,
+          code,
+          number,
+          description,
+          client,
+          quoteNumber,
+          requiresPlaque,
+          startDate: new Date(startDate).toISOString(),
+          estimatedDate: new Date(estimatedDate).toISOString(),
+          componentDevice,
+          deviceNumber,
+          model,
+          componentName,
+          materials: materialsToSubmit,
+        });
+        toast.success('Orden de trabajo registrada.');
+        router.push('/ot');
+        setSubmitting(false);
+        router.refresh();
+      }
     } catch (error) {
       console.log(error);
+      setSubmitting(false);
       toast.error(
         'Orden de trabajo no pudo ser registrada, inténtelo nuevamente.'
       );
@@ -155,9 +213,14 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       <Form.Root onSubmit={submitWorkOrder}>
         <Form.Submit asChild>
           <Box className="p-3">
-            <Button>
-              <PlusIcon />
-              Registrar Orden de trabajo
+            <Button
+              disabled={submitting}
+              style={{ backgroundColor: workOrder ? '#2ebb45' : '#3E63DD' }}
+            >
+              {!workOrder && <PlusIcon />}
+              {workOrder && <UpdateIcon />}
+              {workOrder && 'Actualizar Orden de trabajo'}
+              {!workOrder && 'Registrar Orden de trabajo'}
             </Button>
           </Box>
         </Form.Submit>

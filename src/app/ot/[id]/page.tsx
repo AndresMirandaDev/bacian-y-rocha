@@ -156,7 +156,11 @@ const WorkOrderDetails = async ({ params }: Params) => {
                 <Text className="font-bold">Fecha Entrega</Text>
               </Box>
               <Box className="w-1/2">
-                <Text>{workOrder.endDate.toLocaleDateString()}</Text>
+                <Text>
+                  {workOrder.endDate
+                    ? workOrder.endDate.toLocaleDateString()
+                    : 'Pendiente'}
+                </Text>
               </Box>
             </Flex>
             <Flex>
