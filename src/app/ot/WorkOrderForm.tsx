@@ -1,5 +1,13 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import { SaleOrder, WorkOrder } from '@prisma/client';
+import * as Form from '@radix-ui/react-form';
+import {
+  ChevronDownIcon,
+  ChevronUpIcon,
+  MinusIcon,
+  PlusIcon,
+  TrashIcon,
+} from '@radix-ui/react-icons';
 import {
   Box,
   Button,
@@ -9,27 +17,16 @@ import {
   IconButton,
   Select,
   Separator,
-  Table,
   Text,
 } from '@radix-ui/themes';
 import Image from 'next/image';
-import logo from '../../../public/assets/images/byrs.png';
-import { SaleOrder, WorkOrder, WorkOrderMaterial } from '@prisma/client';
-import FormField from '../components/form/FormField';
-import * as Form from '@radix-ui/react-form';
-import {
-  ArrowDownIcon,
-  ArrowUpIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  MinusIcon,
-  PlusIcon,
-  TrashIcon,
-} from '@radix-ui/react-icons';
-import axios from 'axios';
-import AutoCompleteSelect from '../components/AutoCompleteSelect';
-import { sign } from 'crypto';
+import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import logo from '../../../public/assets/images/byrs.png';
+import AutoCompleteSelect from '../components/AutoCompleteSelect';
+import FormField from '../components/form/FormField';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -47,6 +44,8 @@ type Material = {
 };
 
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
+  const router = useRouter();
+
   const [revision, setRevision] = useState('');
   const [code, setCode] = useState('');
   const [number, setNumber] = useState('');
@@ -86,7 +85,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       setDescription(workOrder.description);
       setClient(workOrder.client);
       setStartDate(workOrder.startDate.toLocaleDateString());
-      setEndDate(workOrder.endDate.toLocaleDateString());
+      // setEndDate(workOrder.endDate.toLocaleDateString());
       setEstimatedDate(workOrder.estimatedDate.toLocaleDateString());
       setQuoteNumber(workOrder.quoteNumber);
       setRequiresPlaque(workOrder.requiresPlaque);
@@ -120,9 +119,48 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
     toast.success('Material ha sido agregado.');
   };
 
+  const submitWorkOrder = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      await axios.post('/api/workorders', {
+        revision,
+        code,
+        number,
+        description,
+        client,
+        quoteNumber,
+        requiresPlaque,
+        startDate: new Date(startDate).toISOString(),
+        estimatedDate: new Date(estimatedDate).toISOString(),
+        componentDevice,
+        deviceNumber,
+        model,
+        componentName,
+        materials: materialsToSubmit,
+      });
+      toast.success('Orden de trabajo registrada.');
+      router.push('/ot');
+      router.refresh();
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        'Orden de trabajo no pudo ser registrada, inténtelo nuevamente.'
+      );
+    }
+  };
+
   return (
     <>
-      <Form.Root>
+      <Form.Root onSubmit={submitWorkOrder}>
+        <Form.Submit asChild>
+          <Box className="p-3">
+            <Button>
+              <PlusIcon />
+              Registrar Orden de trabajo
+            </Button>
+          </Box>
+        </Form.Submit>
         <Box className="bg-white rounded-md p-5">
           {/* cabecera  */}
           <Flex
@@ -353,6 +391,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     name="endDate"
                     typeMismatch="fecha invalida"
                     type="date"
+                    required={false}
                   />
                 </Box>
               </Flex>

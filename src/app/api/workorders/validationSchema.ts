@@ -7,7 +7,7 @@ export const workOrderValidationSchema = z.object({
     description:z.string().min(1),
     client:z.string().min(1).max(255),
     startDate:z.string(),
-    endDate:z.string(),
+    endDate:z.string().optional(),
     estimatedDate:z.string(),
     quoteNumber:z.string().min(1).max(255),
     requiresPlaque:z.string().min(1).max(255),

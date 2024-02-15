@@ -117,7 +117,7 @@ model WorkOrder {
   //general info
   client         String
   startDate      DateTime
-  endDate        DateTime
+  endDate        DateTime?
   estimatedDate  DateTime
   quoteNumber    String
   requiresPlaque String
