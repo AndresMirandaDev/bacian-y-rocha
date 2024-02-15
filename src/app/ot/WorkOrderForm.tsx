@@ -108,7 +108,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
         code: materialCode,
         id: (Math.random() * 1000).toString(),
         discount: parseInt(discount),
-        saleOrderId: 'receipt',
+        saleOrderId: 'boleta',
       },
     ]);
 
@@ -460,14 +460,22 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               onClick={(e: React.FormEvent) => {
                 e.preventDefault();
                 e.stopPropagation();
-                setMaterialForm(true);
+                if (!showMaterialForm) {
+                  setMaterialForm(true);
+                } else if (showMaterialForm) {
+                  setMaterialForm(false);
+                  setSaleOrderForm(false);
+                  setReceiptForm(false);
+                }
                 setTimeout(() => {
                   window.scrollTo({ top: 1000, behavior: 'smooth' });
                 }, 200);
               }}
             >
-              <PlusIcon />
-              Agregar materiales
+              {!showMaterialForm && <ChevronDownIcon />}
+              {showMaterialForm && <ChevronUpIcon />}
+              {!showMaterialForm && <Text>Abrir Formulario</Text>}
+              {showMaterialForm && <Text>Cerrar Formulario</Text>}
             </Button>
           </Flex>
           <Box className="border border-zinc-200 rounded-lg mt-5">
@@ -700,25 +708,27 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               xl: 'grid',
             }}
           >
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center ">
               <Text className="font-bold text-slate-100">Material</Text>
             </Box>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Text className="font-bold text-slate-100">Codigo</Text>
             </Box>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Text className="font-bold text-slate-100">Cantidad</Text>
             </Box>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Text className="font-bold text-slate-100">P. Unitario</Text>
             </Box>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Text className="font-bold text-slate-100">Descuento</Text>
             </Box>
-            <Box className="flex justify-center">
-              <Text className="font-bold text-slate-100">N° o. Compra</Text>
+            <Box className="flex justify-center items-center">
+              <Text className="font-bold text-slate-100 text-center">
+                N° o. Compra / Boleta
+              </Text>
             </Box>
-            <Box className="flex justify-center">
+            <Box className="flex justify-center items-center">
               <Text className="font-bold text-slate-100">Total</Text>
             </Box>
           </Grid>
