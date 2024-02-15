@@ -647,7 +647,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                                   onCheckedChange={(checked) => {
                                     if (checked) {
                                       const updatedMaterials = [
-                                        ...materials,
+                                        ...materialsToSubmit,
                                         {
                                           id: m.id,
                                           name: m.name,
@@ -682,10 +682,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
-                      setMaterialsToSubmit([
-                        ...materialsToSubmit,
-                        ...materials,
-                      ]);
+                      setMaterialsToSubmit([...materials]);
                     }}
                     className="w-full"
                   >
@@ -733,6 +730,11 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             </Box>
           </Grid>
           <Flex direction="column" gap="4">
+            {materialsToSubmit.length === 0 && (
+              <Box className="p-3">
+                <Text className="text-slate-400 italic">No hay materiales</Text>
+              </Box>
+            )}
             {materialsToSubmit?.map((m, index) => {
               return (
                 <>
