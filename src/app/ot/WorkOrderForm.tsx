@@ -188,6 +188,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
               lg: 'row',
               xl: 'row',
             }}
+            gap="3"
           >
             <Flex className="flex-grow" direction="column">
               <Box>
@@ -243,8 +244,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 xs: '1',
                 sm: '1',
                 md: '1',
-                lg: '0',
-                xl: '0',
+                lg: '2',
+                xl: '2',
               }}
             >
               <Flex>
@@ -361,8 +362,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 xs: '1',
                 sm: '1',
                 md: '1',
-                lg: '0',
-                xl: '0',
+                lg: '2',
+                xl: '2',
               }}
             >
               <Flex>
@@ -1007,6 +1008,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                       </Box>
                     </Flex>
                   </Grid>
+                  <Separator size="4" />
                 </>
               );
             })}
