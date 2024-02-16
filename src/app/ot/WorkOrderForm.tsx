@@ -126,7 +126,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
     setPrice('');
     toast.success('Material ha sido agregado.');
   };
-
   const submitWorkOrder = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -166,10 +165,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           materials: materialsToSubmit,
         };
         if (endDate !== '') {
-          updatedData.endDate === new Date(endDate).toISOString();
+          updatedData.endDate = new Date(endDate).toISOString();
         }
-
-        console.log(updatedData);
 
         await axios.patch(`/api/workorders/${workOrder.id}`, updatedData);
         toast.success('Orden de trabajo actualizada.');
