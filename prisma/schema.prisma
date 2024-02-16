@@ -107,7 +107,56 @@ enum Status {
   ARRIVED
 }
 
-// model WorkOrder {
-//   id                String              @id @default(auto()) @map("_id") @db.ObjectId
-//   assignedMaterials AssignedMaterials[]
-// }
+model WorkOrder {
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  revision    String
+  code        String
+  number      String
+  description String
+
+  //general info
+  client         String
+  startDate      DateTime
+  endDate        DateTime?
+  estimatedDate  DateTime
+  quoteNumber    String
+  requiresPlaque String
+
+  //component info
+  componentName   String
+  componentDevice String
+  model           String
+  deviceNumber    String
+
+  materials  WorkOrderMaterial[]
+  activities Task[]
+}
+
+type WorkOrderMaterial {
+  name        String
+  unitPrice   Int
+  quantity    Int
+  code        String
+  id          String
+  discount    Int
+  saleOrderId String
+}
+
+type SubTask {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+}
+
+type Task {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+  subTasks       SubTask[]
+}
