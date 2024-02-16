@@ -20,16 +20,15 @@ import {
   Separator,
   Text,
 } from '@radix-ui/themes';
+import axios from 'axios';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import logo from '../../../public/assets/images/byrs.png';
 import AutoCompleteSelect from '../components/AutoCompleteSelect';
 import FormField from '../components/form/FormField';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
 import { formatDate } from '../helpers/formatDate';
-import { string } from 'zod';
 import ActivityForm from './ActivityForm';
 
 interface Props {
@@ -273,6 +272,14 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 lg: 'center',
                 xl: 'center',
               }}
+              width={{
+                initial: 'auto',
+                xs: 'auto',
+                sm: 'auto',
+                md: 'auto',
+                lg: '100%',
+                xl: '100%',
+              }}
             >
               <Box>
                 <Text className="text-slate-100 font-bold">
@@ -280,7 +287,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 </Text>
               </Box>
               <Box>
-                <Text className="text-slate-100 font-bold">
+                <Text className="text-slate-100 font-bold text-center">
                   REPARACIONES ESTRUCTURALES DE COMPONENTES
                 </Text>
               </Box>
