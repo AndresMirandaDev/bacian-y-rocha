@@ -128,7 +128,8 @@ model WorkOrder {
   model           String
   deviceNumber    String
 
-  materials WorkOrderMaterial[]
+  materials  WorkOrderMaterial[]
+  activities Task[]
 }
 
 type WorkOrderMaterial {
@@ -139,4 +140,23 @@ type WorkOrderMaterial {
   id          String
   discount    Int
   saleOrderId String
+}
+
+type SubTask {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+}
+
+type Task {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+  subTasks       SubTask[]
 }

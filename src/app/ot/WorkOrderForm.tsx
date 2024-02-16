@@ -47,6 +47,25 @@ type Material = {
   saleOrderId: string;
 };
 
+interface SubTask {
+  id: string;
+  description: string;
+  assignedTo: string;
+  progress: number;
+  startDate: string;
+  durationInDays: number;
+}
+
+interface Task {
+  id: string;
+  description: string;
+  assignedTo: string;
+  progress: number;
+  startDate: string;
+  durationInDays: number;
+  subTasks?: SubTask[];
+}
+
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
@@ -65,6 +84,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [componentDevice, setComponentDevice] = useState('');
   const [model, setModel] = useState('');
   const [deviceNumber, setDeviceNumber] = useState('');
+  const [activities, setActivities] = useState<Task[]>([]);
 
   const [materials, setMaterials] = useState<Material[]>([]);
 
@@ -103,6 +123,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       if (workOrder.endDate) {
         setEndDate(formatDate(workOrder.endDate.toLocaleDateString()));
       }
+      setActivities(workOrder.activities);
     }
   }, [workOrder]);
 
@@ -149,6 +170,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           model: string;
           componentName: string;
           materials: Material[];
+          activities: Task[];
         } = {
           revision,
           code,
@@ -164,6 +186,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           model,
           componentName,
           materials: materialsToSubmit,
+          activities,
         };
         if (endDate !== '') {
           updatedData.endDate = new Date(endDate).toISOString();
@@ -191,6 +214,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           model,
           componentName,
           materials: materialsToSubmit,
+          activities,
         });
         toast.success('Orden de trabajo registrada.');
         router.push('/ot');
@@ -1237,7 +1261,10 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             </Box>
           </Flex>
           <Flex>
-            <ActivityForm />
+            <ActivityForm
+              sendActivities={setActivities}
+              tasks={activities && activities}
+            />
           </Flex>
           {/* actividades */}
         </Box>

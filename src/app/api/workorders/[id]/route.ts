@@ -33,7 +33,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
                 componentDevice,
                 model,
                 deviceNumber,
-                materials
+                materials,
+                activities
             } = body
 
             const updatedWorkOrder = await prisma.workOrder.update({
@@ -53,7 +54,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
                     componentDevice,
                     model,
                     deviceNumber,
-                    materials
+                    materials,
+                    activities
                 }
             })
             return NextResponse.json({message:'success', body:updatedWorkOrder})

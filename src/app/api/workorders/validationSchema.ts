@@ -23,9 +23,25 @@ export const workOrderValidationSchema = z.object({
         id:z.string().min(1).max(255),
         discount:z.number(),
         saleOrderId: z.string().min(1).max(255)
-    }).array()
+    }).array(),
+    activities:z.object({
+        id: z.string(),
+        description: z.string(),
+        assignedTo: z.string(),
+        progress: z.number(),
+        startDate: z.string(),
+        durationInDays: z.number(),
 
-})
+        subTasks: z.object({
+                id: z.string(),
+                description: z.string().min(1),
+                assignedTo: z.string().min(1),
+                progress: z.number(),
+                startDate: z.string().min(1),
+                durationInDays: z.number(),
+        }).array().optional()
+    }).array()
+})  
 
 
 export const updateWorkOrderValidationSchema = z.object({
@@ -51,5 +67,22 @@ export const updateWorkOrderValidationSchema = z.object({
         id:z.string().min(1).max(255),
         discount:z.number(),
         saleOrderId: z.string().min(1).max(255)
+    }).array().optional(),
+    activities:z.object({
+        id: z.string().optional(),
+        description: z.string().optional(),
+        assignedTo: z.string().optional(),
+        progress: z.number().optional(),
+        startDate: z.string().optional(),
+        durationInDays: z.number().optional(),
+        
+        subTasks: z.object({
+                id: z.string(),
+                description: z.string().min(1).optional(),
+                assignedTo: z.string().min(1).optional(),
+                progress: z.number().optional(),
+                startDate: z.string().min(1).optional(),
+                durationInDays: z.number().optional(),
+        }).array().optional()
     }).array().optional()
 })
