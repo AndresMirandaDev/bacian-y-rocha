@@ -16,11 +16,10 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import Spinner from '../components/Spinner';
 import FileUploader from '../components/cloud/FileUploader';
 import FormField from '../components/form/FormField';
 import { formatDate } from '../helpers/formatDate';
-import Spinner from '../components/Spinner';
-import { revalidatePath } from 'next/cache';
 
 interface Props {
   quote?: Quote;
