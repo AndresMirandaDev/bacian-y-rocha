@@ -6,8 +6,21 @@ import WorkOrdersTable from './_otTables/WorkOrdersTable';
 import Link from 'next/link';
 import { PlusIcon } from '@radix-ui/react-icons';
 
+const getWorkOrders = async () => {
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/workorders`,
+    {
+      cache: 'no-store',
+    }
+  );
+
+  const quotes = await res.json();
+
+  return quotes.body;
+};
+
 const WorkOrderPage = async () => {
-  const workOrders = await prisma.workOrder.findMany();
+  const workOrders = await getWorkOrders();
 
   if (!workOrders) return notFound();
   return (
