@@ -30,6 +30,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { formatDate } from '../helpers/formatDate';
 import { string } from 'zod';
+import ActivityForm from './ActivityForm';
 
 interface Props {
   workOrder?: WorkOrder;
@@ -1234,6 +1235,9 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
             <Box className="bg-[#013564] w-full p-1 mt-10">
               <Text className="text-slate-100 font-bold">4. Actividades</Text>
             </Box>
+          </Flex>
+          <Flex>
+            <ActivityForm />
           </Flex>
           {/* actividades */}
         </Box>
