@@ -1,6 +1,6 @@
 'use client';
 import { PlusIcon, TrashIcon } from '@radix-ui/react-icons';
-import { Box, Button, Flex, Grid, Text } from '@radix-ui/themes';
+import { Box, Button, Flex, Grid, Separator, Text } from '@radix-ui/themes';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 
@@ -145,59 +145,67 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
           return (
             <Grid
               className="p-2 border border-slate-300 rounded-lg"
-              columns="5"
+              columns={{
+                initial: '1',
+                xs: '1',
+                sm: '1',
+                md: '1',
+                lg: '5',
+                xl: '5',
+              }}
               key={a.id}
+              gap="2"
             >
-              <Box className="flex justify-center items-center mt-2">
+              <Flex direction="column">
                 <Box>
                   <Text className="text-slate-500">Descripción</Text>
-                  <textarea
-                    value={a.description}
-                    className="border border-slate-300 rounded-md p-2"
-                    onChange={(e) => {
-                      handleChange(e, index, 'description');
-                    }}
-                  />
                 </Box>
-              </Box>
-              <Box className="flex justify-center items-center">
+                <textarea
+                  value={a.description}
+                  className="border border-slate-300 rounded-md p-2"
+                  onChange={(e) => {
+                    handleChange(e, index, 'description');
+                  }}
+                />
+              </Flex>
+              <Flex direction="column">
                 <Box>
                   <Text className="text-slate-500">Encargado</Text>
-                  <input
-                    value={a.assignedTo}
-                    className="border border-slate-300 rounded-md p-2"
-                    onChange={(e) => {
-                      handleChange(e, index, 'assignedTo');
-                    }}
-                  />
                 </Box>
-              </Box>
-              <Box className="flex justify-center items-center">
+                <input
+                  value={a.assignedTo}
+                  className="border border-slate-300 rounded-md p-2"
+                  onChange={(e) => {
+                    handleChange(e, index, 'assignedTo');
+                  }}
+                />
+              </Flex>
+              <Flex direction="column">
                 <Box>
                   <Text className="text-slate-500">Fecha de inicio</Text>
-                  <input
-                    value={a.startDate}
-                    className="border border-slate-300 rounded-md p-2"
-                    onChange={(e) => {
-                      handleChange(e, index, 'startDate');
-                    }}
-                    type="date"
-                  />
                 </Box>
-              </Box>
-              <Box className="flex justify-center items-center">
+                <input
+                  value={a.startDate}
+                  className="border border-slate-300 rounded-md p-2"
+                  onChange={(e) => {
+                    handleChange(e, index, 'startDate');
+                  }}
+                  type="date"
+                />
+              </Flex>
+              <Flex direction="column">
                 <Box>
                   <Text className="text-slate-500">Duración en días</Text>
-                  <input
-                    value={a.durationInDays}
-                    className="border border-slate-300 rounded-md p-2 text-center"
-                    type="number"
-                    onChange={(e) => {
-                      handleChange(e, index, 'durationInDays');
-                    }}
-                  />
                 </Box>
-              </Box>
+                <input
+                  value={a.durationInDays}
+                  className="border border-slate-300 rounded-md p-2 text-center"
+                  type="number"
+                  onChange={(e) => {
+                    handleChange(e, index, 'durationInDays');
+                  }}
+                />
+              </Flex>
               <Flex justify="center" align="center" gap="3">
                 <Box>
                   <Button
@@ -211,7 +219,16 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                     Sub-tarea
                   </Button>
                 </Box>
-                <Box className="bg-red-400 p-2 rounded-full text-slate-100">
+                <Box
+                  className="bg-red-400 p-2 rounded-full text-slate-100"
+                  onClick={() => {
+                    const updatedData = [...activities];
+                    const filteredData = updatedData.filter((item) => {
+                      return item.id !== a.id;
+                    });
+                    setActivities(filteredData);
+                  }}
+                >
                   <TrashIcon />
                 </Box>
               </Flex>
@@ -227,86 +244,105 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                 <Flex direction="column">
                   {a.subTasks?.map((st, subTaskIndex) => {
                     return (
-                      <Flex gap="4" align="center" key={st.id}>
+                      <Flex
+                        gap="4"
+                        key={st.id}
+                        align={{
+                          initial: 'stretch',
+                          xs: 'stretch',
+                          sm: 'stretch',
+                          md: 'stretch',
+                          lg: 'center',
+                          xl: 'center',
+                        }}
+                        direction={{
+                          initial: 'column',
+                          xs: 'column',
+                          sm: 'column',
+                          md: 'column',
+                          lg: 'row',
+                          xl: 'row',
+                        }}
+                      >
                         <Box className="flex items-center">
                           <MdSubdirectoryArrowRight size="20" />
                         </Box>
-                        <Box className="flex justify-center items-center mt-2">
+                        <Flex direction="column">
                           <Box>
                             <Text className="text-slate-500">Descripción</Text>
-                            <textarea
-                              value={st.description}
-                              className="border border-slate-300 rounded-md p-2"
-                              onChange={(e) => {
-                                handleSubTaksChange(
-                                  e,
-                                  index,
-                                  subTaskIndex,
-                                  'description'
-                                );
-                              }}
-                            />
                           </Box>
-                        </Box>
-                        <Box className="flex justify-center items-center">
+                          <textarea
+                            value={st.description}
+                            className="border border-slate-300 rounded-md p-2"
+                            onChange={(e) => {
+                              handleSubTaksChange(
+                                e,
+                                index,
+                                subTaskIndex,
+                                'description'
+                              );
+                            }}
+                          />
+                        </Flex>
+                        <Flex direction="column">
                           <Box>
                             <Text className="text-slate-500">Encargado</Text>
-                            <input
-                              value={st.assignedTo}
-                              className="border border-slate-300 rounded-md p-2"
-                              onChange={(e) => {
-                                handleSubTaksChange(
-                                  e,
-                                  index,
-                                  subTaskIndex,
-                                  'assignedTo'
-                                );
-                              }}
-                            />
                           </Box>
-                        </Box>
-                        <Box className="flex justify-center items-center">
+                          <input
+                            value={st.assignedTo}
+                            className="border border-slate-300 rounded-md p-2"
+                            onChange={(e) => {
+                              handleSubTaksChange(
+                                e,
+                                index,
+                                subTaskIndex,
+                                'assignedTo'
+                              );
+                            }}
+                          />
+                        </Flex>
+                        <Flex direction="column">
                           <Box>
                             <Text className="text-slate-500">
                               Fecha de inicio
                             </Text>
-                            <input
-                              value={st.startDate}
-                              className="border border-slate-300 rounded-md p-2"
-                              onChange={(e) => {
-                                handleSubTaksChange(
-                                  e,
-                                  index,
-                                  subTaskIndex,
-                                  'startDate'
-                                );
-                              }}
-                              type="date"
-                            />
                           </Box>
-                        </Box>
-                        <Box className="flex justify-center items-center">
+                          <input
+                            value={st.startDate}
+                            className="border border-slate-300 rounded-md p-2"
+                            onChange={(e) => {
+                              handleSubTaksChange(
+                                e,
+                                index,
+                                subTaskIndex,
+                                'startDate'
+                              );
+                            }}
+                            type="date"
+                          />
+                        </Flex>
+                        <Flex direction="column">
                           <Box>
                             <Text className="text-slate-500">
                               Duracion en días
                             </Text>
-                            <input
-                              value={st.durationInDays}
-                              className="border border-slate-300 rounded-md p-2 text-center"
-                              type="number"
-                              onChange={(e) => {
-                                handleSubTaksChange(
-                                  e,
-                                  index,
-                                  subTaskIndex,
-                                  'durationInDays'
-                                );
-                              }}
-                            />
                           </Box>
-                        </Box>
+                          <input
+                            value={st.durationInDays}
+                            className="border border-slate-300 rounded-md p-2 text-center"
+                            type="number"
+                            onChange={(e) => {
+                              handleSubTaksChange(
+                                e,
+                                index,
+                                subTaskIndex,
+                                'durationInDays'
+                              );
+                            }}
+                          />
+                        </Flex>
                         <Box
-                          className="p-2 rounded-full items-center flex bg-red-400 text-slate-100"
+                          className="p-2 rounded-full items-center flex bg-red-400 text-slate-100 justify-center"
                           onClick={() => {
                             const updatedData = [...activities];
                             updatedData[index].subTasks = a.subTasks?.filter(
@@ -319,6 +355,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                         >
                           <TrashIcon />
                         </Box>
+                        <Separator size="4" />
                       </Flex>
                     );
                   })}
