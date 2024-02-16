@@ -4,13 +4,14 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
+import prisma from '../../../../prisma/client';
 
 interface Params {
   params: { id: string };
 }
 
 const WorkOrderDetails = async ({ params }: Params) => {
-  const workOrder = await prisma?.workOrder.findUnique({
+  const workOrder = await prisma.workOrder.findUnique({
     where: { id: params.id },
   });
 
