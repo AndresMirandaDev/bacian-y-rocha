@@ -56,6 +56,20 @@ const ActivityForm = () => {
     setActivities(updatedData);
   };
 
+  const handleSubTaksChange = (
+    e: React.FormEvent,
+    taskIndex: number,
+    subTaskIndex: number,
+    field: 'description' | 'assignedTo' | 'startDate' | 'durationInDays'
+  ) => {
+    const updatedData = [...activities];
+    updatedData[taskIndex].subTasks![subTaskIndex] = {
+      ...updatedData[taskIndex].subTasks![subTaskIndex],
+      [field]: (e.target as HTMLInputElement).value,
+    };
+    setActivities(updatedData);
+  };
+
   const addRow = () => {
     setActivities([
       ...activities,
@@ -100,7 +114,6 @@ const ActivityForm = () => {
   };
 
   console.log(activities);
-
   return (
     <Flex direction="column" className="w-full">
       <Grid columns="5" className="mt-5 p-2 bg-[#013564] w-full">
@@ -124,11 +137,15 @@ const ActivityForm = () => {
           Agregar Actividad
         </Button>
       </Flex>
-      <Grid className="p-2" columns="5">
+      <Flex gap="3" direction="column">
         {activities.map((a, index) => {
           return (
-            <>
-              <Box key={a.id} className="flex justify-center items-center mt-2">
+            <Grid
+              className="p-2 border border-slate-300 rounded-lg"
+              columns="5"
+              key={a.id}
+            >
+              <Box className="flex justify-center items-center mt-2">
                 <textarea
                   className="border border-slate-300 rounded-md p-2"
                   onChange={(e) => {
@@ -136,7 +153,7 @@ const ActivityForm = () => {
                   }}
                 />
               </Box>
-              <Box key={a.id} className="flex justify-center items-center">
+              <Box className="flex justify-center items-center">
                 <input
                   value={a.assignedTo}
                   className="border border-slate-300 rounded-md p-2"
@@ -145,7 +162,7 @@ const ActivityForm = () => {
                   }}
                 />
               </Box>
-              <Box key={a.id} className="flex justify-center items-center">
+              <Box className="flex justify-center items-center">
                 <input
                   value={a.startDate}
                   className="border border-slate-300 rounded-md p-2"
@@ -155,7 +172,7 @@ const ActivityForm = () => {
                   type="date"
                 />
               </Box>
-              <Box key={a.id} className="flex justify-center items-center">
+              <Box className="flex justify-center items-center">
                 <input
                   value={a.durationInDays}
                   className="border border-slate-300 rounded-md p-2 text-center"
@@ -182,82 +199,117 @@ const ActivityForm = () => {
                   <TrashIcon />
                 </Box>
               </Flex>
-              {a.subTasks && (
-                <Flex direction="column" className="pl-7">
-                  <Flex>
-                    <Box className="mt-5 ">
-                      <Text className="italic text-slate-400 text-xl">
-                        Sub-tareas
-                      </Text>
-                    </Box>
-                  </Flex>
-                  <Flex direction="column">
-                    {a.subTasks?.map((st) => {
-                      return (
-                        <Flex gap="4" align="center" key={st.id}>
-                          <Box className="flex items-center">
-                            <MdSubdirectoryArrowRight size="20" />
-                          </Box>
-                          <Box className="flex justify-center items-center mt-2">
+
+              <Flex direction="column" className="pl-7">
+                <Flex>
+                  <Box className="mt-5 ">
+                    <Text className="italic text-slate-400 text-xl">
+                      Sub-tareas
+                    </Text>
+                  </Box>
+                </Flex>
+                <Flex direction="column">
+                  {a.subTasks?.map((st, subTaskIndex) => {
+                    return (
+                      <Flex gap="4" align="center" key={st.id}>
+                        <Box className="flex items-center">
+                          <MdSubdirectoryArrowRight size="20" />
+                        </Box>
+                        <Box className="flex justify-center items-center mt-2">
+                          <Box>
+                            <Text className="text-slate-500">Descripción</Text>
                             <textarea
                               className="border border-slate-300 rounded-md p-2"
                               onChange={(e) => {
-                                handleChange(e, index, 'description');
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'description'
+                                );
                               }}
                             />
                           </Box>
-                          <Box className="flex justify-center items-center">
+                        </Box>
+                        <Box className="flex justify-center items-center">
+                          <Box>
+                            <Text className="text-slate-500">Encargado</Text>
                             <input
                               value={st.assignedTo}
                               className="border border-slate-300 rounded-md p-2"
                               onChange={(e) => {
-                                handleChange(e, index, 'assignedTo');
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'assignedTo'
+                                );
                               }}
                             />
                           </Box>
-                          <Box className="flex justify-center items-center">
+                        </Box>
+                        <Box className="flex justify-center items-center">
+                          <Box>
+                            <Text className="text-slate-500">
+                              Fecha de inicio
+                            </Text>
                             <input
                               value={st.startDate}
                               className="border border-slate-300 rounded-md p-2"
                               onChange={(e) => {
-                                handleChange(e, index, 'startDate');
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'startDate'
+                                );
                               }}
                               type="date"
                             />
                           </Box>
-                          <Box className="flex justify-center items-center">
+                        </Box>
+                        <Box className="flex justify-center items-center">
+                          <Box>
+                            <Text className="text-slate-500">
+                              Duracion en días
+                            </Text>
                             <input
                               value={st.durationInDays}
                               className="border border-slate-300 rounded-md p-2 text-center"
                               type="number"
                               onChange={(e) => {
-                                handleChange(e, index, 'durationInDays');
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'durationInDays'
+                                );
                               }}
                             />
                           </Box>
-                          <Box
-                            className="p-2 rounded-full items-center flex bg-red-400 text-slate-100"
-                            onClick={() => {
-                              const updatedData = [...activities];
-                              updatedData[index].subTasks = a.subTasks?.filter(
-                                (t) => t.id !== st.id
-                              );
+                        </Box>
+                        <Box
+                          className="p-2 rounded-full items-center flex bg-red-400 text-slate-100"
+                          onClick={() => {
+                            const updatedData = [...activities];
+                            updatedData[index].subTasks = a.subTasks?.filter(
+                              (t) => t.id !== st.id
+                            );
 
-                              setActivities(updatedData);
-                            }}
-                          >
-                            <TrashIcon />
-                          </Box>
-                        </Flex>
-                      );
-                    })}
-                  </Flex>
+                            setActivities(updatedData);
+                          }}
+                        >
+                          <TrashIcon />
+                        </Box>
+                      </Flex>
+                    );
+                  })}
                 </Flex>
-              )}
-            </>
+              </Flex>
+            </Grid>
           );
         })}
-      </Grid>
+      </Flex>
     </Flex>
   );
 };
