@@ -86,8 +86,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [deviceNumber, setDeviceNumber] = useState('');
   const [activities, setActivities] = useState<Task[]>([]);
 
-  const [materials, setMaterials] = useState<Material[]>([]);
-
   const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>([]);
 
   const [showMaterialForm, setMaterialForm] = useState(false);
@@ -782,14 +780,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                                           saleOrderId: so.number,
                                         },
                                       ];
-                                      setMaterials(updatedMaterials);
+                                      setMaterialsToSubmit(updatedMaterials);
                                     } else {
-                                      const updatedMaterials = materials.filter(
-                                        (material) => {
+                                      const updatedMaterials =
+                                        materialsToSubmit.filter((material) => {
                                           return material.id != m.id;
-                                        }
-                                      );
-                                      setMaterials(updatedMaterials);
+                                        });
+                                      setMaterialsToSubmit(updatedMaterials);
                                     }
                                   }}
                                 />{' '}
@@ -801,18 +798,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                       )}
                   </Grid>
                 )}
-                <Flex className="col-span-2">
-                  <Button
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      setMaterialsToSubmit([...materials]);
-                    }}
-                    className="w-full"
-                  >
-                    Ingresar{' '}
-                  </Button>
-                </Flex>
               </Flex>
               // aca
             )}

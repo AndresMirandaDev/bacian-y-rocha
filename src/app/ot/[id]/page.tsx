@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Flex, Grid, Table, Text } from '@radix-ui/themes';
+import { Box, Flex, Grid, Separator, Table, Text } from '@radix-ui/themes';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import logo from '../../../../public/assets/images/byrs.png';
@@ -309,6 +309,61 @@ const WorkOrderDetails = async ({ params }: Params) => {
           </Flex>
         </Flex>
         {/* Materiales      */}
+
+        {/* actividades */}
+        <Flex direction="column">
+          <Box className="bg-[#013564] w-full p-1 mt-10">
+            <Text className="text-slate-100 font-bold">3. ACTIVIDADES</Text>
+          </Box>
+        </Flex>
+        {workOrder.activities.map((a) => {
+          return (
+            <Flex
+              direction="column"
+              key={a.id}
+              className="border border-slate-300 p-2 mt-5 rounded-lg"
+              gap="3"
+            >
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Descripción de actividad</Text>
+                </Box>
+                <Box>
+                  <Text>{a.description}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Encargado</Text>
+                </Box>
+                <Box>
+                  <Text>{a.assignedTo}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Fecha de inicio</Text>
+                </Box>
+                <Box>
+                  <Text>{a.startDate}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Duracion en días</Text>
+                </Box>
+                <Box>
+                  <Text>{a.durationInDays}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+            </Flex>
+          );
+        })}
+        {/* actividades */}
       </Box>
     </>
   );
