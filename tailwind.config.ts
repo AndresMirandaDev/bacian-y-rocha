@@ -19,6 +19,5 @@ const config: Config = {
   daisyUi:{
     themes:["light"]
   }
-
 }
 export default config
