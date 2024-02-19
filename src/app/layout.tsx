@@ -6,7 +6,6 @@ import UserAvatar from './UserAvatar';
 import AuthProvider from './auth/Provider';
 import './globals.css';
 import MainContainer from './MainContainer';
-import MovingBackground from './components/background/MovingBackground';
 import '@radix-ui/themes/styles.css';
 
 const inter = Inter({ subsets: ['latin'] });
