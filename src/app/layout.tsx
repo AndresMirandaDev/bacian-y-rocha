@@ -1,5 +1,4 @@
 import { Container, Theme, ThemePanel } from '@radix-ui/themes';
-import '@radix-ui/themes/styles.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import SideBar from './SideBar';
@@ -8,6 +7,7 @@ import AuthProvider from './auth/Provider';
 import './globals.css';
 import MainContainer from './MainContainer';
 import MovingBackground from './components/background/MovingBackground';
+import '@radix-ui/themes/styles.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
