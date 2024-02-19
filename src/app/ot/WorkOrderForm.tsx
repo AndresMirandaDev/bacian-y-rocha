@@ -770,7 +770,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                             <Text as="label" key={m.id}>
                               <Flex align="center" gap="2">
                                 <Checkbox
-                                  className="bg-slate-200"
+                                  className="bg-blue-200"
                                   defaultChecked={materialsToSubmit?.some(
                                     (material) => material.id === m.id
                                   )}
