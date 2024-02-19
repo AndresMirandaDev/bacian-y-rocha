@@ -1,53 +1,51 @@
 'use client';
+import Pagination from '@/app/components/Pagination';
 import { cloudinaryBaseUrl } from '@/cloud/config';
-import { Quote } from '@prisma/client';
-import { Badge, Box, Flex, IconButton, Table, Text } from '@radix-ui/themes';
-import { useState } from 'react';
-import { FaFilePdf, FaTrash } from 'react-icons/fa6';
-import Pagination from '../components/Pagination';
-import { FaEdit } from 'react-icons/fa';
-import DeleteDataDialog from '../components/DeleteDataDialog';
+import { SaleOrder } from '@prisma/client';
+import { Badge, Box, IconButton, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
+import React, { useState } from 'react';
+import { FaFilePdf } from 'react-icons/fa6';
 
 interface Props {
-  quotes: Quote[];
+  saleOrders: SaleOrder[];
 }
 
-const QuotesTable = ({ quotes }: Props) => {
+const DeliveredOcTable = ({ saleOrders }: Props) => {
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setPage] = useState(0);
-
   return (
     <>
       <Box className="mb-5 pl-2">
-        <Text className="text-xl">Cotizaciones</Text>
+        <Text className="text-xl">O.C Recepcionadas</Text>
       </Box>
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Archivo PDF</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Fecha de solicitud</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Proveedor</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Guía de recepción</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Estado</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {quotes
+          {saleOrders
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
-            .map((quote) => {
+            .map((order) => {
               return (
-                <Table.Row key={quote.id}>
+                <Table.Row key={order.id}>
                   <Table.Cell className="font-bold">
-                    <Link href={`/quotes/${quote.id}`}>#{quote.number}</Link>
+                    <Link href={`/oc/${order.id}`}>#{order.number}</Link>
                   </Table.Cell>
+                  <Table.Cell>{order.providerName}</Table.Cell>
                   <Table.Cell>
-                    {quote.file !== 'pending' && (
+                    {order.receptionGuide !== 'pending' && (
                       <IconButton
                         size="1"
                         color="gray"
                         onClick={() => {
                           window.open(
-                            `${cloudinaryBaseUrl}/image/upload/${quote.file}`,
+                            `${cloudinaryBaseUrl}/image/upload/${order.receptionGuide}`,
                             '_blank'
                           );
                         }}
@@ -55,16 +53,11 @@ const QuotesTable = ({ quotes }: Props) => {
                         <FaFilePdf />
                       </IconButton>
                     )}
-                    {quote.file === 'pending' && 'No hay archivo'}
+                    {order.receptionGuide === 'pending' && 'No hay archivo'}
                   </Table.Cell>
                   <Table.Cell>
-                    {new Date(quote.requestedDate).toLocaleDateString()}
-                  </Table.Cell>
-                  <Table.Cell>
-                    <Badge
-                      color={quote.status === 'PENDING' ? 'yellow' : 'grass'}
-                    >
-                      {quote.status === 'PENDING' ? 'Pendiente' : 'Enviada'}
+                    <Badge color="green">
+                      {order.status === 'ARRIVED' && 'Entregada'}
                     </Badge>
                   </Table.Cell>
                 </Table.Row>
@@ -73,13 +66,13 @@ const QuotesTable = ({ quotes }: Props) => {
         </Table.Body>
       </Table.Root>
       <Pagination
-        itemCount={quotes.length}
         currentPage={currentPage}
         pageSize={pageSize}
         setPage={setPage}
+        itemCount={saleOrders.length}
       />
     </>
   );
 };
 
-export default QuotesTable;
+export default DeliveredOcTable;

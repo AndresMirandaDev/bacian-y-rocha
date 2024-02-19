@@ -20,7 +20,7 @@ const QuoteWaitingTable = ({ quotes }: Props) => {
   const calculateDaysDifference = (dateA: Date, dateB: Date) => {
     const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     const diffDays = Math.round(
-      Math.abs((dateA.getTime() - dateB.getTime()) / oneDay)
+      Math.abs((new Date(dateA).getTime() - new Date(dateB).getTime()) / oneDay)
     );
     return diffDays;
   };
@@ -55,7 +55,7 @@ const QuoteWaitingTable = ({ quotes }: Props) => {
                     <Link href={`/quotes/${quote.id}`}>#{quote.number}</Link>
                   </Table.Cell>
                   <Table.Cell>
-                    {quote.requestedDate.toLocaleDateString()}
+                    {new Date(quote.requestedDate).toLocaleDateString()}
                   </Table.Cell>
                   <Table.Cell>
                     <Badge

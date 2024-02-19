@@ -10,11 +10,26 @@ export async function POST(request:NextRequest) {
         if(!isValid.success)
             return NextResponse.json({message: isValid.error.format()}, { status:400 })
         
-        const { materials, receptionGuide } = body    
+        const { number, date, providerName, providerAddress, providerLine, providerEmail,providerRut,providerCity,providerPhone,providerContact, accordingToQuote, requestedBy, emittedBy, approvedBy, materials, receptionGuide, status,discount } = body    
         const newSaleOrder =  await prisma.saleOrder.create({
             data:{
+                number,
+                date,
+                providerName,
+                providerAddress,
+                providerLine,
+                providerEmail,
+                providerRut,
+                providerCity,
+                providerPhone,
+                providerContact,
+                accordingToQuote,
+                requestedBy,
+                emittedBy,
+                approvedBy,
                 materials,
-                receptionGuide
+                receptionGuide,
+                discount
             }
         })
         

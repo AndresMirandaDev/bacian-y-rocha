@@ -24,6 +24,7 @@ enum Role {
   admin
 }
 
+//quotes ------------------------------------------
 model Quote {
   id            String         @id @default(auto()) @map("_id") @db.ObjectId
   number        String
@@ -45,28 +46,58 @@ enum QuoteStatus {
   FINISHED
 }
 
+//------------------------------------------------
+
+// sale orders received and sent-----------------
+
 model SaleOrder {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  materials         Material[]
-  receptionGuide    String
-  status            Status              @default(PENDING)
-  assignedMaterials AssignedMaterials[]
+  id               String     @id @default(auto()) @map("_id") @db.ObjectId
+  number           String
+  date             DateTime
+  providerName     String
+  providerAddress  String
+  providerLine     String
+  providerEmail    String
+  providerRut      String
+  providerCity     String
+  providerPhone    String
+  providerContact  String
+  accordingToQuote String
+  requestedBy      String
+  emittedBy        String
+  approvedBy       String
+  materials        Material[]
+  receptionGuide   String     @default("pending")
+  status           Status     @default(PENDING)
+  discount         Int
+  // AssignedMaterials AssignedMaterials[]
 }
 
-model AssignedMaterials {
-  id               String    @id @default(auto()) @map("_id") @db.ObjectId
-  material         Material
-  assignedQuantity Int
-  workOrderId      String    @db.ObjectId
-  saleOrderId      String    @db.ObjectId
-  workOrder        WorkOrder @relation(fields: [workOrderId], references: [id])
-  saleOrder        SaleOrder @relation(fields: [saleOrderId], references: [id])
+model ReceivedSaleOrder {
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  file         String   @default("pending")
+  number       String
+  receivedDate DateTime
 }
+
+//----------------------------
+
+// model AssignedMaterials {
+//   id               String    @id @default(auto()) @map("_id") @db.ObjectId
+//   material         Material
+//   assignedQuantity Int
+//   workOrderId      String    @db.ObjectId
+//   saleOrderId      String    @db.ObjectId
+//   workOrder        WorkOrder @relation(fields: [workOrderId], references: [id])
+//   saleOrder        SaleOrder @relation(fields: [saleOrderId], references: [id])
+// }
 
 type Material {
   name      String
   unitPrice Int
   quantity  Int
+  code      String
+  id        String
 }
 
 enum Status {
@@ -77,6 +108,55 @@ enum Status {
 }
 
 model WorkOrder {
-  id                String              @id @default(auto()) @map("_id") @db.ObjectId
-  assignedMaterials AssignedMaterials[]
+  id          String @id @default(auto()) @map("_id") @db.ObjectId
+  revision    String
+  code        String
+  number      String
+  description String
+
+  //general info
+  client         String
+  startDate      DateTime
+  endDate        DateTime?
+  estimatedDate  DateTime
+  quoteNumber    String
+  requiresPlaque String
+
+  //component info
+  componentName   String
+  componentDevice String
+  model           String
+  deviceNumber    String
+
+  materials  WorkOrderMaterial[]
+  activities Task[]
+}
+
+type WorkOrderMaterial {
+  name        String
+  unitPrice   Int
+  quantity    Int
+  code        String
+  id          String
+  discount    Int
+  saleOrderId String
+}
+
+type SubTask {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+}
+
+type Task {
+  id             String
+  description    String
+  assignedTo     String
+  progress       Int
+  startDate      String
+  durationInDays Int
+  subTasks       SubTask[]
 }

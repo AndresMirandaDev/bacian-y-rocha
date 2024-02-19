@@ -8,5 +8,5 @@ export { default } from "next-auth/middleware";
 //   }
 
 export const config = {
- matcher: ["/dashboard", "/ot","/oc"],
+ matcher: ["/dashboard", "/ot","/oc","/quotes"],
 };

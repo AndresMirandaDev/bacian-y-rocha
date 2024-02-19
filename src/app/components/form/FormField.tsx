@@ -7,7 +7,7 @@ interface Props {
   setValue: Dispatch<SetStateAction<string>>;
   valueMissing: string;
   typeMismatch: string;
-  label: string;
+  label?: string;
   type?: HTMLInputTypeAttribute;
   name: string;
   required?: boolean;
@@ -36,7 +36,7 @@ const FormField = ({
           flexDirection: 'column',
         }}
       >
-        <Form.Label className="text-zinc-500">{label}</Form.Label>
+        {label && <Form.Label className="text-zinc-500">{label}</Form.Label>}
         <Form.Message className={errorMessageClassname} match="valueMissing">
           {valueMissing}
         </Form.Message>

@@ -1,3 +1,4 @@
+'use client';
 import { AlertDialog, Box, Button, Flex, IconButton } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import { FaTrash } from 'react-icons/fa';
@@ -9,16 +10,19 @@ import { useRouter } from 'next/navigation';
 interface Props {
   name: string;
   id: string;
+  route: string;
+  pushRoute: string;
 }
 
-const DeleteDataDialog = ({ name, id }: Props) => {
+const DeleteDataDialog = ({ name, id, route, pushRoute }: Props) => {
   const [isDeleting, setDeleting] = useState(false);
   const router = useRouter();
   const handleDelete = async () => {
     try {
       setDeleting(true);
-      await axios.delete(`api/quotes/${id}`);
+      await axios.delete(`${route}/${id}`);
       toast.success('Los datos han sido eliminados correctamente.');
+      router.push(pushRoute);
       router.refresh();
     } catch (error) {
       setDeleting(false);
@@ -31,10 +35,10 @@ const DeleteDataDialog = ({ name, id }: Props) => {
   return (
     <>
       <AlertDialog.Root>
-        <AlertDialog.Trigger>
-          <Box className="text-red-400 cursor-pointer">
-            <FaTrash />
-          </Box>
+        <AlertDialog.Trigger className="w-full">
+          <Button style={{ backgroundColor: '#e33131' }}>
+            Eliminar {name}
+          </Button>
         </AlertDialog.Trigger>
         <AlertDialog.Content>
           <AlertDialog.Title>
