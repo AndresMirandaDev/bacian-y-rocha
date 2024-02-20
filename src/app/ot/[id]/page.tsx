@@ -1,10 +1,20 @@
 import React from 'react';
-import { Box, Flex, Grid, Separator, Table, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Flex,
+  Grid,
+  ScrollArea,
+  Separator,
+  Table,
+  Text,
+} from '@radix-ui/themes';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
 import prisma from '../../../../prisma/client';
+import { FaQuoteLeft } from 'react-icons/fa6';
+import { RiTextDirectionL } from 'react-icons/ri';
 
 interface Params {
   params: { id: string };
@@ -359,6 +369,67 @@ const WorkOrderDetails = async ({ params }: Params) => {
                 <Box>
                   <Text>{a.durationInDays}</Text>
                 </Box>
+                <Separator size="4" />
+              </Flex>
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Sub-tareas</Text>
+                </Box>
+                <ScrollArea
+                  size="2"
+                  scrollbars="vertical"
+                  style={{ height: 400 }}
+                >
+                  {a.subTasks.map((st, index) => {
+                    return (
+                      <Flex
+                        key={st.id}
+                        className="bg-slate-300 w-full p-3 rounded-lg mt-2"
+                        direction="column"
+                      >
+                        <Box>
+                          <Text className="text-slate-700 font-bold">
+                            Descripción
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-600 ">
+                            {st.description}
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-700 font-bold">
+                            Encargado
+                          </Text>
+                        </Box>
+
+                        <Box>
+                          <Text className="text-slate-600 capitalize">
+                            {st.assignedTo}
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-700 font-bold">
+                            Duración en días
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-600">
+                            {st.durationInDays}
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-700 font-bold">
+                            Fecha de inicio
+                          </Text>
+                        </Box>
+                        <Box>
+                          <Text className="text-slate-600">{st.startDate}</Text>
+                        </Box>
+                      </Flex>
+                    );
+                  })}
+                </ScrollArea>
                 <Separator size="4" />
               </Flex>
             </Flex>
