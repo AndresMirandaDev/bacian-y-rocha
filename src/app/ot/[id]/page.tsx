@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   Box,
   Flex,
@@ -10,11 +9,9 @@ import {
 } from '@radix-ui/themes';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import prisma from '../../../../prisma/client';
 import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
-import prisma from '../../../../prisma/client';
-import { FaQuoteLeft } from 'react-icons/fa6';
-import { RiTextDirectionL } from 'react-icons/ri';
 
 interface Params {
   params: { id: string };

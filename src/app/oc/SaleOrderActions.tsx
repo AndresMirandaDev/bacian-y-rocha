@@ -11,7 +11,7 @@ const SaleOrderActions = () => {
     <>
       <Button>
         <PlusIcon />
-        <Link href={'/oc/new'}>Nueva orden de compra</Link>
+        <Link href={'/oc/new'}>Emitir orden de compra</Link>
       </Button>
       <Button>
         <FaFilePdf />
