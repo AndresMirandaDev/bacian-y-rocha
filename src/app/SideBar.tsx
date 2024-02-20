@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { FaFileInvoice, FaHelmetSafety } from 'react-icons/fa6';
 
 import { FaFileInvoiceDollar } from 'react-icons/fa6';
-import { MdDashboard } from 'react-icons/md';
+import { MdAdminPanelSettings, MdDashboard } from 'react-icons/md';
 
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { IoMdClose } from 'react-icons/io';
@@ -92,6 +92,11 @@ const NavLinks = ({ open }: NavlinkProps) => {
       label: 'Cotizaciones',
       href: '/quotes',
       icon: <FaFileInvoice />,
+    },
+    {
+      label: 'Registro',
+      href: '/register',
+      icon: <MdAdminPanelSettings />,
     },
   ];
 

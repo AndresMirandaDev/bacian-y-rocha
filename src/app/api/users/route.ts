@@ -49,9 +49,11 @@ export async function POST(request:NextRequest) {
 
 export async function GET(request:NextRequest) {
     const users = await prisma.user.findMany({
-        orderBy:{email:'asc'}
+        orderBy:{email:'asc'},
+        select:{name:true, email:true, phone:true, }
+        
     })
-    return NextResponse.json(users)
+    return NextResponse.json({message:'success', body:users})
 }
 
 
