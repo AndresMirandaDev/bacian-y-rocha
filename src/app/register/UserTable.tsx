@@ -4,6 +4,7 @@ import { Box, Table, Text } from '@radix-ui/themes';
 import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
+import Link from 'next/link';
 
 interface Props {
   users: User[];
@@ -37,7 +38,11 @@ const UserTable = ({ users }: Props) => {
                       <FaUserCircle />
                     </Box>
                   </Table.Cell>
-                  <Table.Cell>{u.name}</Table.Cell>
+                  <Table.Cell>
+                    <Link href={`/register/${u.id}`} className="font-bold">
+                      {u.name}
+                    </Link>
+                  </Table.Cell>
                   <Table.Cell>{u.email}</Table.Cell>
                   <Table.Cell>{u.phone}</Table.Cell>
                 </Table.Row>
