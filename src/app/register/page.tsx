@@ -1,8 +1,6 @@
-import { Box, Card, Grid } from '@radix-ui/themes';
-import React from 'react';
-import UserForm from './UserForm';
-import UserTable from './UserTable';
+import { Card, Grid } from '@radix-ui/themes';
 import RegisterActions from './RegisterActions';
+import UserTable from './UserTable';
 
 const getUsers = async () => {
   const res = await fetch(`https://bacian-y-rocha-next.vercel.app/api/users`, {

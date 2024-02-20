@@ -1,9 +1,8 @@
+import { Quote } from '@prisma/client';
 import { Box, Card, Grid } from '@radix-ui/themes';
-import prisma from '../../../prisma/client';
-import QuotesTable from './QuotesTable';
 import QuoteActions from './QuoteActions';
 import QuoteWaitingTable from './QuoteWaitingTable';
-import { Quote } from '@prisma/client';
+import QuotesTable from './QuotesTable';
 
 const getQuotes = async () => {
   const res = await fetch(`https://bacian-y-rocha-next.vercel.app/api/quotes`, {

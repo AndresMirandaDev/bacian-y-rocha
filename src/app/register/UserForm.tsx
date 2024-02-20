@@ -34,13 +34,13 @@ const UserForm = ({ user }: Props) => {
           password,
           phone,
         });
-        toast.success('Usuario ha sido actualizado');
         setName('');
         setEmail('');
         setPassword('');
         setPhone('');
-        setSubmitting(false);
         router.push('/register');
+        toast.success('Usuario ha sido actualizado');
+        setSubmitting(false);
         router.refresh();
       } else {
         setSubmitting(true);
@@ -50,13 +50,13 @@ const UserForm = ({ user }: Props) => {
           password,
           phone,
         });
-        toast.success('Usuario ha sido registrado');
         setName('');
         setEmail('');
         setPassword('');
         setPhone('');
-        setSubmitting(false);
         router.push('/register');
+        toast.success('Usuario ha sido registrado');
+        setSubmitting(false);
         router.refresh();
       }
     } catch (error) {
