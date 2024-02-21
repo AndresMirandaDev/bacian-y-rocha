@@ -107,19 +107,20 @@ const NavLinks = ({ open }: NavlinkProps) => {
           <li key={link.href} className="flex items-center mb-4">
             <Link
               className={classNames({
-                'text-zinc-400 pl-2': link.href !== currentPath,
+                'text-zinc-400 pl-2': !currentPath.startsWith(link.href),
                 'bg-slate-300 transition-all p-2 border-r-4 border-[var(--accent-9)]':
-                  link.href === currentPath && open,
+                  currentPath.startsWith(link.href) && open,
                 'hover:text-zinc-600 transition-colors text-zinc-600': true,
                 'flex items-center w-full mt-2 font-medium': true,
                 'justify-end text-2xl pr-5': !open,
-                'text-[var(--accent-9)]': !open && link.href === currentPath,
+                'text-[var(--accent-9)]':
+                  !open && currentPath.startsWith(link.href),
               })}
               href={link.href}
             >
               <Box
                 className={classNames({
-                  'text-[var(--accent-9)]': link.href === currentPath,
+                  'text-[var(--accent-9)]': currentPath.startsWith(link.href),
                 })}
               >
                 {link.icon}

@@ -48,7 +48,7 @@ export async function POST(request:NextRequest) {
 
 
 export async function GET(request:NextRequest) {
- console.log('get users handler')
+
     try{
     const users = await prisma.user.findMany({
         select:{name:true, email:true, phone:true,id:true,image:true }

@@ -25,8 +25,8 @@ const WorkOrderSummaryTable = ({ workOrders, state }: Props) => {
           }}
         >
           <Table.Row>
-            <Table.ColumnHeaderCell>N° O.T</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>N° O.T</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Estado de entrega</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>

@@ -1,8 +1,9 @@
 'use client';
-import { Box, Grid, Text } from '@radix-ui/themes';
+import { Box, Card, Grid, Text } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 import { WorkOrder } from '@prisma/client';
 import WorkOrderSummaryTable from './WorkOrderSummaryTable';
+import WorkOrdersPieChart from './WorkOrdersPieChart';
 
 interface Props {
   workOrders: WorkOrder[];
@@ -48,11 +49,16 @@ const WorkOrderSummary = ({ workOrders }: Props) => {
         gap="4"
       >
         <Box>
-          <WorkOrderSummaryTable state="fullfilled" workOrders={fullfilled} />
+          <Box>
+            <WorkOrderSummaryTable state="fullfilled" workOrders={fullfilled} />
+          </Box>
+          <Box>
+            <WorkOrderSummaryTable state="delayed" workOrders={delayed} />
+          </Box>
         </Box>
-        <Box>
-          <WorkOrderSummaryTable state="delayed" workOrders={delayed} />
-        </Box>
+        <Card className="shadow-lg">
+          <WorkOrdersPieChart fullfilled={fullfilled} delayed={delayed} />
+        </Card>
       </Grid>
     </>
   );
