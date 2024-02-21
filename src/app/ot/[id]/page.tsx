@@ -12,6 +12,7 @@ import { notFound } from 'next/navigation';
 import prisma from '../../../../prisma/client';
 import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
+import TaskAccordion from './TaskAccordion';
 
 interface Params {
   params: { id: string };
@@ -325,112 +326,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
           </Box>
         </Flex>
         {workOrder.activities.map((a) => {
-          return (
-            <Flex
-              direction="column"
-              key={a.id}
-              className="border border-slate-300 p-2 mt-5 rounded-lg"
-              gap="3"
-            >
-              <Flex direction="column" justify="center" align="center" gap="3">
-                <Box>
-                  <Text className="font-bold">Descripción de actividad</Text>
-                </Box>
-                <Box>
-                  <Text>{a.description}</Text>
-                </Box>
-                <Separator size="4" />
-              </Flex>
-              <Flex direction="column" justify="center" align="center" gap="3">
-                <Box>
-                  <Text className="font-bold">Encargado</Text>
-                </Box>
-                <Box>
-                  <Text>{a.assignedTo}</Text>
-                </Box>
-                <Separator size="4" />
-              </Flex>
-              <Flex direction="column" justify="center" align="center" gap="3">
-                <Box>
-                  <Text className="font-bold">Fecha de inicio</Text>
-                </Box>
-                <Box>
-                  <Text>{a.startDate}</Text>
-                </Box>
-                <Separator size="4" />
-              </Flex>
-              <Flex direction="column" justify="center" align="center" gap="3">
-                <Box>
-                  <Text className="font-bold">Duracion en días</Text>
-                </Box>
-                <Box>
-                  <Text>{a.durationInDays}</Text>
-                </Box>
-                <Separator size="4" />
-              </Flex>
-              <Flex direction="column" justify="center" align="center" gap="3">
-                <Box>
-                  <Text className="font-bold">Sub-tareas</Text>
-                </Box>
-                <ScrollArea
-                  size="2"
-                  scrollbars="vertical"
-                  style={{ height: 400 }}
-                >
-                  {a.subTasks.map((st, index) => {
-                    return (
-                      <Flex
-                        key={st.id}
-                        className="bg-slate-300 w-full p-3 rounded-lg mt-2"
-                        direction="column"
-                      >
-                        <Box>
-                          <Text className="text-slate-700 font-bold">
-                            Descripción
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-600 ">
-                            {st.description}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-700 font-bold">
-                            Encargado
-                          </Text>
-                        </Box>
-
-                        <Box>
-                          <Text className="text-slate-600 capitalize">
-                            {st.assignedTo}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-700 font-bold">
-                            Duración en días
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-600">
-                            {st.durationInDays}
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-700 font-bold">
-                            Fecha de inicio
-                          </Text>
-                        </Box>
-                        <Box>
-                          <Text className="text-slate-600">{st.startDate}</Text>
-                        </Box>
-                      </Flex>
-                    );
-                  })}
-                </ScrollArea>
-                <Separator size="4" />
-              </Flex>
-            </Flex>
-          );
+          return <TaskAccordion activity={a} />;
         })}
         {/* actividades */}
       </Box>
