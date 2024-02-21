@@ -8,6 +8,7 @@ import { User } from '@prisma/client';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Spinner from '../components/Spinner';
+import { UpdateIcon } from '@radix-ui/react-icons';
 
 interface Props {
   user?: User;
@@ -36,13 +37,21 @@ const UserForm = ({ user }: Props) => {
     e.preventDefault();
     try {
       if (user) {
-        setSubmitting(true);
-        await axios.patch(`/api/users/${user.id}`, {
+        const updatedUser: {
+          name: string;
+          email: string;
+          password?: string;
+          phone?: string;
+        } = {
           name,
           email,
-          password: password ? password : user.password,
           phone,
-        });
+        };
+        if (password !== '') {
+          updatedUser.password = password;
+        }
+        setSubmitting(true);
+        await axios.patch(`/api/users/${user.id}`, updatedUser);
         setName('');
         setEmail('');
         setPassword('');
@@ -81,7 +90,9 @@ const UserForm = ({ user }: Props) => {
     <>
       <Form.Root onSubmit={handleSubmit}>
         <Box className="mb-5 pl-2">
-          <Text className="text-xl">Registrar nuevo usuario</Text>
+          <Text className="text-xl">
+            {user ? 'Actualizar usuario' : 'Registrar usuario'}
+          </Text>
         </Box>
         <Grid gap="4">
           <Box>
@@ -133,11 +144,12 @@ const UserForm = ({ user }: Props) => {
           <Box>
             <Form.Submit asChild>
               <Button
-                style={{ backgroundColor: '#3E63DD' }}
+                style={{ backgroundColor: user ? '#2ebb45' : '#3E63DD' }}
                 disabled={isSubmitting}
               >
+                {user && <UpdateIcon />}
                 {isSubmitting && <Spinner />}
-                Registrar usuario
+                {user ? 'Actualizar usuario' : 'Registrar usuario'}
               </Button>
             </Form.Submit>
           </Box>

@@ -21,9 +21,9 @@ const DeleteDataDialog = ({ name, id, route, pushRoute }: Props) => {
     try {
       setDeleting(true);
       await axios.delete(`${route}/${id}`);
-      toast.success('Los datos han sido eliminados correctamente.');
       router.push(pushRoute);
       router.refresh();
+      toast.success('Los datos han sido eliminados correctamente.');
     } catch (error) {
       setDeleting(false);
       toast.error(
@@ -58,6 +58,7 @@ const DeleteDataDialog = ({ name, id, route, pushRoute }: Props) => {
           </AlertDialog.Action>
         </AlertDialog.Content>
       </AlertDialog.Root>
+      <Toaster />
     </>
   );
 };
