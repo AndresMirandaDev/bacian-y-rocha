@@ -17,7 +17,7 @@ const WorkOrderActions = ({ id }: Props) => {
         <FaChartGantt />
         <Link href={`/gantt/${id}`}>Visualizar carta gantt</Link>
       </Button>
-      <Button style={{ backgroundColor: '#3E63DD' }}>
+      <Button style={{ backgroundColor: '#2ebb45' }}>
         <UpdateIcon />
         <Link href={`/ot/edit/${id}`}>Actualizar orden de trabajo</Link>
       </Button>

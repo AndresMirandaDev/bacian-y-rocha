@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as Form from '@radix-ui/react-form';
 import { Box, Button, Grid, Text } from '@radix-ui/themes';
 import FormField from '../components/form/FormField';
@@ -22,6 +22,16 @@ const UserForm = ({ user }: Props) => {
   const [password, setPassword] = useState('');
   const [phone, setPhone] = useState('');
 
+  useEffect(() => {
+    if (user) {
+      setName(user.name);
+      setEmail(user.email);
+      if (user.phone) {
+        setPhone(user.phone);
+      }
+    }
+  }, []);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -31,7 +41,7 @@ const UserForm = ({ user }: Props) => {
         axios.patch(`/api/users/${user.id}`, {
           name,
           email,
-          password,
+          password: password ? password : user.password,
           phone,
         });
         setName('');
@@ -83,6 +93,7 @@ const UserForm = ({ user }: Props) => {
               typeMismatch="Nombre invalido"
               valueMissing="Ingrese nombre"
               label="Nombre*"
+              required={user ? false : true}
             />
           </Box>
           <Box>
@@ -94,6 +105,7 @@ const UserForm = ({ user }: Props) => {
               valueMissing="Ingrese email"
               label="Email*"
               type="email"
+              required={user ? false : true}
             />
           </Box>
           <Box>
@@ -105,6 +117,7 @@ const UserForm = ({ user }: Props) => {
               valueMissing="Ingrese contraseña"
               label="Contraseña*"
               type="password"
+              required={user ? false : true}
             />
           </Box>
           <Box>

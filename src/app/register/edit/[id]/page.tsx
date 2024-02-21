@@ -1,7 +1,7 @@
 import React from 'react';
 import prisma from '../../../../../prisma/client';
 import { notFound } from 'next/navigation';
-import { Card } from '@radix-ui/themes';
+import { Box, Card } from '@radix-ui/themes';
 import UserForm from '../../UserForm';
 interface Params {
   params: { id: string };
@@ -12,9 +12,11 @@ const EditUserPage = async ({ params }: Params) => {
 
   if (!user) return notFound();
   return (
-    <Card>
-      <UserForm user={user} />
-    </Card>
+    <Box className="p-3">
+      <Card>
+        <UserForm user={user} />
+      </Card>
+    </Box>
   );
 };
 

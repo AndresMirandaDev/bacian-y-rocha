@@ -4,6 +4,7 @@ import React from 'react';
 import toast from 'react-hot-toast';
 import DeleteQuoteButton from './DeleteQuoteButton';
 import prisma from '../../../../prisma/client';
+import { UpdateIcon } from '@radix-ui/react-icons';
 
 interface Props {
   id: string;
@@ -14,8 +15,9 @@ const QuoteActions = async ({ id }: Props) => {
   return (
     <Container className="p-5">
       <Flex gap="4">
-        <Button>
-          <Link href={`/quotes/edit/${id}`}>Editar Cotización</Link>
+        <Button style={{ backgroundColor: '#2ebb45' }}>
+          <UpdateIcon />
+          <Link href={`/quotes/edit/${id}`}>Actualizar Cotización</Link>
         </Button>
         <DeleteQuoteButton id={id} />
       </Flex>

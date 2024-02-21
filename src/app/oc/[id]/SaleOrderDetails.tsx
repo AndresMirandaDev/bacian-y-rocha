@@ -11,6 +11,7 @@ import { Toaster } from 'react-hot-toast';
 import logo from '../../../../public/assets/images/byrs.png';
 import qualitySeal from '../../../../public/assets/images/sellocalidad.jpg';
 import PdfView from '../saleorderpdf/testpdf';
+import { UpdateIcon } from '@radix-ui/react-icons';
 
 interface Props {
   saleOrder: SaleOrder;
@@ -88,8 +89,11 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 : 'Pendiente'}
             </Text>
             <Flex direction="column" gap="4">
-              <Button>
-                <Link href={`/oc/edit/${saleOrder.id}`}>Actualizar</Link>
+              <Button style={{ backgroundColor: '#2ebb45' }}>
+                <UpdateIcon />
+                <Link href={`/oc/edit/${saleOrder.id}`}>
+                  Actualizar orden de compra
+                </Link>
               </Button>
               <DeleteDataDialog
                 name="orden de compra"
