@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation';
 import WorkOrdersTable from './_otTables/WorkOrdersTable';
 import Link from 'next/link';
 import { PlusIcon } from '@radix-ui/react-icons';
+import WorkOrderSummary from './_components/WorkOrderSummary';
 
 const getWorkOrders = async () => {
   const res = await fetch(
@@ -33,6 +34,9 @@ const WorkOrderPage = async () => {
       </Box>
       <Card>
         <WorkOrdersTable workOrders={workOrders} />
+      </Card>
+      <Card>
+        <WorkOrderSummary workOrders={workOrders} />
       </Card>
     </Grid>
   );

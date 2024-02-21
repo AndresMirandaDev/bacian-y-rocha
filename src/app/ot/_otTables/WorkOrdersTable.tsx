@@ -20,7 +20,7 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
       <Table.Root variant="surface">
         <Table.Header className="bg-blue-300">
           <Table.Row>
-            <Table.ColumnHeaderCell>Orden de trabajo</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>N° O.T</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className="hidden md:table-cell">
               Cliente
             </Table.ColumnHeaderCell>
@@ -37,34 +37,36 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {workOrders.map((wo) => {
-            return (
-              <Table.Row key={wo.id}>
-                <Table.Cell className="font-bold">
-                  <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
-                </Table.Cell>
-                <Table.Cell className="hidden md:table-cell">
-                  {wo.client}
-                </Table.Cell>
-                <Table.Cell>
-                  <div className="block md:hidden text-slate-500 italic ">
-                    Componente
-                  </div>
-                  <div>{wo.componentName}</div>
-                  <div className="block md:hidden text-slate-500 italic ">
-                    Cliente
-                  </div>
-                  <div className="block md:hidden">{wo.client}</div>
-                </Table.Cell>
-                <Table.Cell className="hidden md:table-cell">
-                  {new Date(wo.startDate).toLocaleDateString()}
-                </Table.Cell>
-                <Table.Cell className="hidden md:table-cell">
-                  {new Date(wo.estimatedDate).toLocaleDateString()}
-                </Table.Cell>
-              </Table.Row>
-            );
-          })}
+          {workOrders
+            .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
+            .map((wo) => {
+              return (
+                <Table.Row key={wo.id}>
+                  <Table.Cell className="font-bold">
+                    <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
+                  </Table.Cell>
+                  <Table.Cell className="hidden md:table-cell">
+                    {wo.client}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div className="block md:hidden text-slate-500 italic ">
+                      Componente
+                    </div>
+                    <div>{wo.componentName}</div>
+                    <div className="block md:hidden text-slate-500 italic ">
+                      Cliente
+                    </div>
+                    <div className="block md:hidden">{wo.client}</div>
+                  </Table.Cell>
+                  <Table.Cell className="hidden md:table-cell">
+                    {new Date(wo.startDate).toLocaleDateString()}
+                  </Table.Cell>
+                  <Table.Cell className="hidden md:table-cell">
+                    {new Date(wo.estimatedDate).toLocaleDateString()}
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
         </Table.Body>
       </Table.Root>
       <Pagination
