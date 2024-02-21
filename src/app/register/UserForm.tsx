@@ -32,13 +32,12 @@ const UserForm = ({ user }: Props) => {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    e.stopPropagation();
     try {
       if (user) {
         setSubmitting(true);
-        axios.patch(`/api/users/${user.id}`, {
+        await axios.patch(`/api/users/${user.id}`, {
           name,
           email,
           password: password ? password : user.password,
@@ -54,7 +53,7 @@ const UserForm = ({ user }: Props) => {
         router.refresh();
       } else {
         setSubmitting(true);
-        axios.post('/api/users', {
+        await axios.post('/api/users', {
           name,
           email,
           password,
