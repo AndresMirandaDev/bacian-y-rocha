@@ -26,6 +26,7 @@ export const workOrderValidationSchema = z.object({
     }).array(),
     activities:z.object({
         id: z.string(),
+        name:z.string(),
         description: z.string(),
         assignedTo: z.string(),
         progress: z.number(),
@@ -34,6 +35,7 @@ export const workOrderValidationSchema = z.object({
 
         subTasks: z.object({
                 id: z.string(),
+                name:z.string(),
                 description: z.string().min(1),
                 assignedTo: z.string().min(1),
                 progress: z.number(),
@@ -70,6 +72,7 @@ export const updateWorkOrderValidationSchema = z.object({
     }).array().optional(),
     activities:z.object({
         id: z.string().optional(),
+        name:z.string().optional(),
         description: z.string().optional(),
         assignedTo: z.string().optional(),
         progress: z.number().optional(),
@@ -78,6 +81,7 @@ export const updateWorkOrderValidationSchema = z.object({
         
         subTasks: z.object({
                 id: z.string(),
+                name:z.string().optional(),
                 description: z.string().min(1).optional(),
                 assignedTo: z.string().min(1).optional(),
                 progress: z.number().optional(),
