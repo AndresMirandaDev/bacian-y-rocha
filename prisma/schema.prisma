@@ -150,6 +150,8 @@ type SubTask {
   progress       Int
   startDate      String
   durationInDays Int
+  hours          Int
+  hourPrice      Int
 }
 
 type Task {

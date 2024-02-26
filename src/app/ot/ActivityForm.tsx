@@ -5,6 +5,7 @@ import {
   Button,
   Flex,
   Grid,
+  ScrollArea,
   Separator,
   Text,
   TextArea,
@@ -12,6 +13,7 @@ import {
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { MdSubdirectoryArrowRight } from 'react-icons/md';
 import ActivityPopOver from './_components/ActivityPopOver';
+import colors from '../styles/colors';
 
 interface SubTask {
   id: string;
@@ -21,6 +23,8 @@ interface SubTask {
   progress: number;
   startDate: string;
   durationInDays: number;
+  hours: number;
+  hourPrice: number;
 }
 
 interface Task {
@@ -79,13 +83,19 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
     e: React.FormEvent,
     taskIndex: number,
     subTaskIndex: number,
-    field: 'description' | 'assignedTo' | 'startDate' | 'durationInDays'
+    field:
+      | 'description'
+      | 'assignedTo'
+      | 'startDate'
+      | 'durationInDays'
+      | 'hours'
+      | 'hourPrice'
   ) => {
     const updatedData = [...activities];
     updatedData[taskIndex].subTasks![subTaskIndex] = {
       ...updatedData[taskIndex].subTasks![subTaskIndex],
       [field]:
-        field === 'durationInDays'
+        field === 'durationInDays' || field === 'hours' || field === 'hourPrice'
           ? Number((e.target as HTMLInputElement).value)
           : (e.target as HTMLInputElement).value,
     };
@@ -121,6 +131,8 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
           progress: 0,
           startDate: '',
           durationInDays: 0,
+          hours: 0,
+          hourPrice: 0,
         },
       ];
     } else {
@@ -133,6 +145,8 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
           progress: 0,
           startDate: '',
           durationInDays: 0,
+          hours: 0,
+          hourPrice: 0,
         },
       ];
     }
@@ -252,6 +266,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                         e.stopPropagation();
                         addSubTask(index);
                       }}
+                      style={{ backgroundColor: colors.buttonColors.green }}
                     >
                       <PlusIcon />
                       Agregar sub-tarea
@@ -267,12 +282,12 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                       setActivities(filteredData);
                     }}
                   >
-                    Eliminar
+                    Eliminar actividad
                   </Box>
                   <ActivityPopOver>
                     <TextArea
                       value={a.description}
-                      placeholder="Agrega una descripción..."
+                      placeholder="Agrega una descripción de la actividad..."
                       onChange={(e) => {
                         handleChange(e, index, 'description');
                       }}
@@ -281,7 +296,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                 </Flex>
               </Flex>
 
-              <Flex direction="column" className="pl-7">
+              <Flex direction="column" className="p-1">
                 <Flex>
                   <Box className="mt-5 mb-5">
                     <Text className="italic text-slate-800 text-xl font-bold">
@@ -292,7 +307,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                 <Flex direction="column" className="p-3" gap="4">
                   {a.subTasks?.map((st, subTaskIndex) => {
                     return (
-                      <>
+                      <ScrollArea className="p-5">
                         <Flex
                           gap="4"
                           key={st.id}
@@ -323,14 +338,14 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                               </Text>
                             </Box>
                             <input
-                              value={st.description}
+                              value={st.name}
                               className="border border-slate-300 rounded-md p-2"
                               onChange={(e) => {
                                 handleSubTaksChange(
                                   e,
                                   index,
                                   subTaskIndex,
-                                  'description'
+                                  'name'
                                 );
                               }}
                             />
@@ -392,23 +407,74 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                               }}
                             />
                           </Flex>
-                          <Box
-                            className="p-2 rounded-full items-center flex bg-red-400 text-slate-100 justify-center"
-                            onClick={() => {
-                              const updatedData = [...activities];
-                              updatedData[index].subTasks = a.subTasks?.filter(
-                                (t) => t.id !== st.id
-                              );
+                          <Flex direction="column">
+                            <Box>
+                              <Text className="text-slate-500">H.H</Text>
+                            </Box>
+                            <input
+                              value={st.hours}
+                              className="border border-slate-300 rounded-md p-2 text-center"
+                              type="number"
+                              onChange={(e) => {
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'hours'
+                                );
+                              }}
+                            />
+                          </Flex>
+                          <Flex direction="column">
+                            <Box>
+                              <Text className="text-slate-500">Valor H.H</Text>
+                            </Box>
+                            <input
+                              value={st.hourPrice}
+                              className="border border-slate-300 rounded-md p-2 text-center"
+                              type="number"
+                              onChange={(e) => {
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'hourPrice'
+                                );
+                              }}
+                            />
+                          </Flex>
+                          <Flex direction="column" gap="3">
+                            <Box
+                              className="p-1 rounded-md items-center flex bg-red-400 text-slate-100 justify-center"
+                              onClick={() => {
+                                const updatedData = [...activities];
+                                updatedData[index].subTasks =
+                                  a.subTasks?.filter((t) => t.id !== st.id);
 
-                              setActivities(updatedData);
-                              sendActivities(updatedData);
-                            }}
-                          >
-                            <TrashIcon />
-                          </Box>
+                                setActivities(updatedData);
+                                sendActivities(updatedData);
+                              }}
+                            >
+                              Eliminar tarea
+                            </Box>
+                            <ActivityPopOver>
+                              <TextArea
+                                placeholder="Agrega una descripción de la tarea..."
+                                value={st.description}
+                                onChange={(e) => {
+                                  handleSubTaksChange(
+                                    e,
+                                    index,
+                                    subTaskIndex,
+                                    'description'
+                                  );
+                                }}
+                              />
+                            </ActivityPopOver>
+                          </Flex>
                         </Flex>
-                        <Separator size="4" />
-                      </>
+                        <Separator size="4" className="mt-5" />
+                      </ScrollArea>
                     );
                   })}
                 </Flex>
