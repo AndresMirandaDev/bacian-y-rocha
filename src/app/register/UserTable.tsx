@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 import Pagination from '../components/Pagination';
 import Link from 'next/link';
+import colors from '../styles/colors';
 
 interface Props {
   users: User[];
@@ -19,8 +20,8 @@ const UserTable = ({ users }: Props) => {
         <Text className="text-xl">Registro de usuarios</Text>
       </Box>
       <Table.Root variant="surface">
-        <Table.Header className="bg-blue-300">
-          <Table.Row>
+        <Table.Header style={{ backgroundColor: colors.tableHead }}>
+          <Table.Row className="text-slate-100">
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Nombre</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Email</Table.ColumnHeaderCell>
