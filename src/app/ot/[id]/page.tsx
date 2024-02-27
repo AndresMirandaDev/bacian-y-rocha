@@ -313,7 +313,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* actividades */}
         <DetailsHeader title="4.actividades" />
         {workOrder.activities.map((a) => {
-          return <TaskAccordion activity={a} />;
+          return <TaskAccordion key={a.id} activity={a} />;
         })}
         {/* actividades */}
 
