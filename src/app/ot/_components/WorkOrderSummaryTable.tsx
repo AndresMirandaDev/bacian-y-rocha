@@ -61,7 +61,7 @@ const WorkOrderSummaryTable = ({ workOrders, state }: Props) => {
                     <Badge color={state === 'fullfilled' ? 'green' : 'red'}>
                       {state === 'fullfilled'
                         ? 'Entregada a tiempo'
-                        : 'Retrasada'}
+                        : 'Entregada con retraso'}
                     </Badge>
                   </Table.Cell>
                 </Table.Row>
