@@ -7,6 +7,7 @@ import AuthProvider from './auth/Provider';
 import './globals.css';
 import MainContainer from './MainContainer';
 import '@radix-ui/themes/styles.css';
+import colors from './styles/colors';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -24,7 +25,7 @@ export default async function RootLayout({
     <html lang="en" data-theme="light">
       <body className={inter.className}>
         <AuthProvider>
-          <Theme appearance="light" radius="large" accentColor="indigo">
+          <Theme appearance="light" radius="large" accentColor="cyan">
             <div className="flex">
               <SideBar />
               <main>

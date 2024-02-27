@@ -12,6 +12,7 @@ import logo from '../../../../public/assets/images/byrs.png';
 import qualitySeal from '../../../../public/assets/images/sellocalidad.jpg';
 import PdfView from '../saleorderpdf/testpdf';
 import { UpdateIcon } from '@radix-ui/react-icons';
+import colors from '@/app/styles/colors';
 
 interface Props {
   saleOrder: SaleOrder;
@@ -56,7 +57,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
               />
             )}
             {saleOrder.receptionGuide === 'pending' && (
-              <Text className=" bg-yellow-200 p-2 rounded-xl ml-2 font-bold text-yellow-700">
+              <Text className=" bg-yellow-200 p-2 rounded-xl ml-2 font-semibold text-yellow-600">
                 Pendiente
               </Text>
             )}
@@ -71,8 +72,8 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
             </Box>
             <Text
               className={classNames({
-                'rounded-xl p-2 h-fit w-fit font-bold': true,
-                'bg-yellow-200 text-yellow-700 ':
+                'rounded-xl p-2 h-fit w-fit font-semibold': true,
+                'bg-yellow-200 text-yellow-600 ':
                   saleOrder.status === 'PENDING',
                 'bg-indigo-300 text-blue-700 ':
                   saleOrder.status === 'IN_PROCESS',
@@ -89,7 +90,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 : 'Pendiente'}
             </Text>
             <Flex direction="column" gap="4">
-              <Button style={{ backgroundColor: '#2ebb45' }}>
+              <Button style={{ backgroundColor: colors.buttonColors.green }}>
                 <UpdateIcon />
                 <Link href={`/oc/edit/${saleOrder.id}`}>
                   Actualizar orden de compra

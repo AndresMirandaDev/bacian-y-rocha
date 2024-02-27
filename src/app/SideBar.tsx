@@ -1,5 +1,5 @@
 'use client';
-import { Box, Container, Flex, Text } from '@radix-ui/themes';
+import { Box, Container, Flex, Separator, Text } from '@radix-ui/themes';
 import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -16,10 +16,12 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 import logo from '../../public/assets/images/byrs.png';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { CiInboxIn, CiInboxOut } from 'react-icons/ci';
 
 const SideBar = () => {
   const { status } = useSession();
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const currentPath = usePathname();
   if (currentPath === '/' || currentPath === '/signin') return null;
 
@@ -87,7 +89,23 @@ const NavLinks = ({ open }: NavlinkProps) => {
   const links = [
     { label: 'Inicio', href: '/dashboard', icon: <MdDashboard /> },
     { label: 'O.trabajo', href: '/ot', icon: <FaHelmetSafety /> },
-    { label: 'O.Compra', href: '/oc', icon: <FaFileInvoiceDollar /> },
+    {
+      label: 'O.Compra',
+      href: '/oc',
+      icon: <FaFileInvoiceDollar />,
+      subMenu: [
+        {
+          label: 'Emitidas',
+          icon: <CiInboxOut />,
+          href: '/oc/emitted',
+        },
+        {
+          label: 'Recibidas',
+          icon: <CiInboxIn />,
+          href: '/oc/received',
+        },
+      ],
+    },
     {
       label: 'Cotizaciones',
       href: '/quotes',
@@ -100,40 +118,87 @@ const NavLinks = ({ open }: NavlinkProps) => {
     },
   ];
 
+  const [openSubMenuIndex, setOpenSubMenuIndex] = useState<number | null>(null);
+
+  const toggleSubMenu = (index: number) => {
+    setOpenSubMenuIndex((prevIndex) => (prevIndex === index ? null : index));
+  };
+
   return (
     <ul>
-      {links.map((link) => {
+      {links.map((link, index) => {
         return (
-          <li key={link.href} className="flex items-center mb-4">
-            <Link
+          <li key={link.href} className="flex-col items-center mb-5">
+            <Box
               className={classNames({
-                'text-zinc-400 pl-2': !currentPath.startsWith(link.href),
-                'bg-slate-300 transition-all p-2 border-r-4 border-[var(--accent-9)]':
+                'flex items-center ': true,
+                'justify-end': !open,
+                'bg-slate-300 transition-all p-3 border-r-4 border-[#EF6608]':
                   currentPath.startsWith(link.href) && open,
-                'hover:text-zinc-600 transition-colors text-zinc-600': true,
-                'flex items-center w-full mt-2 font-medium': true,
-                'justify-end text-2xl pr-5': !open,
-                'text-[var(--accent-9)]':
-                  !open && currentPath.startsWith(link.href),
               })}
-              href={link.href}
             >
-              <Box
+              <Link
                 className={classNames({
-                  'text-[var(--accent-9)]': currentPath.startsWith(link.href),
+                  'text-zinc-500 pl-2': !currentPath.startsWith(link.href),
+                  'hover:text-zinc-600 transition-colors ': true,
+                  'flex items-center mt-2 font-medium': true,
+                  'justify-end text-2xl pr-5': !open,
+                  'text-[var(--accent-9)]':
+                    !open && currentPath.startsWith(link.href),
+                })}
+                href={link.href}
+              >
+                <Box
+                  className={classNames({
+                    'text-[var(--accent-9)]': currentPath.startsWith(link.href),
+                  })}
+                >
+                  {link.icon}
+                </Box>
+                <Box
+                  className={classNames({
+                    'ml-2': true,
+                    hidden: !open,
+                  })}
+                >
+                  <Text>{link.label}</Text>
+                </Box>
+              </Link>
+              {link.subMenu && (
+                <Box
+                  onClick={() => toggleSubMenu(index)}
+                  className={classNames({
+                    hidden: !open,
+                    'hover:scale-105 cursor-pointer p-1 transition-colors duration-300 hover:bg-slate-400 hover:text-white rounded-full ml-5':
+                      true,
+                  })}
+                >
+                  <ChevronDownIcon />
+                </Box>
+              )}
+            </Box>
+
+            {link.subMenu && (
+              <ul
+                className={classNames('ml-4 p-1 mt-2', {
+                  'opacity-100': openSubMenuIndex === index,
+                  'transition-transform duration-300 ease-in-out': true,
+                  'opacity-0 hidden': openSubMenuIndex !== index,
                 })}
               >
-                {link.icon}
-              </Box>
-              <Box
-                className={classNames({
-                  'ml-2': true,
-                  hidden: !open,
-                })}
-              >
-                <Text>{link.label}</Text>
-              </Box>
-            </Link>
+                {link.subMenu.map((subLink) => (
+                  <li key={subLink.href} className="mb-3 mt-1">
+                    <Link
+                      className="flex items-center text-zinc-500 hover:text-zinc-600"
+                      href={subLink.href}
+                    >
+                      <Box className="mr-2">{subLink.icon}</Box>
+                      <Text>{subLink.label}</Text>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            )}
           </li>
         );
       })}
