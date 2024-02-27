@@ -3,20 +3,8 @@ import RegisterActions from './RegisterActions';
 import UserTable from './UserTable';
 import { Toaster } from 'react-hot-toast';
 
-// const getUsers = async () => {
-//   const res = await fetch(`https://bacian-y-rocha-next.vercel.app/api/users`, {
-//     cache: 'no-store',
-//     headers: {
-//       'Cache-control': 'no-cache, no-store',
-//     },
-//   });
-
-//   const users = await res.json();
-
-//   return users.body;
-// };
 const getUsers = async () => {
-  const res = await fetch(`http://localhost:3000/api/users`, {
+  const res = await fetch(`https://bacian-y-rocha-next.vercel.app/api/users`, {
     cache: 'no-store',
     headers: {
       'Cache-control': 'no-cache, no-store',
@@ -27,6 +15,18 @@ const getUsers = async () => {
 
   return users.body;
 };
+// const getUsers = async () => {
+//   const res = await fetch(`http://localhost:3000/api/users`, {
+//     cache: 'no-store',
+//     headers: {
+//       'Cache-control': 'no-cache, no-store',
+//     },
+//   });
+
+//   const users = await res.json();
+
+//   return users.body;
+// };
 
 const RegisterPage = async () => {
   const users = await getUsers();
