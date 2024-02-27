@@ -313,10 +313,9 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                 <Flex direction="column" className="p-3" gap="4">
                   {a.subTasks?.map((st, subTaskIndex) => {
                     return (
-                      <ScrollArea className="p-5">
+                      <ScrollArea className="p-5" key={st.id}>
                         <Flex
                           gap="4"
-                          key={st.id}
                           align={{
                             initial: 'stretch',
                             xs: 'stretch',
