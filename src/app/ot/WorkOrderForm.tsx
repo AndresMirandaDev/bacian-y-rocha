@@ -48,15 +48,19 @@ type Material = {
 
 interface SubTask {
   id: string;
+  name: string;
   description: string;
   assignedTo: string;
   progress: number;
   startDate: string;
   durationInDays: number;
+  hours: number;
+  hourPrice: number;
 }
 
 interface Task {
   id: string;
+  name: string;
   description: string;
   assignedTo: string;
   progress: number;
