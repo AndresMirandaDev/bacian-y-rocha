@@ -6,6 +6,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import Spinner from './Spinner';
 import { useRouter } from 'next/navigation';
+import colors from '../styles/colors';
 
 interface Props {
   name: string;
@@ -36,7 +37,7 @@ const DeleteDataDialog = ({ name, id, route, pushRoute }: Props) => {
     <>
       <AlertDialog.Root>
         <AlertDialog.Trigger className="w-full">
-          <Button style={{ backgroundColor: '#e33131' }}>
+          <Button style={{ backgroundColor: colors.buttonColors.danger }}>
             Eliminar {name}
           </Button>
         </AlertDialog.Trigger>

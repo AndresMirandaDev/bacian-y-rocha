@@ -65,7 +65,12 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
   const handleChange = (
     e: React.FormEvent,
     index: number,
-    field: 'description' | 'assignedTo' | 'startDate' | 'durationInDays'
+    field:
+      | 'description'
+      | 'assignedTo'
+      | 'startDate'
+      | 'durationInDays'
+      | 'name'
   ) => {
     const updatedData = [...activities];
     updatedData[index] = {
@@ -90,6 +95,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
       | 'durationInDays'
       | 'hours'
       | 'hourPrice'
+      | 'name'
   ) => {
     const updatedData = [...activities];
     updatedData[taskIndex].subTasks![subTaskIndex] = {

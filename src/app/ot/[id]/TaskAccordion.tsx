@@ -7,6 +7,7 @@ import { Flex, Box, Separator, Text } from '@radix-ui/themes';
 
 interface SubTask {
   id: string;
+  name: string;
   description: string;
   assignedTo: string;
   progress: number;
@@ -16,6 +17,7 @@ interface SubTask {
 
 interface Task {
   id: string;
+  name: string;
   description: string;
   assignedTo: string;
   progress: number;
@@ -39,7 +41,7 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
             style={{ backgroundColor: subTask ? '#669BBC' : '#778DA9' }}
           >
             <Text className="text-xl text-slate-100 font-bold">
-              {subTask ? 'Sub-tarea' : 'Actividad'}
+              {activity.name}
             </Text>
             <Box className="text-white">
               <ChevronDownIcon />
