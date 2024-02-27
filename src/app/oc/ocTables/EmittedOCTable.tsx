@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import colors from '@/app/styles/colors';
 import { ReceivedSaleOrder, SaleOrder } from '@prisma/client';
 import { Badge, Box, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
@@ -18,8 +19,8 @@ const EmittedOCTable = ({ saleOrders }: Props) => {
         <Text className="text-xl">O.C Emitidas</Text>
       </Box>
       <Table.Root variant="surface">
-        <Table.Header className="bg-blue-300">
-          <Table.Row>
+        <Table.Header style={{ backgroundColor: colors.tableHead }}>
+          <Table.Row className="text-white">
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Proveedor</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Fecha</Table.ColumnHeaderCell>

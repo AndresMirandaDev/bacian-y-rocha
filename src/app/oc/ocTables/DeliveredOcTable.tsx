@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import colors from '@/app/styles/colors';
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { SaleOrder } from '@prisma/client';
 import { Badge, Box, IconButton, Table, Text } from '@radix-ui/themes';
@@ -20,8 +21,8 @@ const DeliveredOcTable = ({ saleOrders }: Props) => {
         <Text className="text-xl">O.C Recepcionadas</Text>
       </Box>
       <Table.Root variant="surface">
-        <Table.Header className="bg-blue-300">
-          <Table.Row>
+        <Table.Header style={{ backgroundColor: colors.tableHead }}>
+          <Table.Row className="text-white">
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Proveedor</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Guía de recepción</Table.ColumnHeaderCell>

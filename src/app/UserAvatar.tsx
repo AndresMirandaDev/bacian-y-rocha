@@ -14,6 +14,7 @@ import { FaUserCircle } from 'react-icons/fa';
 import Skeleton from './components/Skeleton';
 import Link from 'next/link';
 import classNames from 'classnames';
+import colors from './styles/colors';
 
 const UserAvatar = () => {
   const { data, status } = useSession();
@@ -22,8 +23,9 @@ const UserAvatar = () => {
 
   return (
     <nav
+      style={{ backgroundColor: colors.grey }}
       className={classNames({
-        'w-screen shadow-sm bg-[var(--accent-9)]': true,
+        'w-screen shadow-sm': true,
       })}
     >
       <Flex justify="end" mr="5">

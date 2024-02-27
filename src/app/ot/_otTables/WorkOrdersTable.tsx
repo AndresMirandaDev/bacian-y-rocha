@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import colors from '@/app/styles/colors';
 import { WorkOrder } from '@prisma/client';
 import { Box, Table, Text } from '@radix-ui/themes';
 import Link from 'next/link';
@@ -17,9 +18,9 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
       <Box className="mb-5 pl-2">
         <Text className="text-xl">Ordenes de trabajo</Text>
       </Box>
-      <Table.Root variant="surface">
-        <Table.Header className="bg-blue-300">
-          <Table.Row>
+      <Table.Root variant="surface" className="shadow-md">
+        <Table.Header style={{ backgroundColor: colors.tableHead }}>
+          <Table.Row className="text-white">
             <Table.ColumnHeaderCell>N° O.T</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell className="hidden md:table-cell">
               Cliente

@@ -8,6 +8,7 @@ import Pagination from '../components/Pagination';
 import { FaEdit } from 'react-icons/fa';
 import DeleteDataDialog from '../components/DeleteDataDialog';
 import Link from 'next/link';
+import colors from '../styles/colors';
 
 interface Props {
   quotes: Quote[];
@@ -22,9 +23,9 @@ const QuotesTable = ({ quotes }: Props) => {
       <Box className="mb-5 pl-2">
         <Text className="text-xl">Cotizaciones</Text>
       </Box>
-      <Table.Root variant="surface">
-        <Table.Header className="bg-blue-300">
-          <Table.Row>
+      <Table.Root variant="surface" className="shadow-md">
+        <Table.Header style={{ backgroundColor: colors.tableHead }}>
+          <Table.Row className="text-white">
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Archivo PDF</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Fecha de solicitud</Table.ColumnHeaderCell>

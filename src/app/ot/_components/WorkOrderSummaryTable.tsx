@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import colors from '@/app/styles/colors';
 import { WorkOrder } from '@prisma/client';
 import { CheckIcon } from '@radix-ui/react-icons';
 import { AlertDialogAction, Badge, Box, Table } from '@radix-ui/themes';
@@ -18,13 +19,16 @@ const WorkOrderSummaryTable = ({ workOrders, state }: Props) => {
   const [currentPage, setCurrentPage] = useState(0);
   return (
     <>
-      <Table.Root variant="surface">
+      <Table.Root variant="surface" className="shadow-md">
         <Table.Header
           style={{
-            backgroundColor: state === 'fullfilled' ? '#C7F9CC' : '#E76F51',
+            backgroundColor:
+              state === 'fullfilled'
+                ? colors.buttonColors.green
+                : colors.buttonColors.danger,
           }}
         >
-          <Table.Row>
+          <Table.Row className="text-slate-100">
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>N° O.T</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Estado de entrega</Table.ColumnHeaderCell>
