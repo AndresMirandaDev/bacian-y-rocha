@@ -116,7 +116,7 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
                 <Text className="font-bold">Sub tareas</Text>
               </Box>
               {activity.subTasks?.map((st) => {
-                return <TaskAccordion activity={st} subTask />;
+                return <TaskAccordion key={st.id} activity={st} subTask />;
               })}
             </Flex>
           )}
