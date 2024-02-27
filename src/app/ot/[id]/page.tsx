@@ -13,6 +13,7 @@ import prisma from '../../../../prisma/client';
 import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
 import TaskAccordion from './TaskAccordion';
+import DetailsHeader from './_components/DetailsHeader';
 
 interface Params {
   params: { id: string };
@@ -121,9 +122,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* Datos generales */}
 
         <Flex direction="column">
-          <Box className="bg-[#013564] w-full p-1 mt-10">
-            <Text className="text-slate-100 font-bold">1. DATOS GENERALES</Text>
-          </Box>
+          <DetailsHeader title="1.datos generales" />
           <Grid
             columns={{
               initial: '1',
@@ -195,11 +194,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
 
         {/* Datos de componente */}
         <Flex direction="column">
-          <Box className="bg-[#013564] w-full p-1 mt-10">
-            <Text className="text-slate-100 font-bold">
-              2. DATOS DE COMPONENTE
-            </Text>
-          </Box>
+          <DetailsHeader title="2.datos de componente" />
           <Grid
             columns={{
               initial: '1',
@@ -249,11 +244,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* Datos de componente */}
         {/* Materiales      */}
         <Flex direction="column">
-          <Box className="bg-[#013564] w-full p-1 mt-10">
-            <Text className="text-slate-100 font-bold">
-              3. MATERIALES A UTILIZAR O COMPRAR/ REPUESTOS
-            </Text>
-          </Box>
+          <DetailsHeader title="3.materiales a utilizar o comprar/repuestos" />
           <Box>
             <Table.Root variant="ghost" className="border border-black">
               <Table.Header>
@@ -320,15 +311,90 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* Materiales      */}
 
         {/* actividades */}
-        <Flex direction="column">
-          <Box className="bg-[#013564] w-full p-1 mt-10">
-            <Text className="text-slate-100 font-bold">3. ACTIVIDADES</Text>
-          </Box>
-        </Flex>
+        <DetailsHeader title="4.actividades" />
         {workOrder.activities.map((a) => {
           return <TaskAccordion activity={a} />;
         })}
         {/* actividades */}
+
+        {/* gastos */}
+        <DetailsHeader title="5.gastos" />
+        <Grid
+          columns={{
+            initial: '1',
+            xs: '1',
+            sm: '1',
+            md: '1',
+            lg: '1',
+            xl: '1',
+          }}
+          gap="4"
+          className="p-1"
+        >
+          <Flex justify="between">
+            <Box>
+              <Text className="font-bold ">Gastos en materiales</Text>
+            </Box>
+            <Box>
+              <Text className="text-xl">
+                $
+                {workOrder.materials.reduce((accumulator, m) => {
+                  return (
+                    m.quantity * m.unitPrice -
+                    m.quantity * m.unitPrice * (m.discount / 100) +
+                    accumulator
+                  );
+                }, 0)}
+              </Text>
+            </Box>
+          </Flex>
+          <Separator size="4" />
+          <Flex justify="between">
+            <Box>
+              <Text className="font-bold ">Gastos H.H</Text>
+            </Box>
+            <Box>
+              <Text className="text-xl">
+                $
+                {workOrder.activities.reduce((accumulator, activity) => {
+                  return (
+                    accumulator +
+                    activity.subTasks.reduce((acc, st) => {
+                      return acc + st.hours * st.hourPrice;
+                    }, 0)
+                  );
+                }, 0)}
+              </Text>
+            </Box>
+          </Flex>
+          <Separator size="4" />
+          <Flex justify="between">
+            <Box>
+              <Text className="font-bold text-2xl">Gastos Totales</Text>
+            </Box>
+            <Box>
+              <Text className="text-2xl font-bold">
+                $
+                {workOrder.activities.reduce((accumulator, activity) => {
+                  return (
+                    accumulator +
+                    activity.subTasks.reduce((acc, st) => {
+                      return acc + st.hours * st.hourPrice;
+                    }, 0)
+                  );
+                }, 0) +
+                  workOrder.materials.reduce((accumulator, m) => {
+                    return (
+                      m.quantity * m.unitPrice -
+                      m.quantity * m.unitPrice * (m.discount / 100) +
+                      accumulator
+                    );
+                  }, 0)}
+              </Text>
+            </Box>
+          </Flex>
+        </Grid>
+        {/* gastos */}
       </Box>
     </>
   );

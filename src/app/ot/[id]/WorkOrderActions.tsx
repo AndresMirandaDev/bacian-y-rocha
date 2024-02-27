@@ -1,5 +1,6 @@
 'use client';
 import DeleteDataDialog from '@/app/components/DeleteDataDialog';
+import colors from '@/app/styles/colors';
 import { UpdateIcon } from '@radix-ui/react-icons';
 import { Button, Flex } from '@radix-ui/themes';
 import Link from 'next/link';
@@ -17,7 +18,7 @@ const WorkOrderActions = ({ id }: Props) => {
         <FaChartGantt />
         <Link href={`/gantt/${id}`}>Visualizar carta gantt</Link>
       </Button>
-      <Button style={{ backgroundColor: '#2ebb45' }}>
+      <Button style={{ backgroundColor: colors.buttonColors.green }}>
         <UpdateIcon />
         <Link href={`/ot/edit/${id}`}>Actualizar orden de trabajo</Link>
       </Button>

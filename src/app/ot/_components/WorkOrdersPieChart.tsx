@@ -30,7 +30,7 @@ const WorkOrdersPieChart = ({ delayed, fullfilled }: Props) => {
         value: fullfilled.length,
       },
       {
-        name: 'Retrasadas',
+        name: 'Entregadas con retraso',
         value: delayed.length,
       },
     ]);
@@ -51,7 +51,7 @@ const WorkOrdersPieChart = ({ delayed, fullfilled }: Props) => {
   return (
     <>
       <Box className="mb-5 pl-2">
-        <Text className="text-xl">O.T cumplidas vs retrasadas</Text>
+        <Text className="text-xl">O.T Finalizadas</Text>
       </Box>
       <ResponsiveContainer width="100%" height="80%">
         <PieChart>

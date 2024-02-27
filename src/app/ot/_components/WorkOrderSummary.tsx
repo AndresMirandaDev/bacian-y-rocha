@@ -42,7 +42,9 @@ const WorkOrderSummary = ({ workOrders }: Props) => {
   return (
     <>
       <Box className="mb-5 pl-2">
-        <Text className="text-xl">Recuento de ordenes de compra</Text>
+        <Text className="text-xl">
+          Recuento de ordenes de compra finalizadas
+        </Text>
       </Box>
       <Grid
         columns={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '2', xl: '2' }}

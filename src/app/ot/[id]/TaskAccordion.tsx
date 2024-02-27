@@ -1,19 +1,7 @@
 'use client';
-import React from 'react';
 import * as Accordion from '@radix-ui/react-accordion';
-import classNames from 'classnames';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { Flex, Box, Separator, Text } from '@radix-ui/themes';
-
-interface SubTask {
-  id: string;
-  name: string;
-  description: string;
-  assignedTo: string;
-  progress: number;
-  startDate: string;
-  durationInDays: number;
-}
+import { Box, Flex, Grid, Separator, Text } from '@radix-ui/themes';
 
 interface Task {
   id: string;
@@ -23,7 +11,9 @@ interface Task {
   progress: number;
   startDate: string;
   durationInDays: number;
-  subTasks?: SubTask[];
+  subTasks?: Task[];
+  hours?: number;
+  hourPrice?: number;
 }
 
 interface Props {
@@ -40,7 +30,7 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
             className="flex items-center w-full justify-center p-2"
             style={{ backgroundColor: subTask ? '#669BBC' : '#778DA9' }}
           >
-            <Text className="text-xl text-slate-100 font-bold">
+            <Text className="text-xl text-slate-100 font-bold capitalize">
               {activity.name}
             </Text>
             <Box className="text-white">
@@ -50,42 +40,76 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
           <Separator size="4" />
         </Accordion.Header>
         <Accordion.Content className="rounded-md data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden">
-          <Flex direction="column" justify="center" align="center" gap="3">
-            <Box>
-              <Text className="font-bold">Descripción de actividad</Text>
-            </Box>
-            <Box>
-              <Text>{activity.description}</Text>
-            </Box>
-            <Separator size="4" />
-          </Flex>
-          <Flex direction="column" justify="center" align="center" gap="3">
-            <Box>
-              <Text className="font-bold">Encargado</Text>
-            </Box>
-            <Box>
-              <Text>{activity.assignedTo}</Text>
-            </Box>
-            <Separator size="4" />
-          </Flex>
-          <Flex direction="column" justify="center" align="center" gap="3">
-            <Box>
-              <Text className="font-bold">Fecha de inicio</Text>
-            </Box>
-            <Box>
-              <Text>{activity.startDate}</Text>
-            </Box>
-            <Separator size="4" />
-          </Flex>
-          <Flex direction="column" justify="center" align="center" gap="3">
-            <Box>
-              <Text className="font-bold">Duracion en días</Text>
-            </Box>
-            <Box>
-              <Text>{activity.durationInDays}</Text>
-            </Box>
-            <Separator size="4" />
-          </Flex>
+          <Grid
+            columns={{
+              initial: '1',
+              xs: '1',
+              sm: '1',
+              md: '1',
+              lg: '2',
+              xl: '2',
+            }}
+            className="p-3"
+          >
+            <Flex direction="column" justify="center" align="center" gap="3">
+              <Box>
+                <Text className="font-bold">Descripción de actividad</Text>
+              </Box>
+              <Box>
+                <Text>{activity.description}</Text>
+              </Box>
+              <Separator size="4" />
+            </Flex>
+            <Flex direction="column" justify="center" align="center" gap="3">
+              <Box>
+                <Text className="font-bold">Encargado</Text>
+              </Box>
+              <Box>
+                <Text>{activity.assignedTo}</Text>
+              </Box>
+              <Separator size="4" />
+            </Flex>
+            <Flex direction="column" justify="center" align="center" gap="3">
+              <Box>
+                <Text className="font-bold">Fecha de inicio</Text>
+              </Box>
+              <Box>
+                <Text>{activity.startDate}</Text>
+              </Box>
+              <Separator size="4" />
+            </Flex>
+            <Flex direction="column" justify="center" align="center" gap="3">
+              <Box>
+                <Text className="font-bold">Duracion en días</Text>
+              </Box>
+              <Box>
+                <Text>{activity.durationInDays}</Text>
+              </Box>
+              <Separator size="4" />
+            </Flex>
+            {subTask && (
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">H.H</Text>
+                </Box>
+                <Box>
+                  <Text>{activity.hours}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+            )}
+            {subTask && (
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Valor H.H</Text>
+                </Box>
+                <Box>
+                  <Text>$ {activity.hourPrice}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+            )}
+          </Grid>
           {activity.subTasks && (
             <Flex direction="column" className="p-5">
               <Box className="flex mb-5 justify-center">
