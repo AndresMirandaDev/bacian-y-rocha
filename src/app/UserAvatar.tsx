@@ -1,19 +1,11 @@
 'use client';
-import {
-  Box,
-  Container,
-  DropdownMenu,
-  Flex,
-  IconButton,
-  Text,
-} from '@radix-ui/themes';
+import { Box, DropdownMenu, Flex, Text } from '@radix-ui/themes';
 import { useSession } from 'next-auth/react';
-import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
 
-import Skeleton from './components/Skeleton';
-import Link from 'next/link';
 import classNames from 'classnames';
+import Link from 'next/link';
+import Skeleton from './components/Skeleton';
 import colors from './styles/colors';
 
 const UserAvatar = () => {

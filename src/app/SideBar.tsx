@@ -137,33 +137,67 @@ const NavLinks = ({ open }: NavlinkProps) => {
                   currentPath.startsWith(link.href) && open,
               })}
             >
-              <Link
-                className={classNames({
-                  'text-zinc-500 pl-2': !currentPath.startsWith(link.href),
-                  'hover:text-zinc-600 transition-colors ': true,
-                  'flex items-center mt-2 font-medium': true,
-                  'justify-end text-2xl pr-5': !open,
-                  'text-[var(--accent-9)]':
-                    !open && currentPath.startsWith(link.href),
-                })}
-                href={link.href}
-              >
+              {!link.subMenu && (
+                <Link
+                  className={classNames({
+                    'text-zinc-500 pl-2': !currentPath.startsWith(link.href),
+                    'hover:text-zinc-600 transition-colors ': true,
+                    'flex items-center mt-2 font-medium': true,
+                    'justify-end text-2xl pr-5': !open,
+                    'text-[var(--accent-9)]':
+                      !open && currentPath.startsWith(link.href),
+                  })}
+                  href={link.href}
+                >
+                  <Box
+                    className={classNames({
+                      'text-[var(--accent-9)]': currentPath.startsWith(
+                        link.href
+                      ),
+                    })}
+                  >
+                    {link.icon}
+                  </Box>
+                  <Box
+                    className={classNames({
+                      'ml-2': true,
+                      hidden: !open,
+                    })}
+                  >
+                    <Text>{link.label}</Text>
+                  </Box>
+                </Link>
+              )}
+              {link.subMenu && (
                 <Box
                   className={classNames({
-                    'text-[var(--accent-9)]': currentPath.startsWith(link.href),
+                    'text-zinc-500 pl-2': !currentPath.startsWith(link.href),
+                    'hover:text-zinc-600 transition-colors ': true,
+                    'flex items-center mt-2 font-medium': true,
+                    'justify-end text-2xl pr-5': !open,
+                    'text-[var(--accent-9)]':
+                      !open && currentPath.startsWith(link.href),
                   })}
                 >
-                  {link.icon}
+                  <Box
+                    className={classNames({
+                      'text-[var(--accent-9)]': currentPath.startsWith(
+                        link.href
+                      ),
+                    })}
+                  >
+                    {link.icon}
+                  </Box>
+                  <Box
+                    className={classNames({
+                      'ml-2': true,
+                      hidden: !open,
+                    })}
+                  >
+                    <Text>{link.label}</Text>
+                  </Box>
                 </Box>
-                <Box
-                  className={classNames({
-                    'ml-2': true,
-                    hidden: !open,
-                  })}
-                >
-                  <Text>{link.label}</Text>
-                </Box>
-              </Link>
+              )}
               {link.subMenu && (
                 <Box
                   onClick={() => toggleSubMenu(index)}
@@ -187,7 +221,14 @@ const NavLinks = ({ open }: NavlinkProps) => {
                 })}
               >
                 {link.subMenu.map((subLink) => (
-                  <li key={subLink.href} className="mb-3 mt-1">
+                  <li
+                    key={subLink.href}
+                    className={classNames({
+                      'bg-slate-300 transition-all p-3 border-r-4 border-[#EF6608]':
+                        currentPath.startsWith(subLink.href) && open,
+                      'mb-3 mt-1': true,
+                    })}
+                  >
                     <Link
                       className="flex items-center text-zinc-500 hover:text-zinc-600"
                       href={subLink.href}

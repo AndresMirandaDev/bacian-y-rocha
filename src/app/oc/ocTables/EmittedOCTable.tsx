@@ -18,7 +18,7 @@ const EmittedOCTable = ({ saleOrders }: Props) => {
       <Box className="mb-5 pl-2">
         <Text className="text-xl">O.C Emitidas</Text>
       </Box>
-      <Table.Root variant="surface">
+      <Table.Root variant="surface" className="shadow-lg">
         <Table.Header style={{ backgroundColor: colors.tableHead }}>
           <Table.Row className="text-white">
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
