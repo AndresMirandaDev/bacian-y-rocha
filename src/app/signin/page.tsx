@@ -58,26 +58,32 @@ const SignInPage = () => {
           direction="column"
           justify="center"
           align="center"
-          className="w-full p-5"
+          className="w-full p-1"
         >
-          <Box className="md:h-2/3 sm:w-1/2 md:w-1/2 shadow-2xl z-10 bg-[rgba(254,254,254,0.68813462885154064)] rounded-2xl">
+          <Box className="md:h-2/3 sm:w-1/2 md:w-1/2 shadow-2xl z-10 bg-[rgba(254,254,254,0.48813462885154064)] hover:bg-[rgba(254,254,254,0.68813462885154064)]  transition-all duration-700 rounded-2xl">
             <Flex
               direction="column"
               justify="center"
-              align="center"
               height="100%"
               gap="8"
+              className="p-5"
             >
               <Flex direction="column" gap="3">
-                <Flex direction="column" gap="3">
+                <Flex
+                  direction="column"
+                  gap="3"
+                  className="w-full"
+                  justify="center"
+                  align="center"
+                >
                   <Text size="8" style={{ fontWeight: 'lighter' }}>
                     Inicia Sesión
                   </Text>
                   <Image
                     src={require('../../../public/assets/images/byrs.png')}
                     alt="Logo"
-                    height={200}
-                    width={200}
+                    height={150}
+                    width={150}
                   />
                 </Flex>
                 <Form.Root onSubmit={onSubmit}>
@@ -91,7 +97,7 @@ const SignInPage = () => {
                           flexDirection: 'column',
                         }}
                       >
-                        <Form.Label className="text-zinc-500">Email</Form.Label>
+                        <Form.Label className="text-zinc-800">Email</Form.Label>
                         <Form.Message
                           className={errorMessageClassname}
                           match="valueMissing"
@@ -124,7 +130,7 @@ const SignInPage = () => {
                           flexDirection: 'column',
                         }}
                       >
-                        <Form.Label className="text-zinc-500">
+                        <Form.Label className="text-zinc-800">
                           Contraseña
                         </Form.Label>
                         <Form.Message
@@ -144,7 +150,10 @@ const SignInPage = () => {
                       </Form.Control>
                     </Form.Field>
                     <Form.Submit asChild>
-                      <Button size="4" className="bg-[var(--accent-9)]">
+                      <Button
+                        size="4"
+                        className="bg-[var(--accent-9)] shadow-lg"
+                      >
                         <Flex align="center" gap="2">
                           <RiLoginCircleLine />
                           <Text>Iniciar Sesión</Text>

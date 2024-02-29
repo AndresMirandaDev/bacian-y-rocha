@@ -15,7 +15,7 @@ const LoginPage = () => {
         align="center"
         className="w-full"
       >
-        <Box className="md:h-1/2 md:w-1/2 shadow-2xl bg-[rgba(254,254,254,0.68813462885154064)] rounded-xl z-10 p-5">
+        <Box className="md:h-1/2 md:w-1/2 shadow-2xl transition-all duration-700 bg-[rgba(254,254,254,0.48813462885154064)] hover:bg-[rgba(254,254,254,0.68813462885154064)] rounded-xl z-10 p-5">
           <Flex
             direction="column"
             justify="center"
@@ -30,8 +30,8 @@ const LoginPage = () => {
               <Image
                 src={require('../../../public/assets/images/byrs.png')}
                 alt="Logo"
-                height={200}
-                width={200}
+                height={150}
+                width={150}
               />
             </Flex>
             <Flex justify="center" align="center">
