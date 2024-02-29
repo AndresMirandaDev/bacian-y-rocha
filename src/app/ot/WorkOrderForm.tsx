@@ -67,6 +67,7 @@ interface Task {
   startDate: string;
   durationInDays: number;
   subTasks?: SubTask[];
+  photos: string[];
 }
 
 const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {

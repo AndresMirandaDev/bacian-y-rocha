@@ -2,6 +2,7 @@
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
 import { Box, Flex, Grid, Separator, Text } from '@radix-ui/themes';
+import GalleryModal from '../_components/GalleryModal';
 
 interface Task {
   id: string;
@@ -14,6 +15,7 @@ interface Task {
   subTasks?: Task[];
   hours?: number;
   hourPrice?: number;
+  photos?: string[];
 }
 
 interface Props {
@@ -46,8 +48,8 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
               xs: '1',
               sm: '1',
               md: '1',
-              lg: '2',
-              xl: '2',
+              lg: '1',
+              xl: '1',
             }}
             className="p-3"
           >
@@ -87,6 +89,11 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
               </Box>
               <Separator size="4" />
             </Flex>
+            {!subTask && activity.photos && (
+              <Flex>
+                <GalleryModal photos={activity.photos} />
+              </Flex>
+            )}
             {subTask && (
               <Flex direction="column" justify="center" align="center" gap="3">
                 <Box>

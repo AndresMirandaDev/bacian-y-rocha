@@ -11,9 +11,12 @@ import {
   TextArea,
 } from '@radix-ui/themes';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { MdSubdirectoryArrowRight } from 'react-icons/md';
+import { MdPhotoLibrary, MdSubdirectoryArrowRight } from 'react-icons/md';
 import ActivityPopOver from './_components/ActivityPopOver';
 import colors from '../styles/colors';
+import Link from 'next/link';
+import GalleryModal from './_components/GalleryModal';
+import ImageUploader from './_components/ImageUploader';
 
 interface SubTask {
   id: string;
@@ -36,6 +39,7 @@ interface Task {
   startDate: string;
   durationInDays: number;
   subTasks?: SubTask[];
+  photos: string[];
 }
 
 interface Props {
@@ -53,8 +57,11 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
       progress: 0,
       startDate: '',
       durationInDays: 0,
+      photos: [],
     },
   ]);
+
+  console.log(activities);
 
   useEffect(() => {
     if (tasks) {
@@ -120,6 +127,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
         progress: 0,
         startDate: '',
         durationInDays: 0,
+        photos: [],
       },
     ]);
   };
@@ -301,6 +309,22 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                   </ActivityPopOver>
                 </Flex>
               </Flex>
+              <Box className="w-full">
+                <GalleryModal photos={a.photos} />
+              </Box>
+              <Box className="w-full">
+                <ImageUploader
+                  setPublicId={(publicId: string) => {
+                    const updatedActivities = [...activities];
+                    updatedActivities[index].photos = [
+                      ...updatedActivities[index].photos,
+                      publicId,
+                    ];
+                    setActivities(updatedActivities);
+                  }}
+                  multiple
+                />
+              </Box>
 
               <Flex direction="column" className="p-1">
                 <Flex>

@@ -32,6 +32,7 @@ export const workOrderValidationSchema = z.object({
         progress: z.number(),
         startDate: z.string(),
         durationInDays: z.number(),
+        photos:z.string().array(),
 
         subTasks: z.object({
                 id: z.string(),
@@ -80,6 +81,7 @@ export const updateWorkOrderValidationSchema = z.object({
         progress: z.number().optional(),
         startDate: z.string().optional(),
         durationInDays: z.number().optional(),
+        photos:z.string().array().optional(),
         
         subTasks: z.object({
                 id: z.string(),

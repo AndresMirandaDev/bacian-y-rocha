@@ -2,12 +2,16 @@
 
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { DownloadIcon } from '@radix-ui/react-icons';
-import { Box, Button, IconButton } from '@radix-ui/themes';
+import { Box, Button, Flex, IconButton } from '@radix-ui/themes';
 import { CldImage as CldImageDefault, CldImageProps } from 'next-cloudinary';
 
 const CldImage = (props: CldImageProps) => {
   return (
-    <>
+    <Flex
+      direction="column"
+      justify="between"
+      className="border border-slate-300 p-1 rounded-lg"
+    >
       <CldImageDefault {...props} />
       <Box>
         <Button
@@ -22,7 +26,7 @@ const CldImage = (props: CldImageProps) => {
           Descargar
         </Button>
       </Box>
-    </>
+    </Flex>
   );
 };
 

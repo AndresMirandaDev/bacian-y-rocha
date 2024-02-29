@@ -10,9 +10,10 @@ interface CloudinaryResult {
 interface Props {
   publicId: string;
   setPublicId: Dispatch<SetStateAction<string>>;
+  multiple: boolean;
 }
 
-const FileUploader = ({ publicId, setPublicId }: Props) => {
+const FileUploader = ({ publicId, setPublicId, multiple }: Props) => {
   return (
     <>
       {publicId && publicId !== 'pending' && (
@@ -21,7 +22,7 @@ const FileUploader = ({ publicId, setPublicId }: Props) => {
       <CldUploadWidget
         options={{
           sources: ['local'],
-          multiple: false,
+          multiple: multiple,
           clientAllowedFormats: ['pdf'],
         }}
         uploadPreset="lvoo9bpb"
@@ -34,7 +35,11 @@ const FileUploader = ({ publicId, setPublicId }: Props) => {
         {({ open }) => (
           <button
             className="btn mt-3 bg-[var(--accent-9)] text-white hover:bg-gray-600"
-            onClick={(e) => open()}
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              open();
+            }}
             type="button"
           >
             <UploadIcon />

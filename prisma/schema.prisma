@@ -163,4 +163,5 @@ type Task {
   startDate      String
   durationInDays Int
   subTasks       SubTask[]
+  photos         String[]
 }
