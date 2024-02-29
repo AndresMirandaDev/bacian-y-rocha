@@ -214,7 +214,11 @@ const QuoteForm = ({ quote }: Props) => {
                 />
               </Flex>
               <Flex gap="2" direction="column">
-                <FileUploader publicId={file} setPublicId={setFile} />
+                <FileUploader
+                  publicId={file}
+                  setPublicId={setFile}
+                  multiple={false}
+                />
               </Flex>
             </Flex>
           </Card>
