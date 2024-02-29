@@ -130,6 +130,7 @@ model WorkOrder {
 
   materials  WorkOrderMaterial[]
   activities Task[]
+  workPrice  Int
 }
 
 type WorkOrderMaterial {

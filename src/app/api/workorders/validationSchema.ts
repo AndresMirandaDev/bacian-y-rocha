@@ -15,6 +15,7 @@ export const workOrderValidationSchema = z.object({
     componentDevice:z.string().min(1).max(255),
     model:z.string().min(1).max(255),
     deviceNumber:z.string().min(1).max(255),
+    workPrice:z.number(),
     materials:z.object({
         name:z.string().min(1).max(255),
         unitPrice:z.number(),
@@ -64,6 +65,7 @@ export const updateWorkOrderValidationSchema = z.object({
     componentDevice:z.string().min(1).max(255).optional(),
     model:z.string().min(1).max(255).optional(),
     deviceNumber:z.string().min(1).max(255).optional(),
+    workPrice:z.number().optional(),
     materials:z.object({
         name:z.string().min(1).max(255),
         unitPrice:z.number(),

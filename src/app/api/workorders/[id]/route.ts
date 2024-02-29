@@ -34,7 +34,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
                 model,
                 deviceNumber,
                 materials,
-                activities
+                activities,
+                workPrice
             } = body
 
             const updatedWorkOrder = await prisma.workOrder.update({
@@ -55,7 +56,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
                     model,
                     deviceNumber,
                     materials,
-                    activities
+                    activities,
+                    workPrice
                 }
             })
             return NextResponse.json({message:'success', body:updatedWorkOrder})
