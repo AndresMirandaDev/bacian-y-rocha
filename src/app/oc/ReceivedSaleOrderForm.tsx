@@ -93,7 +93,11 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
           />
 
           <Text className="text-zinc-500">Archivo PDF</Text>
-          <FileUploader publicId={file} setPublicId={setFile} />
+          <FileUploader
+            publicId={file}
+            setPublicId={setFile}
+            multiple={false}
+          />
           <Form.Submit asChild>
             <Button
               disabled={isSubmitting}
