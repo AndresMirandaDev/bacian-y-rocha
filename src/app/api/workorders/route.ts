@@ -35,7 +35,8 @@ export async function POST(request:NextRequest){
             model,
             deviceNumber,
             materials,
-            activities
+            activities,
+            workPrice
         } = body
 
         const newWorkOrder = await prisma.workOrder.create({
@@ -55,8 +56,9 @@ export async function POST(request:NextRequest){
                 model,
                 deviceNumber,
                 materials,
-                activities
-            }
+                activities,
+                workPrice
+            }   
         })    
 
         return NextResponse.json({message:'success', body:newWorkOrder})

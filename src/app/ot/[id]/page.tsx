@@ -14,6 +14,8 @@ import logo from '../../../../public/assets/images/byrs.png';
 import WorkOrderActions from './WorkOrderActions';
 import TaskAccordion from './TaskAccordion';
 import DetailsHeader from './_components/DetailsHeader';
+import { FaArrowTrendDown, FaArrowTrendUp } from 'react-icons/fa6';
+import colors from '@/app/styles/colors';
 
 interface Params {
   params: { id: string };
@@ -26,8 +28,56 @@ const WorkOrderDetails = async ({ params }: Params) => {
 
   if (!workOrder) return notFound();
 
-  const orderTotal = workOrder.materials.reduce((accumulator, m) => {
-    return m.quantity * m.unitPrice + accumulator;
+  const totalBalance =
+    workOrder.workPrice -
+    (workOrder.activities.reduce((accumulator, activity) => {
+      return (
+        accumulator +
+        activity.subTasks.reduce((acc, st) => {
+          return acc + st.hours * st.hourPrice;
+        }, 0)
+      );
+    }, 0) +
+      workOrder.materials.reduce((accumulator, m) => {
+        return (
+          m.quantity * m.unitPrice -
+          m.quantity * m.unitPrice * (m.discount / 100) +
+          accumulator
+        );
+      }, 0));
+
+  const totalExpenses =
+    workOrder.activities.reduce((accumulator, activity) => {
+      return (
+        accumulator +
+        activity.subTasks.reduce((acc, st) => {
+          return acc + st.hours * st.hourPrice;
+        }, 0)
+      );
+    }, 0) +
+    workOrder.materials.reduce((accumulator, m) => {
+      return (
+        m.quantity * m.unitPrice -
+        m.quantity * m.unitPrice * (m.discount / 100) +
+        accumulator
+      );
+    }, 0);
+
+  const totalHours = workOrder.activities.reduce((accumulator, activity) => {
+    return (
+      accumulator +
+      activity.subTasks.reduce((acc, st) => {
+        return acc + st.hours * st.hourPrice;
+      }, 0)
+    );
+  }, 0);
+
+  const materialExpenses = workOrder.materials.reduce((accumulator, m) => {
+    return (
+      m.quantity * m.unitPrice -
+      m.quantity * m.unitPrice * (m.discount / 100) +
+      accumulator
+    );
   }, 0);
 
   return (
@@ -114,6 +164,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
             </Box>
             <Box>
               <Text>{workOrder.description}</Text>
+            </Box>
+          </Flex>
+          <Flex direction="column" className="flex-grow">
+            <Box>
+              <Text className="font-bold">Precio Cobrado:</Text>
+            </Box>
+            <Box>
+              <Text>$ {workOrder.workPrice}</Text>
             </Box>
           </Flex>
         </Flex>
@@ -336,16 +394,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
               <Text className="font-bold ">Gastos en materiales</Text>
             </Box>
             <Box>
-              <Text className="text-xl">
-                $
-                {workOrder.materials.reduce((accumulator, m) => {
-                  return (
-                    m.quantity * m.unitPrice -
-                    m.quantity * m.unitPrice * (m.discount / 100) +
-                    accumulator
-                  );
-                }, 0)}
-              </Text>
+              <Text className="text-xl">${totalExpenses}</Text>
             </Box>
           </Flex>
           <Separator size="4" />
@@ -354,42 +403,53 @@ const WorkOrderDetails = async ({ params }: Params) => {
               <Text className="font-bold ">Gastos H.H</Text>
             </Box>
             <Box>
-              <Text className="text-xl">
-                $
-                {workOrder.activities.reduce((accumulator, activity) => {
-                  return (
-                    accumulator +
-                    activity.subTasks.reduce((acc, st) => {
-                      return acc + st.hours * st.hourPrice;
-                    }, 0)
-                  );
-                }, 0)}
-              </Text>
+              <Text className="text-xl">${totalHours}</Text>
             </Box>
           </Flex>
           <Separator size="4" />
           <Flex justify="between">
             <Box>
-              <Text className="font-bold text-2xl">Gastos Totales</Text>
+              <Text className="font-bold text-xl">Gastos Totales</Text>
             </Box>
             <Box>
-              <Text className="text-2xl font-bold">
-                $
-                {workOrder.activities.reduce((accumulator, activity) => {
-                  return (
-                    accumulator +
-                    activity.subTasks.reduce((acc, st) => {
-                      return acc + st.hours * st.hourPrice;
-                    }, 0)
-                  );
-                }, 0) +
-                  workOrder.materials.reduce((accumulator, m) => {
-                    return (
-                      m.quantity * m.unitPrice -
-                      m.quantity * m.unitPrice * (m.discount / 100) +
-                      accumulator
-                    );
-                  }, 0)}
+              <Text className="text-xl font-bold">${totalExpenses}</Text>
+            </Box>
+          </Flex>
+          <Separator size="4" />
+          <Flex justify="between">
+            <Box>
+              <Text className="font-bold text-xl">Precio cobrado</Text>
+            </Box>
+            <Box>
+              <Text className="text-xl font-bold">${workOrder.workPrice}</Text>
+            </Box>
+          </Flex>
+          <Separator size={'4'} />
+          <Flex justify="between">
+            <Box className="flex items-center gap-3">
+              <Text className="font-bold text-2xl">Balance</Text>
+              {totalBalance > 0 && (
+                <Box className="mr-5 text-green-500 text-2xl">
+                  <FaArrowTrendUp />
+                </Box>
+              )}
+              {totalBalance < 0 && (
+                <Box className="mr-5 text-red-500 text-2xl">
+                  <FaArrowTrendDown />
+                </Box>
+              )}
+            </Box>
+            <Box>
+              <Text
+                className="text-2xl font-bold"
+                style={{
+                  color:
+                    totalBalance > 0
+                      ? colors.buttonColors.green
+                      : colors.buttonColors.danger,
+                }}
+              >
+                ${totalBalance}
               </Text>
             </Box>
           </Flex>

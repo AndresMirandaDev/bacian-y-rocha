@@ -88,6 +88,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [componentDevice, setComponentDevice] = useState('');
   const [model, setModel] = useState('');
   const [deviceNumber, setDeviceNumber] = useState('');
+  const [workPrice, setWorkPrice] = useState('');
   const [activities, setActivities] = useState<Task[]>([]);
 
   const [materialsToSubmit, setMaterialsToSubmit] = useState<Material[]>([]);
@@ -172,6 +173,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           model: string;
           componentName: string;
           materials: Material[];
+          workPrice: number;
           activities: Task[];
         } = {
           revision,
@@ -188,6 +190,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           model,
           componentName,
           materials: materialsToSubmit,
+          workPrice: parseInt(workPrice),
           activities,
         };
         if (endDate !== '') {
@@ -215,6 +218,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           deviceNumber,
           model,
           componentName,
+          workPrice: parseInt(workPrice),
           materials: materialsToSubmit,
           activities,
         });
@@ -355,6 +359,21 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                   valueMissing="Campo requerido"
                   name="number"
                   typeMismatch="numero inválido"
+                />
+              </Box>
+            </Flex>
+            <Flex className="flex-grow" direction="column">
+              <Box>
+                <Text className="font-bold">Precio cobrado</Text>
+              </Box>
+              <Box>
+                <FormField
+                  value={workPrice}
+                  setValue={setWorkPrice}
+                  valueMissing="Campo requerido"
+                  name="workPrice"
+                  typeMismatch="numero inválido"
+                  type="number"
                 />
               </Box>
             </Flex>
