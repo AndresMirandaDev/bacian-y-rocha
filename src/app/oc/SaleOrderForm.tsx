@@ -290,6 +290,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
             <FileUploader
               publicId={receptionGuide}
               setPublicId={setReceptionGuide}
+              multiple={false}
             />
           </Flex>
         </Flex>
