@@ -1,7 +1,15 @@
 import DeleteDataDialog from '@/app/components/DeleteDataDialog';
 import { User } from '@prisma/client';
 import { UpdateIcon } from '@radix-ui/react-icons';
-import { Box, Button, Card, Flex, Grid, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Separator,
+  Text,
+} from '@radix-ui/themes';
 import Link from 'next/link';
 import React from 'react';
 import { FaUserCircle } from 'react-icons/fa';
@@ -15,11 +23,16 @@ const UserDetails = ({ user }: Props) => {
   return (
     <Card>
       <Grid
-        columns={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '2', xl: '2' }}
+        columns={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '1', xl: '1' }}
         align="center"
         gap="4"
       >
-        <Flex className="row-span-3" justify="center">
+        <Flex
+          className="row-span-3"
+          justify="center"
+          direction="column"
+          align={'center'}
+        >
           <Box className="text-9xl text-slate-400">
             <FaUserCircle />
           </Box>
@@ -31,6 +44,7 @@ const UserDetails = ({ user }: Props) => {
           <Box>
             <Text>{user.name}</Text>
           </Box>
+          <Separator size="4" />
         </Flex>
         <Flex direction="column">
           <Box>
@@ -39,6 +53,7 @@ const UserDetails = ({ user }: Props) => {
           <Box>
             <Text>{user.email}</Text>
           </Box>
+          <Separator size="4" />
         </Flex>
         {user.phone && (
           <Flex direction="column">
@@ -50,6 +65,7 @@ const UserDetails = ({ user }: Props) => {
             <Box>
               <Text>{user.phone}</Text>
             </Box>
+            <Separator size="4" />
           </Flex>
         )}
         <Flex direction="column" gap="3">
