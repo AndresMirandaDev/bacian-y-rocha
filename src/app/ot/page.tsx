@@ -6,6 +6,8 @@ import WorkOrdersTable from './_otTables/WorkOrdersTable';
 import Link from 'next/link';
 import { PlusIcon } from '@radix-ui/react-icons';
 import WorkOrderSummary from './_components/WorkOrderSummary';
+import PendingWorkOrdersTable from './_otTables/PendingWorkOrdersTable';
+import { WorkOrder } from '@prisma/client';
 
 const getWorkOrders = async () => {
   const res = await fetch(
@@ -37,6 +39,13 @@ const WorkOrderPage = async () => {
       </Card>
       <Card>
         <WorkOrderSummary workOrders={workOrders} />
+      </Card>
+      <Card>
+        <PendingWorkOrdersTable
+          workOrders={workOrders.filter((wo: WorkOrder) => {
+            return !wo.endDate;
+          })}
+        />
       </Card>
     </Grid>
   );
