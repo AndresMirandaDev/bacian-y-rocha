@@ -100,7 +100,7 @@ const SaleOrderDetails = ({ saleOrder }: Props) => {
                 name="orden de compra"
                 id={saleOrder.id}
                 route="/api/saleorders"
-                pushRoute="/oc"
+                pushRoute="/oc/emitted"
               />
               <PdfView saleOrder={saleOrder} />
             </Flex>

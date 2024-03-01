@@ -116,9 +116,9 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
           {receivedSaleOrder && (
             <DeleteDataDialog
               id={receivedSaleOrder.id}
-              route="/api/receivedsaleorders"
+              route="/api/receivedSaleOrders"
               name="orden de compra"
-              pushRoute="/oc"
+              pushRoute="/oc/received"
             />
           )}
         </Box>
