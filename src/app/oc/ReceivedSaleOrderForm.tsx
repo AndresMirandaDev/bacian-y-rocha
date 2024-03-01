@@ -30,23 +30,23 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
     try {
       setSubmitting(true);
       if (receivedSaleOrder) {
-        await axios.patch(`/api/receivedsaleorders/${receivedSaleOrder.id}`, {
+        await axios.patch(`/api/receivedSaleOrders/${receivedSaleOrder.id}`, {
           file,
           number,
           receivedDate: new Date(date).toISOString(),
         });
-        toast.success('Orden de compra aactualizada');
+        toast.success('Orden de compra actualizada');
         router.refresh();
         setSubmitting(false);
       } else {
-        await axios.post('/api/receivedsaleorders', {
+        await axios.post('/api/receivedSaleOrders', {
           file,
           number,
           receivedDate: new Date(date).toISOString(),
         });
 
         toast.success('Orden de compra registrada');
-        router.push('/oc');
+        router.push('/oc/received');
         router.refresh();
         setSubmitting(false);
       }

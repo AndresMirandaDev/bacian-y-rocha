@@ -394,7 +394,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
               <Text className="font-bold ">Gastos en materiales</Text>
             </Box>
             <Box>
-              <Text className="text-xl">${totalExpenses}</Text>
+              <Text className="text-xl">${materialExpenses}</Text>
             </Box>
           </Flex>
           <Separator size="4" />

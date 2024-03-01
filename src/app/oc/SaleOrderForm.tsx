@@ -153,7 +153,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
         await axios.patch(`/api/saleorders/${saleOrder.id}`, updatedData);
         toast.success('Orden de compra actualizada.');
         setSubmitting(false);
-        router.push('/oc');
+        router.push('/oc/emitted');
         router.refresh();
       } else {
         setSubmitting(true);
@@ -177,7 +177,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
           status,
           discount: parseInt(discount),
         });
-        router.push('/oc');
+        router.push('/oc/emitted');
         router.refresh();
         setSubmitting(false);
         toast.success('Nueva orden de compra ha sido creada.');
