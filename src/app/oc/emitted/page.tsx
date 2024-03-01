@@ -32,7 +32,7 @@ const EmittedWorkOrdersPage = async () => {
       <Box>
         <Button>
           <PlusIcon />
-          <Link href={'/oc/new'}>Emitir orden de compra</Link>
+          <Link href={'/oc/new'}>Generar orden de compra</Link>
         </Button>
       </Box>
       <Card className="shadow-lg">

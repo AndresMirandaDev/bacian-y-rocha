@@ -100,6 +100,9 @@ const QuoteForm = ({ quote }: Props) => {
         if (quoteSent !== '') {
           updatedData.quoteSent = new Date(quoteSent).toISOString();
         }
+        if (quoteSent !== '' || file !== '') {
+          setStatus('FINISHED');
+        }
 
         await axios.patch(`/api/quotes/${quote.id}`, updatedData);
 
@@ -171,7 +174,7 @@ const QuoteForm = ({ quote }: Props) => {
                   type="date"
                 />
               </Flex>
-              <Flex gap="2" direction="column">
+              {/* <Flex gap="2" direction="column">
                 <Box>
                   <Text className={labelStyle}>Estado</Text>
                 </Box>
@@ -185,7 +188,7 @@ const QuoteForm = ({ quote }: Props) => {
                     <Select.Item value="FINISHED">Enviada</Select.Item>
                   </Select.Content>
                 </Select.Root>
-              </Flex>
+              </Flex> */}
             </Flex>
           </Card>
           <Card>
