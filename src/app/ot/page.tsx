@@ -27,7 +27,7 @@ const WorkOrderPage = async () => {
 
   if (!workOrders) return notFound();
   return (
-    <Grid className="p-3" gap="4">
+    <Grid className="p-3" gap="7">
       <Box>
         <Button>
           <PlusIcon />
@@ -37,9 +37,9 @@ const WorkOrderPage = async () => {
       <Card>
         <WorkOrdersTable workOrders={workOrders} />
       </Card>
-      <Card>
-        <WorkOrderSummary workOrders={workOrders} />
-      </Card>
+
+      <WorkOrderSummary workOrders={workOrders} />
+
       <Card>
         <PendingWorkOrdersTable
           workOrders={workOrders.filter((wo: WorkOrder) => {
