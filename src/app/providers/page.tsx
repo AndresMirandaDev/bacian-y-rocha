@@ -31,7 +31,11 @@ const ProvidersPage = async () => {
           </Button>
         </Flex>
         <Card>
-          <StakeHolderTable stakeholders={providers} title="Proveedores" />
+          <StakeHolderTable
+            stakeholders={providers}
+            title="Proveedores"
+            type="providers"
+          />
         </Card>
       </Grid>
       <Toaster />

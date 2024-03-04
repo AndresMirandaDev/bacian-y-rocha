@@ -3,19 +3,19 @@ import { Box, Card, Grid, Text } from '@radix-ui/themes';
 import React from 'react';
 import { Toaster } from 'react-hot-toast';
 
-const NewProviderPage = () => {
+const NewClientPage = () => {
   return (
     <>
       <Grid className="p-3">
         <Card>
           <Box className="mb-5 pl-2">
-            <Text className="text-xl">Registrar nuevo Proveedor</Text>
+            <Text className="text-xl">Registrar nuevo cliente</Text>
           </Box>
-          <StakeholderForm type="providers" />
+          <StakeholderForm type="clients" />
         </Card>
       </Grid>
     </>
   );
 };
 
-export default NewProviderPage;
+export default NewClientPage;

@@ -8,24 +8,24 @@ interface Params {
   params: { id: string };
 }
 
-const EditProviderPage = async ({ params }: Params) => {
-  const provider = await prisma.stakeholders.findUnique({
+const EditClientPage = async ({ params }: Params) => {
+  const client = await prisma.stakeholders.findUnique({
     where: { id: params.id },
   });
 
-  if (!provider) return notFound();
+  if (!client) return notFound();
   return (
     <>
       <Grid className="p-3">
         <Card>
           <Box className="mb-5 pl-2">
-            <Text className="text-xl">Actualizar Proveedor</Text>
+            <Text className="text-xl">Actualizar Cliente</Text>
           </Box>
-          <StakeholderForm stakeholder={provider} type="providers" />
+          <StakeholderForm stakeholder={client} type="clients" />
         </Card>
       </Grid>
     </>
   );
 };
 
-export default EditProviderPage;
+export default EditClientPage;

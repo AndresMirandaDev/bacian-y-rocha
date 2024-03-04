@@ -9,9 +9,10 @@ import Pagination from './Pagination';
 interface Props {
   stakeholders: Stakeholders[];
   title: string;
+  type: 'clients' | 'providers';
 }
 
-const StakeHolderTable = ({ stakeholders, title }: Props) => {
+const StakeHolderTable = ({ stakeholders, title, type }: Props) => {
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setPage] = useState(0);
   return (
@@ -37,7 +38,7 @@ const StakeHolderTable = ({ stakeholders, title }: Props) => {
               >
                 <Table.Cell>
                   <Link
-                    href={`/providers/${provider.id}`}
+                    href={`/${type}/${provider.id}`}
                     className="text-slate-700 font-bold"
                   >
                     {provider.name}

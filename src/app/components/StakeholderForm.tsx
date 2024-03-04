@@ -13,8 +13,9 @@ import { UpdateIcon } from '@radix-ui/react-icons';
 
 interface Props {
   stakeholder?: Stakeholders;
+  type: 'clients' | 'providers';
 }
-const StakeholderForm = ({ stakeholder }: Props) => {
+const StakeholderForm = ({ stakeholder, type }: Props) => {
   const router = useRouter();
 
   const [name, setName] = useState('');
@@ -40,33 +41,38 @@ const StakeholderForm = ({ stakeholder }: Props) => {
     try {
       if (stakeholder) {
         setSubmitting(true);
-        await axios.patch(`/api/providers/${stakeholder.id}`, {
+        await axios.patch(`/api/${type}/${stakeholder.id}`, {
           name,
           email,
           rut,
           phone,
           city,
         });
-        router.push('/providers');
+        router.push(`/${type}`);
         setSubmitting(false);
         router.refresh();
-        toast.success('Proveedor actualizado');
+        toast.success(
+          `${type == 'clients' ? 'Cliente' : 'Proveedor'} actualizado`
+        );
       } else {
         setSubmitting(true);
-        await axios.post(`/api/providers`, {
+        await axios.post(`/api/${type}`, {
           name,
           email,
           rut,
           phone,
           city,
         });
-        router.push('/providers');
+        router.push(`/${type}`);
         setSubmitting(false);
         router.refresh();
-        toast.success('Proveedor registrado');
+        toast.success(
+          `${type == 'clients' ? 'Cliente' : 'Proveedor'} registrado`
+        );
       }
     } catch (error) {
       console.log(error);
+      toast('Ocurrió un error inesperado, inténtelo nuevamente.');
     }
   };
 
