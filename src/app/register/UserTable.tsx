@@ -19,7 +19,7 @@ const UserTable = ({ users }: Props) => {
       <Box className="mb-5 pl-2">
         <Text className="text-xl">Registro de usuarios</Text>
       </Box>
-      <Table.Root variant="surface">
+      <Table.Root variant="surface" className="shadow-lg">
         <Table.Header style={{ backgroundColor: colors.tableHead }}>
           <Table.Row className="text-slate-100">
             <Table.ColumnHeaderCell></Table.ColumnHeaderCell>
