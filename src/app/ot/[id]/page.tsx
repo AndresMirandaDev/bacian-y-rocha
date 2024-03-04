@@ -127,20 +127,6 @@ const WorkOrderDetails = async ({ params }: Params) => {
               </Text>
             </Box>
           </Flex>
-          <Grid columns="2" className="flex-grow">
-            <Box className="border border-slate-300 flex justify-center items-center font-bold">
-              <Text>Revisión</Text>
-            </Box>
-            <Box className="border border-slate-300 flex justify-center items-center">
-              <Text>{workOrder.revision}</Text>
-            </Box>
-            <Box className="border border-slate-300 flex justify-center items-center font-bold">
-              <Text>Código</Text>
-            </Box>
-            <Box className="border border-slate-300 flex justify-center items-center">
-              <Text>{workOrder.code}</Text>
-            </Box>
-          </Grid>
         </Flex>
         {/* cabecera  */}
 
@@ -229,14 +215,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
                 </Text>
               </Box>
             </Flex>
-            <Flex>
-              <Box className="w-1/2">
-                <Text className="font-bold">Requiere placa</Text>
-              </Box>
-              <Box className="w-1/2">
-                <Text>{workOrder.requiresPlaque}</Text>
-              </Box>
-            </Flex>
+
             <Flex>
               <Box className="w-1/2">
                 <Text className="font-bold">Fecha estimada de entrega </Text>

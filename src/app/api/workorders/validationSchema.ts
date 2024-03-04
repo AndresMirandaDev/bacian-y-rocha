@@ -1,8 +1,8 @@
 import { z } from 'zod'
 
 export const workOrderValidationSchema = z.object({
-    revision:z.string().min(1).max(255),
-    code:z.string().min(1).max(255),
+    // revision:z.string().min(1).max(255),
+    // code:z.string().min(1).max(255),
     number:z.string().min(1).max(255),
     description:z.string().min(1),
     client:z.string().min(1).max(255),
@@ -10,7 +10,7 @@ export const workOrderValidationSchema = z.object({
     endDate:z.string().optional(),
     estimatedDate:z.string(),
     quoteNumber:z.string().min(1).max(255),
-    requiresPlaque:z.string().min(1).max(255),
+    // requiresPlaque:z.string().min(1).max(255),
     componentName:z.string().min(1).max(255),
     componentDevice:z.string().min(1).max(255),
     model:z.string().min(1).max(255),
@@ -51,8 +51,8 @@ export const workOrderValidationSchema = z.object({
 
 
 export const updateWorkOrderValidationSchema = z.object({
-    revision:z.string().min(1).max(255).optional(),
-    code:z.string().min(1).max(255).optional(),
+    // revision:z.string().min(1).max(255).optional(),
+    // code:z.string().min(1).max(255).optional(),
     number:z.string().min(1).max(255).optional(),
     description:z.string().min(1).optional(),
     client:z.string().min(1).max(255).optional(),
@@ -60,7 +60,7 @@ export const updateWorkOrderValidationSchema = z.object({
     endDate:z.string().optional(),
     estimatedDate:z.string().optional(),
     quoteNumber:z.string().min(1).max(255).optional(),
-    requiresPlaque:z.string().min(1).max(255).optional(),
+    // requiresPlaque:z.string().min(1).max(255).optional(),
     componentName:z.string().min(1).max(255).optional(),
     componentDevice:z.string().min(1).max(255).optional(),
     model:z.string().min(1).max(255).optional(),

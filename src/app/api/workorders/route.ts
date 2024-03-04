@@ -20,8 +20,8 @@ export async function POST(request:NextRequest){
             return NextResponse.json({message:isValid.error.format()}, {status : 400})
         
         const {
-            revision,
-            code,
+            // revision,
+            // code,
             number,
             description,
             client,
@@ -29,7 +29,7 @@ export async function POST(request:NextRequest){
             endDate,
             estimatedDate,
             quoteNumber,
-            requiresPlaque,
+            // requiresPlaque,
             componentName,
             componentDevice,
             model,
@@ -41,8 +41,8 @@ export async function POST(request:NextRequest){
 
         const newWorkOrder = await prisma.workOrder.create({
             data:{
-                revision,
-                code,
+                // revision,
+                // code,
                 number,
                 description,
                 client,
@@ -50,7 +50,7 @@ export async function POST(request:NextRequest){
                 endDate,
                 estimatedDate,
                 quoteNumber,
-                requiresPlaque,
+                // requiresPlaque,
                 componentName,
                 componentDevice,
                 model,

@@ -107,8 +107,8 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
 
   useEffect(() => {
     if (workOrder) {
-      setRevision(workOrder.revision);
-      setCode(workOrder.code);
+      // setRevision(workOrder.revision);
+      // setCode(workOrder.code);
       setNumber(workOrder.number);
       setDescription(workOrder.description);
       setClient(workOrder.client);
@@ -117,7 +117,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
         formatDate(workOrder.estimatedDate.toLocaleDateString())
       );
       setQuoteNumber(workOrder.quoteNumber);
-      setRequiresPlaque(workOrder.requiresPlaque);
+      // setRequiresPlaque(workOrder.requiresPlaque);
       setComponentName(workOrder.componentName);
       setComponentDevice(workOrder.componentDevice);
       setModel(workOrder.model);
@@ -159,13 +159,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       if (workOrder) {
         setSubmitting(true);
         const updatedData: {
-          revision: string;
-          code: string;
+          // revision: string;
+          // code: string;
           number: string;
           description: string;
           client: string;
           quoteNumber: string;
-          requiresPlaque: string;
+          // requiresPlaque: string;
           startDate: string;
           endDate?: string;
           estimatedDate: string;
@@ -177,13 +177,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           workPrice: number;
           activities: Task[];
         } = {
-          revision,
-          code,
+          // revision,
+          // code,
           number,
           description,
           client,
           quoteNumber,
-          requiresPlaque,
+          // requiresPlaque,
           startDate: new Date(startDate).toISOString(),
           estimatedDate: new Date(estimatedDate).toISOString(),
           componentDevice,
@@ -206,13 +206,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       } else {
         setSubmitting(true);
         await axios.post('/api/workorders', {
-          revision,
-          code,
+          // revision,
+          // code,
           number,
           description,
           client,
           quoteNumber,
-          requiresPlaque,
+          // requiresPlaque,
           startDate: new Date(startDate).toISOString(),
           estimatedDate: new Date(estimatedDate).toISOString(),
           componentDevice,
@@ -316,32 +316,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                 </Text>
               </Box>
             </Flex>
-            <Grid columns="2" className="flex-grow">
-              <Box className="border border-slate-300 flex justify-center items-center font-bold">
-                <Text>Revisión</Text>
-              </Box>
-              <Box className="border border-slate-300 flex justify-center items-center">
-                <FormField
-                  value={revision}
-                  setValue={setRevision}
-                  valueMissing="Campo requerido"
-                  name="revision"
-                  typeMismatch="revision invalida"
-                />
-              </Box>
-              <Box className="border border-slate-300 flex justify-center items-center font-bold">
-                <Text>Código</Text>
-              </Box>
-              <Box className="border border-slate-300 flex justify-center items-center">
-                <FormField
-                  value={code}
-                  setValue={setCode}
-                  valueMissing="Campo requerido"
-                  name="code"
-                  typeMismatch="código invalido"
-                />
-              </Box>
-            </Grid>
           </Flex>
           {/* cabecera  */}
 
@@ -486,20 +460,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                     name="estimatedDate"
                     typeMismatch="fecha invalida"
                     type="date"
-                  />
-                </Box>
-              </Flex>
-              <Flex>
-                <Box className="w-1/2">
-                  <Text className="font-bold">Requiere placa</Text>
-                </Box>
-                <Box className="w-1/2">
-                  <FormField
-                    value={requiresPlaque}
-                    setValue={setRequiresPlaque}
-                    valueMissing="Campo requerido"
-                    name="requiresPlaque"
-                    typeMismatch="campo invalido"
                   />
                 </Box>
               </Flex>

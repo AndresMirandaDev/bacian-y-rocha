@@ -19,8 +19,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
             return NextResponse.json({ message:isValid.error.format() },{ status:400 })
 
             const {
-                revision,
-                code,
+                // revision,
+                // code,
                 number,
                 description,
                 client,
@@ -28,7 +28,7 @@ export async function PATCH(request:NextRequest, { params } : Params){
                 endDate,
                 estimatedDate,
                 quoteNumber,
-                requiresPlaque,
+                // requiresPlaque,
                 componentName,
                 componentDevice,
                 model,
@@ -41,8 +41,8 @@ export async function PATCH(request:NextRequest, { params } : Params){
             const updatedWorkOrder = await prisma.workOrder.update({
                 where:{ id : workOrder.id},
                 data:{
-                    revision,
-                    code,
+                    // revision,
+                    // code,
                     number,
                     description,
                     client,
@@ -50,7 +50,7 @@ export async function PATCH(request:NextRequest, { params } : Params){
                     endDate,
                     estimatedDate,
                     quoteNumber,
-                    requiresPlaque,
+                    // requiresPlaque,
                     componentName,
                     componentDevice,
                     model,

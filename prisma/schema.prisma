@@ -109,18 +109,18 @@ enum Status {
 
 model WorkOrder {
   id          String @id @default(auto()) @map("_id") @db.ObjectId
-  revision    String
-  code        String
+  // revision    String
+  // code        String
   number      String
   description String
 
   //general info
-  client         String
-  startDate      DateTime
-  endDate        DateTime?
-  estimatedDate  DateTime
-  quoteNumber    String
-  requiresPlaque String
+  client        String
+  startDate     DateTime
+  endDate       DateTime?
+  estimatedDate DateTime
+  quoteNumber   String
+  // requiresPlaque String
 
   //component info
   componentName   String
