@@ -9,6 +9,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Spinner from '../components/Spinner';
 import { UpdateIcon } from '@radix-ui/react-icons';
+import colors from '../styles/colors';
 
 interface Props {
   user?: User;
@@ -144,7 +145,11 @@ const UserForm = ({ user }: Props) => {
           <Box>
             <Form.Submit asChild>
               <Button
-                style={{ backgroundColor: user ? '#2ebb45' : '#3E63DD' }}
+                style={{
+                  backgroundColor: user
+                    ? colors.buttonColors.green
+                    : colors.buttonColors.primary,
+                }}
                 disabled={isSubmitting}
               >
                 {user && <UpdateIcon />}

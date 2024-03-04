@@ -28,23 +28,25 @@ const StakeHolderTable = ({ stakeholders, title }: Props) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {stakeholders.map((provider, index) => (
-            <Table.Row
-              key={provider.id}
-              className={index % 2 === 0 ? 'bg-gray-200' : 'bg-white'}
-            >
-              <Table.Cell>
-                <Link
-                  href={`/providers/${provider.id}`}
-                  className="text-slate-700 font-bold"
-                >
-                  {provider.name}
-                </Link>
-              </Table.Cell>
-              <Table.Cell>{provider.phone}</Table.Cell>
-              <Table.Cell>{provider.email}</Table.Cell>
-            </Table.Row>
-          ))}
+          {stakeholders
+            .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
+            .map((provider, index) => (
+              <Table.Row
+                key={provider.id}
+                className={index % 2 === 0 ? colors.tableNthChild : 'bg-white'}
+              >
+                <Table.Cell>
+                  <Link
+                    href={`/providers/${provider.id}`}
+                    className="text-slate-700 font-bold"
+                  >
+                    {provider.name}
+                  </Link>
+                </Table.Cell>
+                <Table.Cell>{provider.phone}</Table.Cell>
+                <Table.Cell>{provider.email}</Table.Cell>
+              </Table.Row>
+            ))}
         </Table.Body>
       </Table.Root>
       <Pagination
