@@ -31,9 +31,14 @@ const UserTable = ({ users }: Props) => {
         <Table.Body>
           {users
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
-            .map((u) => {
+            .map((u, index) => {
               return (
-                <Table.Row key={u.id}>
+                <Table.Row
+                  key={u.id}
+                  className={
+                    index % 2 === 0 ? colors.tableNthChild : 'bg-white'
+                  }
+                >
                   <Table.Cell>
                     <Box className="text-xl text-slate-300">
                       <FaUserCircle />

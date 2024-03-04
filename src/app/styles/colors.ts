@@ -6,5 +6,6 @@ export default {
         green:'#17B169',
     },
     grey: '#585a62',
-    tableHead:'#4a516b'
+    tableHead:'#4a516b',
+    tableNthChild:"bg-gray-100"
 }

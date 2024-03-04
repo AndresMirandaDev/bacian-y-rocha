@@ -40,9 +40,14 @@ const WorkOrdersTable = ({ workOrders }: Props) => {
         <Table.Body>
           {workOrders
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
-            .map((wo) => {
+            .map((wo, index) => {
               return (
-                <Table.Row key={wo.id}>
+                <Table.Row
+                  key={wo.id}
+                  className={
+                    index % 2 === 0 ? colors.tableNthChild : 'bg-white'
+                  }
+                >
                   <Table.Cell className="font-bold">
                     <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
                   </Table.Cell>

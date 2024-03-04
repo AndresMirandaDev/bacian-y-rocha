@@ -30,9 +30,14 @@ const EmittedOCTable = ({ saleOrders }: Props) => {
         <Table.Body>
           {saleOrders
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
-            .map((order) => {
+            .map((order, index) => {
               return (
-                <Table.Row key={order.id}>
+                <Table.Row
+                  key={order.id}
+                  className={
+                    index % 2 === 0 ? colors.tableNthChild : 'bg-white'
+                  }
+                >
                   <Table.Cell className="font-bold">
                     <Link href={`/oc/${order.id}`}>#{order.number}</Link>
                   </Table.Cell>

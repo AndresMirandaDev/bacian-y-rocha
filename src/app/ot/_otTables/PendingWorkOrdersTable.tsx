@@ -35,31 +35,38 @@ const PendingWorkOrdersTable = ({ workOrders }: Props) => {
           </Table.Row>
         </Table.Header>
         <Table.Body>
-          {workOrders.map((wo) => {
-            return (
-              <Table.Row key={wo.id}>
-                <Table.Cell className="font-bold">
-                  <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
-                </Table.Cell>
-                <Table.Cell className="hidden md:table-cell">
-                  {wo.client}
-                </Table.Cell>
-                <Table.Cell>
-                  <div className="block md:hidden text-slate-500 italic ">
-                    Componente
-                  </div>
-                  <div>{wo.componentName}</div>
-                  <div className="block md:hidden text-slate-500 italic ">
-                    Cliente
-                  </div>
-                  <div className="block md:hidden">{wo.client}</div>
-                </Table.Cell>
-                <Table.Cell>
-                  <Badge color="yellow">En proceso</Badge>
-                </Table.Cell>
-              </Table.Row>
-            );
-          })}
+          {workOrders
+            .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
+            .map((wo, index) => {
+              return (
+                <Table.Row
+                  key={wo.id}
+                  className={
+                    index % 2 === 0 ? colors.tableNthChild : 'bg-white'
+                  }
+                >
+                  <Table.Cell className="font-bold">
+                    <Link href={`/ot/${wo.id}`}> #{wo.number}</Link>
+                  </Table.Cell>
+                  <Table.Cell className="hidden md:table-cell">
+                    {wo.client}
+                  </Table.Cell>
+                  <Table.Cell>
+                    <div className="block md:hidden text-slate-500 italic ">
+                      Componente
+                    </div>
+                    <div>{wo.componentName}</div>
+                    <div className="block md:hidden text-slate-500 italic ">
+                      Cliente
+                    </div>
+                    <div className="block md:hidden">{wo.client}</div>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Badge color="yellow">En proceso</Badge>
+                  </Table.Cell>
+                </Table.Row>
+              );
+            })}
         </Table.Body>
       </Table.Root>
       <Pagination

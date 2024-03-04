@@ -45,13 +45,18 @@ const QuoteWaitingTable = ({ quotes }: Props) => {
         <Table.Body>
           {quotes
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
-            .map((quote) => {
+            .map((quote, index) => {
               const daysDifference = calculateDaysDifference(
                 new Date(),
                 quote.requestedDate
               );
               return (
-                <Table.Row key={quote.id}>
+                <Table.Row
+                  key={quote.id}
+                  className={
+                    index % 2 === 0 ? colors.tableNthChild : 'bg-white'
+                  }
+                >
                   <Table.Cell className="font-bold">
                     <Link href={`/quotes/${quote.id}`}>#{quote.number}</Link>
                   </Table.Cell>
