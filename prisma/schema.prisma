@@ -166,3 +166,20 @@ type Task {
   subTasks       SubTask[]
   photos         String[]
 }
+
+//clients & providers
+
+model Stakeholders {
+  id    String          @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  email String
+  phone String
+  city  String
+  rut   String
+  type  StakeholderType
+}
+
+enum StakeholderType {
+  CLIENT
+  PROVIDER
+}
