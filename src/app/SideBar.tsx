@@ -4,7 +4,12 @@ import classNames from 'classnames';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { FaFileInvoice, FaHelmetSafety } from 'react-icons/fa6';
+import {
+  FaFileInvoice,
+  FaHandshakeSimple,
+  FaHelmetSafety,
+  FaTruckFast,
+} from 'react-icons/fa6';
 
 import { FaFileInvoiceDollar } from 'react-icons/fa6';
 import { MdAdminPanelSettings, MdDashboard } from 'react-icons/md';
@@ -110,6 +115,16 @@ const NavLinks = ({ open }: NavlinkProps) => {
       label: 'Cotizaciones',
       href: '/quotes',
       icon: <FaFileInvoice />,
+    },
+    {
+      label: 'Clientes',
+      href: '/clients',
+      icon: <FaHandshakeSimple />,
+    },
+    {
+      label: 'Proveedores',
+      href: '/providers',
+      icon: <FaTruckFast />,
     },
     {
       label: 'Registro',
