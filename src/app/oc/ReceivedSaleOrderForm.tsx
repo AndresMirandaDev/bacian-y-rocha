@@ -11,6 +11,9 @@ import { useRouter } from 'next/navigation';
 import Spinner from '../components/Spinner';
 import { formatDate } from '../helpers/formatDate';
 import DeleteDataDialog from '../components/DeleteDataDialog';
+import ImageUploader from '../ot/_components/ImageUploader';
+import colors from '../styles/colors';
+import { UpdateIcon } from '@radix-ui/react-icons';
 
 interface Props {
   receivedSaleOrder?: ReceivedSaleOrder;
@@ -19,7 +22,7 @@ interface Props {
 const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
   const router = useRouter();
 
-  const [file, setFile] = useState('pending');
+  const [files, setFiles] = useState<string[]>([]);
   const [number, setNumber] = useState('');
   const [date, setDate] = useState('');
 
@@ -31,7 +34,7 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
       setSubmitting(true);
       if (receivedSaleOrder) {
         await axios.patch(`/api/receivedSaleOrders/${receivedSaleOrder.id}`, {
-          file,
+          files,
           number,
           receivedDate: new Date(date).toISOString(),
         });
@@ -40,7 +43,7 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
         setSubmitting(false);
       } else {
         await axios.post('/api/receivedSaleOrders', {
-          file,
+          files,
           number,
           receivedDate: new Date(date).toISOString(),
         });
@@ -59,7 +62,8 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
 
   useEffect(() => {
     if (receivedSaleOrder) {
-      setFile(receivedSaleOrder.file), setNumber(receivedSaleOrder.number);
+      setFiles([...receivedSaleOrder.files]),
+        setNumber(receivedSaleOrder.number);
       setDate(formatDate(receivedSaleOrder.receivedDate.toLocaleDateString()));
     }
   }, [receivedSaleOrder]);
@@ -93,18 +97,25 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
           />
 
           <Text className="text-zinc-500">Archivo PDF</Text>
-          <FileUploader
-            publicId={file}
-            setPublicId={setFile}
-            multiple={false}
+          <ImageUploader
+            multiple
+            allowedFormats={['pdf']}
+            setPublicId={(publicId: string) => {
+              const updatedFiles = [...files, publicId];
+              setFiles(updatedFiles);
+            }}
+            title="Subir archivos"
           />
           <Form.Submit asChild>
             <Button
               disabled={isSubmitting}
               style={{
-                backgroundColor: receivedSaleOrder ? '#2ebb45' : '#3E63DD',
+                backgroundColor: receivedSaleOrder
+                  ? colors.buttonColors.green
+                  : colors.buttonColors.primary,
               }}
             >
+              {receivedSaleOrder && <UpdateIcon />}
               {isSubmitting && <Spinner />}
               {receivedSaleOrder
                 ? 'Actualizar Orden de Compra'

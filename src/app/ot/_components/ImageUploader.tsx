@@ -12,16 +12,23 @@ interface CloudinaryResult {
 interface Props {
   setPublicId: CallableFunction;
   multiple: boolean;
+  allowedFormats: string[];
+  title?: string;
 }
 
-const ImageUploader = ({ setPublicId, multiple }: Props) => {
+const ImageUploader = ({
+  setPublicId,
+  multiple,
+  allowedFormats,
+  title = 'Subir imagen',
+}: Props) => {
   return (
     <>
       <CldUploadWidget
         options={{
           sources: ['local'],
           multiple: multiple,
-          clientAllowedFormats: ['jpgeg', 'jpg', 'png'],
+          clientAllowedFormats: [...allowedFormats],
         }}
         uploadPreset="lvoo9bpb"
         onUpload={(result, widget) => {
@@ -31,9 +38,16 @@ const ImageUploader = ({ setPublicId, multiple }: Props) => {
         }}
       >
         {({ open }) => (
-          <Button onClick={(e) => open()} className="w-full">
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              open();
+            }}
+            className="w-full"
+          >
             <UploadIcon />
-            Subir Imagen
+            {title}
           </Button>
         )}
       </CldUploadWidget>

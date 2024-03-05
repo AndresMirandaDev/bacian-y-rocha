@@ -7,6 +7,7 @@ import axios from 'axios';
 import Spinner from './Spinner';
 import { useRouter } from 'next/navigation';
 import colors from '../styles/colors';
+import { TrashIcon } from '@radix-ui/react-icons';
 
 interface Props {
   name: string;
@@ -38,6 +39,7 @@ const DeleteDataDialog = ({ name, id, route, pushRoute }: Props) => {
       <AlertDialog.Root>
         <AlertDialog.Trigger className="w-full">
           <Button style={{ backgroundColor: colors.buttonColors.danger }}>
+            <TrashIcon />
             Eliminar {name}
           </Button>
         </AlertDialog.Trigger>

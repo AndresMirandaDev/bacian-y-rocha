@@ -17,12 +17,12 @@ export async function POST (request:NextRequest){
     try {
         if(!isValid.success)
             return NextResponse.json({ message: isValid.error.format() }, { status: 400 })
-        const { number, file, receivedDate } = body
+        const { number, files, receivedDate } = body
 
         const newReceivedSaleOrder = await prisma.receivedSaleOrder.create({
             data:{
                 number,
-                file,
+                files,
                 receivedDate
             }
         })

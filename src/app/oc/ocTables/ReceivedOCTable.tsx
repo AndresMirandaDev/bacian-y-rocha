@@ -1,5 +1,6 @@
 'use client';
 import Pagination from '@/app/components/Pagination';
+import GalleryModal from '@/app/ot/_components/GalleryModal';
 import colors from '@/app/styles/colors';
 import { cloudinaryBaseUrl } from '@/cloud/config';
 import { ReceivedSaleOrder, SaleOrder } from '@prisma/client';
@@ -15,6 +16,7 @@ interface Props {
 const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
   const [pageSize, setPageSize] = useState(5);
   const [currentPage, setPage] = useState(0);
+
   return (
     <>
       <Box className="mb-5 pl-2">
@@ -24,7 +26,7 @@ const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
         <Table.Header style={{ backgroundColor: colors.tableHead }}>
           <Table.Row className="text-white">
             <Table.ColumnHeaderCell>Número</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell>Archivo</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell>Archivos</Table.ColumnHeaderCell>
             <Table.ColumnHeaderCell>Fecha</Table.ColumnHeaderCell>
           </Table.Row>
         </Table.Header>
@@ -32,6 +34,7 @@ const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
           {receivedSaleOrders
             .slice(currentPage * pageSize, currentPage * pageSize + pageSize)
             .map((order, index) => {
+              console.log(order.files);
               return (
                 <Table.Row
                   key={order.id}
@@ -45,21 +48,7 @@ const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
                     </Link>
                   </Table.Cell>
                   <Table.Cell>
-                    {order.file !== 'pending' && (
-                      <IconButton
-                        size="1"
-                        color="gray"
-                        onClick={() => {
-                          window.open(
-                            `${cloudinaryBaseUrl}/image/upload/${order.file}`,
-                            '_blank'
-                          );
-                        }}
-                      >
-                        <FaFilePdf />
-                      </IconButton>
-                    )}
-                    {order.file === 'pending' && 'No hay archivo'}
+                    {/* <GalleryModal photos={order.files} /> */}
                   </Table.Cell>
                   <Table.Cell>
                     {new Date(order.receivedDate).toLocaleDateString()}

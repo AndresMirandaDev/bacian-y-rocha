@@ -61,8 +61,6 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
     },
   ]);
 
-  console.log(activities);
-
   useEffect(() => {
     if (tasks) {
       setActivities(tasks);
@@ -323,6 +321,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                     setActivities(updatedActivities);
                   }}
                   multiple
+                  allowedFormats={['jpeg', 'jpg', 'png']}
                 />
               </Box>
 

@@ -30,13 +30,13 @@ export async function PATCH( request:NextRequest, { params }: Params){
         if(!receivedSaleOrder)
             return NextResponse.json({message:'Invalid id'}, { status: 404 })
 
-        const { number, file , receivedDate } = body    
+        const { number, files , receivedDate } = body    
 
         const updatedReceivedSaleOrder = await prisma.receivedSaleOrder.update({
             where: {id:receivedSaleOrder.id},
             data:{
                 number,
-                file,
+                files,
                 receivedDate
             }
         })
