@@ -8,9 +8,11 @@ import CloudImage from '@/app/components/cloud/CloudImage';
 
 interface Props {
   photos: string[];
+  title: string;
+  description: string;
 }
 
-const GalleryModal = ({ photos }: Props) => {
+const GalleryModal = ({ photos, title, description }: Props) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -19,12 +21,12 @@ const GalleryModal = ({ photos }: Props) => {
           style={{ backgroundColor: colors.grey }}
         >
           <MdPhotoLibrary />
-          Galería de fotos
+          {title}
         </Button>
       </Dialog.Trigger>
       <Dialog.Content>
-        <Dialog.Title>Galería de fotos</Dialog.Title>
-        <Dialog.Description>Registro de fotos de actividad</Dialog.Description>
+        <Dialog.Title>{title}</Dialog.Title>
+        <Dialog.Description>{description}</Dialog.Description>
 
         <ScrollArea>
           <Grid
@@ -56,7 +58,7 @@ const GalleryModal = ({ photos }: Props) => {
         <Flex gap="3" justify="end">
           <Dialog.Close>
             <Button
-              className="cursor-pointer"
+              className="cursor-pointer mt-5"
               style={{ backgroundColor: colors.tableHead }}
             >
               Cerrar

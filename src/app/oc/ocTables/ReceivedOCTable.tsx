@@ -47,8 +47,12 @@ const ReceivedOCTable = ({ receivedSaleOrders }: Props) => {
                       #{order.number}
                     </Link>
                   </Table.Cell>
-                  <Table.Cell>
-                    {/* <GalleryModal photos={order.files} /> */}
+                  <Table.Cell className="w-1/3">
+                    <GalleryModal
+                      photos={order.files}
+                      title="Ver archivos"
+                      description="Archivos adjuntados a orden de compra"
+                    />
                   </Table.Cell>
                   <Table.Cell>
                     {new Date(order.receivedDate).toLocaleDateString()}

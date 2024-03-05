@@ -308,7 +308,11 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                 </Flex>
               </Flex>
               <Box className="w-full">
-                <GalleryModal photos={a.photos} />
+                <GalleryModal
+                  photos={a.photos}
+                  title="Galeria de fotos"
+                  description="Registro de fotos de actividad"
+                />
               </Box>
               <Box className="w-full">
                 <ImageUploader
