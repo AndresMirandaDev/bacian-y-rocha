@@ -102,6 +102,15 @@ const ProviderDetails = async ({ params }: Params) => {
             </Box>
             <Separator size="4" />
           </Flex>
+          <Flex direction="column">
+            <Box>
+              <Text className="text-xl font-lighter text-slate-500">Giro</Text>
+            </Box>
+            <Box>
+              <Text className="capitalize">{provider.sector}</Text>
+            </Box>
+            <Separator size="4" />
+          </Flex>
           <Flex direction="column" gap="3">
             <Box>
               <Button className="w-full" style={{ backgroundColor: '#2ebb45' }}>

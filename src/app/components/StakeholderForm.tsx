@@ -23,6 +23,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
   const [rut, setRut] = useState('');
   const [phone, setPhone] = useState('');
   const [city, setCity] = useState('');
+  const [sector, setSector] = useState('');
 
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -33,6 +34,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
       setRut(stakeholder.rut);
       setPhone(stakeholder.phone);
       setCity(stakeholder.city);
+      setSector(stakeholder.sector);
     }
   }, [stakeholder]);
 
@@ -47,6 +49,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
           rut,
           phone,
           city,
+          sector,
         });
         router.push(`/${type}`);
         setSubmitting(false);
@@ -62,6 +65,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
           rut,
           phone,
           city,
+          sector,
         });
         router.push(`/${type}`);
         setSubmitting(false);
@@ -72,7 +76,8 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
       }
     } catch (error) {
       console.log(error);
-      toast('Ocurrió un error inesperado, inténtelo nuevamente.');
+      toast.error('Ocurrió un error inesperado, inténtelo nuevamente.');
+      setSubmitting(false);
     }
   };
 
@@ -130,6 +135,14 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
             typeMismatch="Cuidad inválida"
             valueMissing="Ingrese cuidad"
             label="Cuidad"
+          />
+          <FormField
+            setValue={setSector}
+            value={sector}
+            name="sector"
+            typeMismatch="Giro inválida"
+            valueMissing="Ingrese giro"
+            label="Giro"
           />
           <Form.Submit asChild>
             <Button

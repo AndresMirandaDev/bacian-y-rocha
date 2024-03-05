@@ -49,7 +49,8 @@ export async function PATCH (request:NextRequest, { params } : Params) {
             email,
             city,
             phone,
-            rut, 
+            rut,
+            sector 
         } = body
         
         const updatedClient = await prisma.stakeholders.update({
@@ -59,7 +60,8 @@ export async function PATCH (request:NextRequest, { params } : Params) {
                 email,
                 city,
                 phone,
-                rut
+                rut,
+                sector
             }
         })
 
