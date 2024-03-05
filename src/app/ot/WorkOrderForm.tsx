@@ -74,8 +74,9 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
-  const [revision, setRevision] = useState('');
-  const [code, setCode] = useState('');
+  const [clientRut, setRut] = useState('');
+  const [clientAddress, setClientAddress] = useState('');
+  const [clientSector, setSector] = useState('');
   const [number, setNumber] = useState('');
   const [description, setDescription] = useState('');
   const [client, setClient] = useState('');
@@ -83,7 +84,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
   const [endDate, setEndDate] = useState('');
   const [estimatedDate, setEstimatedDate] = useState('');
   const [quoteNumber, setQuoteNumber] = useState('');
-  const [requiresPlaque, setRequiresPlaque] = useState('');
   const [componentName, setComponentName] = useState('');
   const [componentDevice, setComponentDevice] = useState('');
   const [model, setModel] = useState('');
@@ -107,17 +107,17 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
 
   useEffect(() => {
     if (workOrder) {
-      // setRevision(workOrder.revision);
-      // setCode(workOrder.code);
       setNumber(workOrder.number);
       setDescription(workOrder.description);
       setClient(workOrder.client);
+      setClientAddress(workOrder.clientAddress);
+      setRut(workOrder.clientRut);
+      setSector(workOrder.clientSector);
       setStartDate(formatDate(workOrder.startDate.toLocaleDateString()));
       setEstimatedDate(
         formatDate(workOrder.estimatedDate.toLocaleDateString())
       );
       setQuoteNumber(workOrder.quoteNumber);
-      // setRequiresPlaque(workOrder.requiresPlaque);
       setComponentName(workOrder.componentName);
       setComponentDevice(workOrder.componentDevice);
       setModel(workOrder.model);
@@ -159,13 +159,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       if (workOrder) {
         setSubmitting(true);
         const updatedData: {
-          // revision: string;
-          // code: string;
           number: string;
           description: string;
           client: string;
+          clientRut: string;
+          clientAddress: string;
+          clientSector: string;
           quoteNumber: string;
-          // requiresPlaque: string;
           startDate: string;
           endDate?: string;
           estimatedDate: string;
@@ -177,13 +177,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           workPrice: number;
           activities: Task[];
         } = {
-          // revision,
-          // code,
           number,
           description,
           client,
+          clientAddress,
+          clientRut,
+          clientSector,
           quoteNumber,
-          // requiresPlaque,
           startDate: new Date(startDate).toISOString(),
           estimatedDate: new Date(estimatedDate).toISOString(),
           componentDevice,
@@ -206,13 +206,13 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       } else {
         setSubmitting(true);
         await axios.post('/api/workorders', {
-          // revision,
-          // code,
           number,
           description,
           client,
+          clientAddress,
+          clientRut,
+          clientSector,
           quoteNumber,
-          // requiresPlaque,
           startDate: new Date(startDate).toISOString(),
           estimatedDate: new Date(estimatedDate).toISOString(),
           componentDevice,
@@ -305,16 +305,6 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                   INFORME TÉCNICO
                 </Text>
               </Box>
-              <Box>
-                <Text className="text-slate-100 font-bold text-center">
-                  REPARACIONES ESTRUCTURALES DE COMPONENTES
-                </Text>
-              </Box>
-              <Box>
-                <Text className="text-slate-100 font-bold">
-                  INDUSTRIALES Y MINEROS
-                </Text>
-              </Box>
             </Flex>
           </Flex>
           {/* cabecera  */}
@@ -378,12 +368,12 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           </Flex>
           {/* datos de orden de trabajo */}
 
-          {/* Datos generales */}
+          {/* Datos cliente     */}
 
           <Flex direction="column">
             <Box className="bg-[#013564] w-full p-1 mt-10">
               <Text className="text-slate-100 font-bold">
-                1. DATOS GENERALES
+                1. DATOS DE CLIENTE
               </Text>
             </Box>
             <Grid
@@ -419,6 +409,80 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                   />
                 </Box>
               </Flex>
+              <Flex>
+                <Box className="w-1/2">
+                  <Text className="font-bold">RUT</Text>
+                </Box>
+                <Box className="w-1/2">
+                  <FormField
+                    value={clientRut}
+                    setValue={setRut}
+                    valueMissing="Campo requerido"
+                    name="clientRut"
+                    typeMismatch="rut invalido"
+                  />
+                </Box>
+              </Flex>
+              <Flex>
+                <Box className="w-1/2">
+                  <Text className="font-bold">Dirección</Text>
+                </Box>
+                <Box className="w-1/2">
+                  <FormField
+                    value={clientAddress}
+                    setValue={setClientAddress}
+                    valueMissing="Campo requerido"
+                    name="clientAddress"
+                    typeMismatch="dirección invalido"
+                  />
+                </Box>
+              </Flex>
+              <Flex>
+                <Box className="w-1/2">
+                  <Text className="font-bold">Giro</Text>
+                </Box>
+                <Box className="w-1/2">
+                  <FormField
+                    value={clientSector}
+                    setValue={setSector}
+                    valueMissing="Campo requerido"
+                    name="clientSector"
+                    typeMismatch="giroinvalido"
+                  />
+                </Box>
+              </Flex>
+            </Grid>
+          </Flex>
+
+          {/* Datos cliente     */}
+
+          {/* Datos generales */}
+
+          <Flex direction="column">
+            <Box className="bg-[#013564] w-full p-1 mt-10">
+              <Text className="text-slate-100 font-bold">
+                1. DATOS GENERALES
+              </Text>
+            </Box>
+            <Grid
+              columns={{
+                initial: '1',
+                xs: '1',
+                sm: '1',
+                md: '1',
+                lg: '2',
+                xl: '2',
+              }}
+              className="p-1"
+              gap={{
+                initial: '1',
+                xs: '1',
+                sm: '1',
+                md: '1',
+                lg: '2',
+                xl: '2',
+              }}
+            >
               <Flex>
                 <Box className="w-1/2">
                   <Text className="font-bold">Fecha inicio</Text>
