@@ -429,6 +429,7 @@ const WorkOrderForm = ({ workOrder, saleOrders, clients }: Props) => {
                     dataKey="name"
                     getValue={setClientId}
                     showValue={client}
+                    getText={setClient}
                   />
                 </Box>
               </Flex>

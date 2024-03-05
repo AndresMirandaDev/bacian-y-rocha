@@ -16,6 +16,7 @@ interface Props<T extends Item, K extends keyof T> {
   dataToRetrieve: K;
   getValue: Dispatch<SetStateAction<T[K]>>;
   showValue?: string;
+  getText?: Dispatch<SetStateAction<string>>;
 }
 
 const AutoCompleteSelect = <T extends Item, K extends keyof T>({
@@ -24,6 +25,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   dataToRetrieve,
   getValue,
   showValue,
+  getText,
 }: Props<T, K>) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -31,6 +33,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
 
   useEffect(() => {
     setData(items);
+
     if (showValue) {
       setValue(showValue);
     }
@@ -39,6 +42,9 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value;
     setValue(inputValue);
+    if (getText) {
+      getText(inputValue);
+    }
     setOpen(true); // Open the dropdown when input changes
     // Filter data based on input value
     setData(
