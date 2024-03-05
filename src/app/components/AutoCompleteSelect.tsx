@@ -15,6 +15,7 @@ interface Props<T extends Item, K extends keyof T> {
   dataKey: K; // Key of the item in data array
   dataToRetrieve: K;
   getValue: Dispatch<SetStateAction<T[K]>>;
+  showValue?: string;
 }
 
 const AutoCompleteSelect = <T extends Item, K extends keyof T>({
@@ -22,6 +23,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   dataKey,
   dataToRetrieve,
   getValue,
+  showValue,
 }: Props<T, K>) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -29,7 +31,10 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
 
   useEffect(() => {
     setData(items);
-  }, [items]);
+    if (showValue) {
+      setValue(showValue);
+    }
+  }, [items, showValue]);
 
   const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
     const inputValue = e.currentTarget.value;
@@ -44,7 +49,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
   };
   return (
     <>
-      <div className="border border-zinc-300 rounded-md">
+      <div className="border border-zinc-300 rounded-md relative">
         <div className="flex items-center p-2">
           <Box className="text-slate-500 pr-3 ">
             <FaSearch />
@@ -69,7 +74,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
         <ul
           className={classNames({
             hidden: !open,
-            'block transition-all duration-700 h-4/6 no-scrollbar overflow-y-scroll':
+            'block transition-all border border-zinc-300  duration-700 h-3/6/6 no-scrollbar overflow-y-scroll absolute bg-slate-100 w-full rounded-b-md':
               true,
           })}
         >

@@ -1,5 +1,5 @@
 'use client';
-import { SaleOrder, WorkOrder } from '@prisma/client';
+import { SaleOrder, Stakeholders, WorkOrder } from '@prisma/client';
 import * as Form from '@radix-ui/react-form';
 import {
   ChevronDownIcon,
@@ -34,6 +34,7 @@ import ActivityForm from './ActivityForm';
 interface Props {
   workOrder?: WorkOrder;
   saleOrders: SaleOrder[];
+  clients: Stakeholders[];
 }
 
 type Material = {
@@ -70,13 +71,14 @@ interface Task {
   photos: string[];
 }
 
-const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
+const WorkOrderForm = ({ workOrder, saleOrders, clients }: Props) => {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
   const [clientRut, setRut] = useState('');
   const [clientAddress, setClientAddress] = useState('');
   const [clientSector, setSector] = useState('');
+  const [clientId, setClientId] = useState('');
   const [number, setNumber] = useState('');
   const [description, setDescription] = useState('');
   const [client, setClient] = useState('');
@@ -130,6 +132,19 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       setActivities(workOrder.activities);
     }
   }, [workOrder]);
+
+  useEffect(() => {
+    if (clientId) {
+      const getClientInfo = () => {
+        const selectedClient = clients.filter((c) => (c.id = clientId));
+        setClientAddress(selectedClient[0].address);
+        setRut(selectedClient[0].rut);
+        setSector(selectedClient[0].sector);
+        setClient(selectedClient[0].name);
+      };
+      getClientInfo();
+    }
+  }, [clientId]);
 
   const onSubmitReceiptMaterial = () => {
     setMaterialsToSubmit([
@@ -245,7 +260,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
       });
     }
   };
-
+  console.log('client name', client);
   return (
     <>
       <Form.Root onSubmit={submitWorkOrder}>
@@ -400,12 +415,20 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
                   <Text className="font-bold">Cliente</Text>
                 </Box>
                 <Box className="w-1/2">
-                  <FormField
+                  {/* <FormField
                     value={client}
                     setValue={setClient}
                     valueMissing="Campo requerido"
                     name="client"
                     typeMismatch="cliente invalido"
+                  /> */}
+
+                  <AutoCompleteSelect
+                    items={clients}
+                    dataToRetrieve="id"
+                    dataKey="name"
+                    getValue={setClientId}
+                    showValue={client}
                   />
                 </Box>
               </Flex>
