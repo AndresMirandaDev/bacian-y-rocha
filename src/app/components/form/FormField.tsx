@@ -23,7 +23,7 @@ const FormField = ({
   name,
   required = true,
 }: Props) => {
-  const errorMessageClassname = 'text-red-500 text-sm opacity-80';
+  const errorMessageClassname = 'text-red-500 text-sm opacity-80 ';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
 
   return (
@@ -36,7 +36,7 @@ const FormField = ({
           flexDirection: 'column',
         }}
       >
-        {label && <Form.Label className="text-zinc-500">{label}</Form.Label>}
+        {label && <Form.Label className="text-zinc-500 -z">{label}</Form.Label>}
         <Form.Message className={errorMessageClassname} match="valueMissing">
           {valueMissing}
         </Form.Message>

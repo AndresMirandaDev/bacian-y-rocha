@@ -80,7 +80,7 @@ const AutoCompleteSelect = <T extends Item, K extends keyof T>({
         <ul
           className={classNames({
             hidden: !open,
-            'block transition-all border border-zinc-300  duration-700 h-3/6/6 no-scrollbar overflow-y-scroll absolute bg-slate-100 w-full rounded-b-md':
+            'block transition-all border border-zinc-300  duration-700 h-3/6/6 no-scrollbar overflow-y-scroll absolute bg-slate-100 w-full rounded-b-md z-10':
               true,
           })}
         >
