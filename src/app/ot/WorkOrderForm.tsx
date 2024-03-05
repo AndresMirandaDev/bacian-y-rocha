@@ -461,7 +461,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           <Flex direction="column">
             <Box className="bg-[#013564] w-full p-1 mt-10">
               <Text className="text-slate-100 font-bold">
-                1. DATOS GENERALES
+                2. DATOS GENERALES
               </Text>
             </Box>
             <Grid
@@ -552,7 +552,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           <Flex direction="column">
             <Box className="bg-[#013564] w-full p-1 mt-10">
               <Text className="text-slate-100 font-bold">
-                2. DATOS DE COMPONENTE
+                3. DATOS DE COMPONENTE
               </Text>
             </Box>
             <Grid
@@ -638,7 +638,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           <Flex direction="column">
             <Box className="bg-[#013564] w-full p-1 mt-10">
               <Text className="text-slate-100 font-bold">
-                3. MATERIALES A UTILIZAR O COMPRAR/ REPUESTOS
+                4. MATERIALES A UTILIZAR O COMPRAR/ REPUESTOS
               </Text>
             </Box>
           </Flex>
@@ -1308,7 +1308,7 @@ const WorkOrderForm = ({ workOrder, saleOrders }: Props) => {
           {/* actividades */}
           <Flex>
             <Box className="bg-[#013564] w-full p-1 mt-10">
-              <Text className="text-slate-100 font-bold">4. Actividades</Text>
+              <Text className="text-slate-100 font-bold">5. Actividades</Text>
             </Box>
           </Flex>
           <Flex>

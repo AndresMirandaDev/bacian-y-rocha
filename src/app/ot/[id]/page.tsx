@@ -163,10 +163,9 @@ const WorkOrderDetails = async ({ params }: Params) => {
         </Flex>
         {/* datos de orden de trabajo */}
 
-        {/* Datos generales */}
-
+        {/* Datos cliente */}
         <Flex direction="column">
-          <DetailsHeader title="1.datos generales" />
+          <DetailsHeader title="1.datos de cliente" />
           <Grid
             columns={{
               initial: '1',
@@ -187,6 +186,51 @@ const WorkOrderDetails = async ({ params }: Params) => {
                 <Text>{workOrder.client}</Text>
               </Box>
             </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">RUT</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.clientRut}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Dirección</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.clientAddress}</Text>
+              </Box>
+            </Flex>
+            <Flex>
+              <Box className="w-1/2">
+                <Text className="font-bold">Giro</Text>
+              </Box>
+              <Box className="w-1/2">
+                <Text>{workOrder.clientSector}</Text>
+              </Box>
+            </Flex>
+          </Grid>
+        </Flex>
+
+        {/* Datos cliente */}
+
+        {/* Datos generales */}
+
+        <Flex direction="column">
+          <DetailsHeader title="2.datos generales" />
+          <Grid
+            columns={{
+              initial: '1',
+              xs: '1',
+              sm: '1',
+              md: '1',
+              lg: '2',
+              xl: '2',
+            }}
+            className="p-1"
+            gap={{ initial: '1', xs: '1', sm: '1', md: '1', lg: '0', xl: '0' }}
+          >
             <Flex>
               <Box className="w-1/2">
                 <Text className="font-bold">Fecha inicio</Text>
@@ -231,7 +275,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
 
         {/* Datos de componente */}
         <Flex direction="column">
-          <DetailsHeader title="2.datos de componente" />
+          <DetailsHeader title="3.datos de componente" />
           <Grid
             columns={{
               initial: '1',
@@ -281,7 +325,7 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* Datos de componente */}
         {/* Materiales      */}
         <Flex direction="column">
-          <DetailsHeader title="3.materiales a utilizar o comprar/repuestos" />
+          <DetailsHeader title="4.materiales a utilizar o comprar/repuestos" />
           <Box>
             <Table.Root variant="ghost" className="border border-black">
               <Table.Header>
@@ -348,14 +392,14 @@ const WorkOrderDetails = async ({ params }: Params) => {
         {/* Materiales      */}
 
         {/* actividades */}
-        <DetailsHeader title="4.actividades" />
+        <DetailsHeader title="5.actividades" />
         {workOrder.activities.map((a) => {
           return <TaskAccordion key={a.id} activity={a} />;
         })}
         {/* actividades */}
 
         {/* gastos */}
-        <DetailsHeader title="5.gastos" />
+        <DetailsHeader title="6.gastos" />
         <Grid
           columns={{
             initial: '1',
