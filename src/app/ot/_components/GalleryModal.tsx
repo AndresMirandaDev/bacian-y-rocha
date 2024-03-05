@@ -5,14 +5,23 @@ import { Button, Dialog, Flex, Grid, ScrollArea } from '@radix-ui/themes';
 import React, { useEffect, useState } from 'react';
 import { MdPhotoLibrary } from 'react-icons/md';
 import CloudImage from '@/app/components/cloud/CloudImage';
+import { TrashIcon } from '@radix-ui/react-icons';
 
 interface Props {
   photos: string[];
   title: string;
   description: string;
+  updateFiles?: CallableFunction;
+  updatable?: boolean;
 }
 
-const GalleryModal = ({ photos, title, description }: Props) => {
+const GalleryModal = ({
+  photos,
+  title,
+  description,
+  updateFiles,
+  updatable,
+}: Props) => {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -38,18 +47,36 @@ const GalleryModal = ({ photos, title, description }: Props) => {
               lg: '3',
               xl: '3',
             }}
-            gap="4"
+            gap="3"
           >
             {photos.map((photo) => {
               if (photo !== '') {
                 return (
-                  <CloudImage
+                  <Flex
+                    direction="column"
+                    className="border border-slate-300 rounded-md p-1"
                     key={photo}
-                    alt="image"
-                    src={photo}
-                    width={200}
-                    height={200}
-                  />
+                  >
+                    <CloudImage
+                      alt="image"
+                      src={photo}
+                      width={200}
+                      height={200}
+                    />
+
+                    {updatable && updateFiles && (
+                      <Button
+                        className=" rounded-md"
+                        style={{ backgroundColor: colors.buttonColors.danger }}
+                        onClick={() => {
+                          updateFiles(photo);
+                        }}
+                      >
+                        <TrashIcon />
+                        Eliminar
+                      </Button>
+                    )}
+                  </Flex>
                 );
               }
             })}

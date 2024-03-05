@@ -312,6 +312,13 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                   photos={a.photos}
                   title="Galeria de fotos"
                   description="Registro de fotos de actividad"
+                  updateFiles={(file: string) => {
+                    const updatedActivities = [...activities];
+                    const updatedFiles = a.photos.filter((f) => f !== file);
+                    updatedActivities[index].photos = updatedFiles;
+                    setActivities(updatedActivities);
+                  }}
+                  updatable
                 />
               </Box>
               <Box className="w-full">

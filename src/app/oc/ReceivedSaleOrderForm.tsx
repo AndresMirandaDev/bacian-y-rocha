@@ -14,6 +14,7 @@ import DeleteDataDialog from '../components/DeleteDataDialog';
 import ImageUploader from '../ot/_components/ImageUploader';
 import colors from '../styles/colors';
 import { UpdateIcon } from '@radix-ui/react-icons';
+import GalleryModal from '../ot/_components/GalleryModal';
 
 interface Props {
   receivedSaleOrder?: ReceivedSaleOrder;
@@ -106,6 +107,18 @@ const ReceivedSaleOrderForm = ({ receivedSaleOrder }: Props) => {
             }}
             title="Subir archivos"
           />
+          {receivedSaleOrder && (
+            <GalleryModal
+              photos={files}
+              title="Ver archivos adjuntados"
+              description="Archivos adjuntados a orden de compra"
+              updateFiles={(file: string) => {
+                const updatedFiles = files.filter((f) => f !== file);
+                setFiles(updatedFiles);
+              }}
+              updatable
+            />
+          )}
           <Form.Submit asChild>
             <Button
               disabled={isSubmitting}

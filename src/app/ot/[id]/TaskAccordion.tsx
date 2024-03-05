@@ -91,7 +91,11 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
             </Flex>
             {!subTask && activity.photos && (
               <Flex>
-                <GalleryModal photos={activity.photos} />
+                <GalleryModal
+                  photos={activity.photos}
+                  description="Galeria de fotos de actividad"
+                  title="Galeria de fotos"
+                />
               </Flex>
             )}
             {subTask && (

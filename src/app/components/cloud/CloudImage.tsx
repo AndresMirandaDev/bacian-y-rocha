@@ -10,11 +10,13 @@ const CldImage = (props: CldImageProps) => {
     <Flex
       direction="column"
       justify="between"
-      className="border border-slate-300 p-1 rounded-lg"
+      className=" p-1 rounded-lg"
+      gap="3"
     >
       <CldImageDefault {...props} />
       <Box>
         <Button
+          className="w-full"
           onClick={() =>
             window.open(
               `${cloudinaryBaseUrl}/image/upload/${props.src}`,
