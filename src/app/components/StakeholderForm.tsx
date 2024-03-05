@@ -24,6 +24,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
   const [phone, setPhone] = useState('');
   const [city, setCity] = useState('');
   const [sector, setSector] = useState('');
+  const [address, setAddress] = useState('');
 
   const [isSubmitting, setSubmitting] = useState(false);
 
@@ -35,6 +36,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
       setPhone(stakeholder.phone);
       setCity(stakeholder.city);
       setSector(stakeholder.sector);
+      setAddress(stakeholder.address);
     }
   }, [stakeholder]);
 
@@ -50,6 +52,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
           phone,
           city,
           sector,
+          address,
         });
         router.push(`/${type}`);
         setSubmitting(false);
@@ -66,6 +69,7 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
           phone,
           city,
           sector,
+          address,
         });
         router.push(`/${type}`);
         setSubmitting(false);
@@ -119,6 +123,14 @@ const StakeholderForm = ({ stakeholder, type }: Props) => {
             typeMismatch="Rut inválido"
             valueMissing="Ingrese rut"
             label="RUT"
+          />
+          <FormField
+            setValue={setAddress}
+            value={address}
+            name="address"
+            typeMismatch="Dirección inválida"
+            valueMissing="Ingrese dirección"
+            label="Dirección"
           />
           <FormField
             setValue={setPhone}

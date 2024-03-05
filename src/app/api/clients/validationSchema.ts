@@ -6,7 +6,8 @@ export const stakeholderValidationSchema = z.object({
     phone: z.string().min(1).max(255),
     city: z.string().min(1).max(255),
     rut: z.string().min(1).max(255),
-    sector :z.string().min(1).max(255)
+    sector :z.string().min(1).max(255),
+    address:z.string().min(1).max(255),
 })
 export const updateStakeholderValidationSchema = z.object({
     name: z.string().min(1).max(255).optional(),
@@ -14,5 +15,6 @@ export const updateStakeholderValidationSchema = z.object({
     phone: z.string().min(1).max(255).optional(),
     city: z.string().min(1).max(255).optional(),
     rut: z.string().min(1).max(255).optional(),
-    sector :z.string().min(1).max(255).optional()
+    sector :z.string().min(1).max(255).optional(),
+    address:z.string().min(1).max(255).optional()
 })

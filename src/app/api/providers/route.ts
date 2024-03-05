@@ -27,7 +27,8 @@ export async function POST (request:NextRequest) {
                 city,
                 phone,
                 rut,
-                sector
+                sector,
+                address
             } = body
 
         const newClient = await prisma.stakeholders.create({
@@ -38,6 +39,7 @@ export async function POST (request:NextRequest) {
                 phone,
                 rut,
                 sector,
+                address,
                 type:StakeholderType.PROVIDER
             }
         })

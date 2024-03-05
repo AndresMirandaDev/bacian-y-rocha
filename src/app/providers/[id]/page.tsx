@@ -50,6 +50,7 @@ const ProviderDetails = async ({ params }: Params) => {
             <Box className="text-9xl text-slate-400">
               <FaTruckFast />
             </Box>
+            <Text className="text-slate-400 text-xl">Proveedor</Text>
           </Flex>
           <Flex direction="column">
             <Box>
@@ -59,6 +60,17 @@ const ProviderDetails = async ({ params }: Params) => {
             </Box>
             <Box>
               <Text className="text-2xl capitalize">{provider.name}</Text>
+            </Box>
+            <Separator size="4" />
+          </Flex>
+          <Flex direction="column">
+            <Box>
+              <Text className="text-xl font-lighter text-slate-500">
+                Dirección
+              </Text>
+            </Box>
+            <Box>
+              <Text className="capitalize">{provider.address}</Text>
             </Box>
             <Separator size="4" />
           </Flex>

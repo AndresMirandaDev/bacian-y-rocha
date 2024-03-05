@@ -170,14 +170,15 @@ type Task {
 //clients & providers
 
 model Stakeholders {
-  id     String          @id @default(auto()) @map("_id") @db.ObjectId
-  name   String
-  email  String
-  phone  String
-  city   String
-  rut    String
-  sector String
-  type   StakeholderType
+  id      String          @id @default(auto()) @map("_id") @db.ObjectId
+  name    String
+  email   String
+  phone   String
+  city    String
+  rut     String
+  sector  String
+  address String
+  type    StakeholderType
 }
 
 enum StakeholderType {
