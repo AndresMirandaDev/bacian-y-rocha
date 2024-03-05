@@ -7,7 +7,7 @@ import qualitySeal from '../../../public/assets/images/sellocalidad.jpg';
 
 import Image from 'next/image';
 import FormField from '../components/form/FormField';
-import { SaleOrder, Status } from '@prisma/client';
+import { SaleOrder, Stakeholders, Status } from '@prisma/client';
 import { formatDate } from '../helpers/formatDate';
 import { PlusIcon, TrashIcon, UpdateIcon } from '@radix-ui/react-icons';
 import Spinner from '../components/Spinner';
@@ -15,9 +15,11 @@ import axios from 'axios';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import FileUploader from '../components/cloud/FileUploader';
+import AutoCompleteSelect from '../components/AutoCompleteSelect';
 
 interface Props {
   saleOrder?: SaleOrder;
+  providers: Stakeholders[];
 }
 
 type Material = {
@@ -29,9 +31,10 @@ type Material = {
   [key: string]: string | number; // Index signature
 };
 
-const SaleOrderForm = ({ saleOrder }: Props) => {
+const SaleOrderForm = ({ saleOrder, providers }: Props) => {
   const router = useRouter();
 
+  const [selectedProvider, setSelectedProvider] = useState('');
   const [number, setNumber] = useState('');
   const [date, setDate] = useState('');
   const [providerName, setProviderName] = useState('');
@@ -87,6 +90,21 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
       setReceptionGuide(saleOrder.receptionGuide);
     }
   }, [saleOrder]);
+
+  useEffect(() => {
+    if (selectedProvider) {
+      const filteredProvider = providers.filter((p) => {
+        return p.id === selectedProvider;
+      });
+      setProviderName(filteredProvider[0].name);
+      setProviderAddress(filteredProvider[0].address);
+      setProviderLine(filteredProvider[0].sector);
+      setProviderEmail(filteredProvider[0].email);
+      setProviderRut(filteredProvider[0].rut);
+      setProviderCity(filteredProvider[0].city);
+      setProviderPhone(filteredProvider[0].phone);
+    }
+  }, [selectedProvider]);
 
   const recalculateTotals = () => {
     const netTotal = materials.reduce((accumulator, m) => {
@@ -341,13 +359,13 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
               xl: 'row',
             }}
           >
-            <Flex direction="column" grow="1">
+            <Flex direction="column" grow="1" gap="3">
               <Flex>
                 <Flex className="w-1/2" align="center">
                   <Text className={fieldNameStyle}>SEÑOR</Text>
                 </Flex>
                 <Flex grow="1" justify="start">
-                  <FormField
+                  {/* <FormField
                     valueMissing="Campo requerido"
                     value={providerName}
                     setValue={setProviderName}
@@ -355,6 +373,14 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                     type="text"
                     name="providerName"
                     required
+                  /> */}
+                  <AutoCompleteSelect
+                    dataKey="name"
+                    dataToRetrieve="id"
+                    showValue={providerName}
+                    getValue={setSelectedProvider}
+                    items={providers}
+                    getText={setProviderName}
                   />
                 </Flex>
               </Flex>
@@ -407,7 +433,7 @@ const SaleOrderForm = ({ saleOrder }: Props) => {
                 </Flex>
               </Flex>
             </Flex>
-            <Flex direction="column" grow="1">
+            <Flex direction="column" grow="1" gap="3">
               <Flex gap="4">
                 <Flex className="w-1/2" align="center">
                   <Text className={fieldNameStyle}>RUT</Text>

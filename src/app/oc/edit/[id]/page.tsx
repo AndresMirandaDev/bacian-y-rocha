@@ -2,6 +2,7 @@ import React from 'react';
 import prisma from '../../../../../prisma/client';
 import { notFound } from 'next/navigation';
 import SaleOrderForm from '../../SaleOrderForm';
+import { StakeholderType } from '@prisma/client';
 
 interface Params {
   params: { id: string };
@@ -11,8 +12,12 @@ const EditSaleOrderPage = async ({ params }: Params) => {
   const saleOrder = await prisma.saleOrder.findUnique({
     where: { id: params.id },
   });
+  const providers = await prisma.stakeholders.findMany({
+    where: { type: StakeholderType.PROVIDER },
+  });
+
   if (!saleOrder) return notFound();
-  return <SaleOrderForm saleOrder={saleOrder} />;
+  return <SaleOrderForm saleOrder={saleOrder} providers={providers} />;
 };
 
 export default EditSaleOrderPage;
