@@ -56,6 +56,7 @@ const GalleryModal = ({
                     direction="column"
                     className="border border-slate-300 rounded-md p-1"
                     key={photo}
+                    justify="between"
                   >
                     <CloudImage
                       alt="image"

@@ -10,7 +10,7 @@ const CldImage = (props: CldImageProps) => {
     <Flex
       direction="column"
       justify="between"
-      className=" p-1 rounded-lg"
+      className=" p-1 rounded-lg h-full"
       gap="3"
     >
       <CldImageDefault {...props} />
