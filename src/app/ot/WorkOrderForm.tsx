@@ -256,9 +256,9 @@ const WorkOrderForm = ({
       toast.error(
         'Orden de trabajo no pudo ser registrada, inténtelo nuevamente.'
       );
-      workOrder?.activities.forEach((a) => {
-        a.subTasks.forEach((st) => {
-          if (a.description === '' || st.description === '') {
+      activities.forEach((a) => {
+        a.subTasks!.forEach((st) => {
+          if (!a.description || !st.description.length) {
             return toast.error(
               'Alguna(s) descripción(es) de actividades o sub tareas estan vacías, recuerde agregarlas.'
             );
@@ -267,7 +267,7 @@ const WorkOrderForm = ({
       });
     }
   };
-  console.log('client name', client);
+
   return (
     <>
       <Form.Root onSubmit={submitWorkOrder}>
