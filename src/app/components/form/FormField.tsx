@@ -1,6 +1,7 @@
 'use client';
 import React, { Dispatch, HTMLInputTypeAttribute, SetStateAction } from 'react';
 import * as Form from '@radix-ui/react-form';
+import { TextField } from '@radix-ui/themes';
 
 interface Props {
   value: string;
@@ -23,7 +24,7 @@ const FormField = ({
   name,
   required = true,
 }: Props) => {
-  const errorMessageClassname = 'text-red-500 text-sm opacity-80 ';
+  const errorMessageClassname = 'text-red-500 text-sm opacity-80 -z-10';
   const inputClassname = 'input input-bordered w-full bg-transparent ';
 
   return (

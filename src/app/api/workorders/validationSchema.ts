@@ -47,7 +47,8 @@ export const workOrderValidationSchema = z.object({
                 startDate: z.string().min(1),
                 durationInDays: z.number(),
                 hours:z.number(),
-                hourPrice:z.number()
+                hourPrice:z.number(),
+                position:z.string().min(1).max(255)
         }).array().optional()
     }).array()
 })  
@@ -100,7 +101,8 @@ export const updateWorkOrderValidationSchema = z.object({
                 startDate: z.string().min(1).optional(),
                 durationInDays: z.number().optional(),
                 hours:z.number().optional(),
-                hourPrice:z.number().optional()
+                hourPrice:z.number().optional(),
+                position:z.string().min(1).max(255).optional()
         }).array().optional()
     }).array().optional()
 })

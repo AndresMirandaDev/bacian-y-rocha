@@ -6,6 +6,7 @@ import {
   Flex,
   Grid,
   ScrollArea,
+  Select,
   Separator,
   Text,
   TextArea,
@@ -17,6 +18,8 @@ import colors from '../styles/colors';
 import Link from 'next/link';
 import GalleryModal from './_components/GalleryModal';
 import ImageUploader from './_components/ImageUploader';
+import AutoCompleteSelect from '../components/AutoCompleteSelect';
+import { Position } from '@prisma/client';
 
 interface SubTask {
   id: string;
@@ -28,6 +31,7 @@ interface SubTask {
   durationInDays: number;
   hours: number;
   hourPrice: number;
+  position: string;
 }
 
 interface Task {
@@ -45,9 +49,10 @@ interface Task {
 interface Props {
   sendActivities: Dispatch<SetStateAction<Task[]>>;
   tasks?: Task[];
+  positions: Position[];
 }
 
-const ActivityForm = ({ sendActivities, tasks }: Props) => {
+const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
   const [activities, setActivities] = useState<Task[]>([
     {
       id: (Math.random() * 1000).toString(),
@@ -67,6 +72,21 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
     }
   }, [tasks]);
 
+  const handlePositionChange = (
+    positionId: string,
+    activityIndex: number,
+    subTaskIndex: number
+  ) => {
+    const filteredPosition = positions.filter((p) => p.id === positionId);
+    const updatedActivities = [...activities];
+    updatedActivities[activityIndex].subTasks![subTaskIndex].position =
+      filteredPosition[0].name;
+    updatedActivities[activityIndex].subTasks![subTaskIndex].hourPrice =
+      filteredPosition[0].value;
+    setActivities(updatedActivities);
+    sendActivities(updatedActivities);
+  };
+
   const handleChange = (
     e: React.FormEvent,
     index: number,
@@ -76,6 +96,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
       | 'startDate'
       | 'durationInDays'
       | 'name'
+      | 'position'
   ) => {
     const updatedData = [...activities];
     updatedData[index] = {
@@ -145,6 +166,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
           durationInDays: 0,
           hours: 0,
           hourPrice: 0,
+          position: '',
         },
       ];
     } else {
@@ -159,6 +181,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
           durationInDays: 0,
           hours: 0,
           hourPrice: 0,
+          position: '',
         },
       ];
     }
@@ -348,7 +371,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                   {a.subTasks?.map((st, subTaskIndex) => {
                     return (
                       <ScrollArea className="p-5" key={st.id}>
-                        <Flex
+                        <Grid
                           gap="4"
                           align={{
                             initial: 'stretch',
@@ -358,18 +381,15 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                             lg: 'center',
                             xl: 'center',
                           }}
-                          direction={{
-                            initial: 'column',
-                            xs: 'column',
-                            sm: 'column',
-                            md: 'column',
-                            lg: 'row',
-                            xl: 'row',
+                          columns={{
+                            initial: '1',
+                            xs: '1',
+                            sm: '1',
+                            md: '1',
+                            lg: '2',
+                            xl: '2',
                           }}
                         >
-                          <Box className="flex items-center">
-                            <MdSubdirectoryArrowRight size="20" />
-                          </Box>
                           <Flex direction="column">
                             <Box>
                               <Text className="text-slate-500">
@@ -466,6 +486,36 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                           </Flex>
                           <Flex direction="column">
                             <Box>
+                              <Text className="text-slate-500">
+                                Cargo/Posición
+                              </Text>
+                            </Box>
+                            <Select.Root
+                              size="3"
+                              onValueChange={(value) =>
+                                handlePositionChange(value, index, subTaskIndex)
+                              }
+                              defaultValue={
+                                positions.filter(
+                                  (p) => p.name === st.position
+                                )[0].id
+                              }
+                            >
+                              <Select.Trigger />
+                              <Select.Content>
+                                {positions &&
+                                  positions.map((p) => {
+                                    return (
+                                      <Select.Item key={p.id} value={p.id}>
+                                        {p.name}
+                                      </Select.Item>
+                                    );
+                                  })}
+                              </Select.Content>
+                            </Select.Root>
+                          </Flex>
+                          <Flex direction="column">
+                            <Box>
                               <Text className="text-slate-500">Valor H.H</Text>
                             </Box>
                             <input
@@ -482,7 +532,11 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                               }}
                             />
                           </Flex>
-                          <Flex direction="column" gap="3">
+                          <Flex
+                            direction="column"
+                            gap="3"
+                            className="col-span-full"
+                          >
                             <Box
                               className="p-1 rounded-md items-center flex bg-red-400 text-slate-100 justify-center"
                               onClick={() => {
@@ -511,7 +565,7 @@ const ActivityForm = ({ sendActivities, tasks }: Props) => {
                               />
                             </ActivityPopOver>
                           </Flex>
-                        </Flex>
+                        </Grid>
                         <Separator size="4" className="mt-5" />
                       </ScrollArea>
                     );

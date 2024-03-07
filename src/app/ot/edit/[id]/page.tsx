@@ -18,12 +18,15 @@ const EditWorkOrderPage = async ({ params }: Params) => {
 
   const saleOrders = await prisma.saleOrder.findMany();
 
+  const positions = await prisma.position.findMany();
+
   if (!workOrder) return notFound();
   return (
     <WorkOrderForm
       workOrder={workOrder}
       saleOrders={saleOrders}
       clients={clients}
+      positions={positions}
     />
   );
 };

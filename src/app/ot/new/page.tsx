@@ -8,7 +8,15 @@ const NewWorkOrderPage = async () => {
   const clients = await prisma.stakeholders.findMany({
     where: { type: StakeholderType.CLIENT },
   });
-  return <WorkOrderForm saleOrders={saleOrders} clients={clients} />;
+  const positions = await prisma.position.findMany();
+
+  return (
+    <WorkOrderForm
+      saleOrders={saleOrders}
+      clients={clients}
+      positions={positions}
+    />
+  );
 };
 
 export default NewWorkOrderPage;

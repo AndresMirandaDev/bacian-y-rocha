@@ -1,5 +1,5 @@
 'use client';
-import { SaleOrder, Stakeholders, WorkOrder } from '@prisma/client';
+import { Position, SaleOrder, Stakeholders, WorkOrder } from '@prisma/client';
 import * as Form from '@radix-ui/react-form';
 import {
   ChevronDownIcon,
@@ -35,6 +35,7 @@ interface Props {
   workOrder?: WorkOrder;
   saleOrders: SaleOrder[];
   clients: Stakeholders[];
+  positions: Position[];
 }
 
 type Material = {
@@ -57,6 +58,7 @@ interface SubTask {
   durationInDays: number;
   hours: number;
   hourPrice: number;
+  position: string;
 }
 
 interface Task {
@@ -71,7 +73,12 @@ interface Task {
   photos: string[];
 }
 
-const WorkOrderForm = ({ workOrder, saleOrders, clients }: Props) => {
+const WorkOrderForm = ({
+  workOrder,
+  saleOrders,
+  clients,
+  positions,
+}: Props) => {
   const router = useRouter();
   const [submitting, setSubmitting] = useState(false);
 
@@ -1339,6 +1346,7 @@ const WorkOrderForm = ({ workOrder, saleOrders, clients }: Props) => {
             <ActivityForm
               sendActivities={setActivities}
               tasks={activities && activities}
+              positions={positions}
             />
           </Flex>
           {/* actividades */}

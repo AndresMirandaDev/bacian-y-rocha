@@ -150,6 +150,7 @@ type SubTask {
   assignedTo     String
   progress       Int
   startDate      String
+  position       String
   durationInDays Int
   hours          Int
   hourPrice      Int
