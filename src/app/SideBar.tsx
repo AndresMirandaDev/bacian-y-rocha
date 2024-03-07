@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import {
+  FaAddressCard,
   FaFileInvoice,
   FaHandshakeSimple,
   FaHelmetSafety,
@@ -125,6 +126,11 @@ const NavLinks = ({ open }: NavlinkProps) => {
       label: 'Proveedores',
       href: '/providers',
       icon: <FaTruckFast />,
+    },
+    {
+      label: 'Cargos y posiciones',
+      href: '/positions',
+      icon: <FaAddressCard />,
     },
     {
       label: 'Registro',
