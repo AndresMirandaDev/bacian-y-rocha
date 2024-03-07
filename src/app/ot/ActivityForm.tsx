@@ -496,6 +496,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                                 handlePositionChange(value, index, subTaskIndex)
                               }
                               defaultValue={
+                                st.position &&
                                 positions.filter(
                                   (p) => p.name === st.position
                                 )[0].id
