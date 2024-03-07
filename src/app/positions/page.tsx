@@ -5,15 +5,12 @@ import Link from 'next/link';
 import { Toaster } from 'react-hot-toast';
 
 const getPositions = async () => {
-  //   const res = await fetch(
-  //     `https://bacian-y-rocha-next.vercel.app/api/positions`,
-  //     {
-  //       cache: 'no-store',
-  //     }
-  //   );
-  const res = await fetch(`http://localhost:3000/api/positions`, {
-    cache: 'no-store',
-  });
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/positions`,
+    {
+      cache: 'no-store',
+    }
+  );
 
   const quotes = await res.json();
 
