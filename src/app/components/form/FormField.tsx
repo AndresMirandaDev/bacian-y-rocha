@@ -2,6 +2,7 @@
 import React, { Dispatch, HTMLInputTypeAttribute, SetStateAction } from 'react';
 import * as Form from '@radix-ui/react-form';
 import { TextField } from '@radix-ui/themes';
+import colors from '@/app/styles/colors';
 
 interface Props {
   value: string;
@@ -38,7 +39,11 @@ const FormField = ({
         }}
       >
         {label && <Form.Label className="text-zinc-500 -z">{label}</Form.Label>}
-        <Form.Message className={errorMessageClassname} match="valueMissing">
+        <Form.Message
+          // className={errorMessageClassname}
+          style={{ color: colors.buttonColors.danger }}
+          match="valueMissing"
+        >
           {valueMissing}
         </Form.Message>
         <Form.Message className={errorMessageClassname} match="typeMismatch">
