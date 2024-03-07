@@ -185,3 +185,9 @@ enum StakeholderType {
   CLIENT
   PROVIDER
 }
+
+model Position {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  name  String
+  value Int
+}
