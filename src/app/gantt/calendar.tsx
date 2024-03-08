@@ -7,19 +7,22 @@ import {
   eachDayOfInterval,
   isWithinInterval,
   Locale,
+  subDays,
 } from 'date-fns';
 import esLocale from 'date-fns/locale/es';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { Task } from './GanttChart'; // Asegúrate de que la importación sea correcta según tu estructura de archivos
+import { SubTask, Task } from '@prisma/client';
 
-const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
+interface Props {
+  tasks: Task[];
+  workOrderStart: Date;
+  workOrderEnd: Date;
+}
+
+const WeeklyCalendar = ({ tasks, workOrderEnd, workOrderStart }: Props) => {
   const currentDate = new Date();
-  const [selectedStartDate, setSelectedStartDate] = useState(
-    startOfYear(currentDate)
-  );
-  const [selectedEndDate, setSelectedEndDate] = useState(
-    endOfYear(currentDate)
-  );
+  const [selectedStartDate, setSelectedStartDate] = useState(workOrderStart);
+  const [selectedEndDate, setSelectedEndDate] = useState(workOrderEnd);
 
   const daysInRange = eachDayOfInterval({
     start: selectedStartDate,
@@ -47,21 +50,21 @@ const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
       limitToBounds={true}
       wheel={{ step: 0.2 }}
     >
+      <div className="flex justify-start mb-4">
+        <input
+          type="date"
+          value={format(selectedStartDate, 'yyyy-MM-dd')}
+          onChange={(e) => setSelectedStartDate(parseISO(e.target.value))}
+          className="mr-2"
+        />
+        <input
+          type="date"
+          value={format(selectedEndDate, 'yyyy-MM-dd')}
+          onChange={(e) => setSelectedEndDate(parseISO(e.target.value))}
+        />
+      </div>
       <TransformComponent>
-        <div className="overflow-x-auto">
-          <div className="flex justify-start mb-4">
-            <input
-              type="date"
-              value={format(selectedStartDate, 'yyyy-MM-dd')}
-              onChange={(e) => setSelectedStartDate(parseISO(e.target.value))}
-              className="mr-2"
-            />
-            <input
-              type="date"
-              value={format(selectedEndDate, 'yyyy-MM-dd')}
-              onChange={(e) => setSelectedEndDate(parseISO(e.target.value))}
-            />
-          </div>
+        <div>
           <div
             style={{
               display: 'flex',
@@ -92,21 +95,23 @@ const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
           </div>
           <div style={{ position: 'relative', minHeight: '150px' }}>
             {tasks
-              .filter(
-                (task) =>
+              .filter((task) => {
+                return (
                   task.startDate &&
                   isWithinInterval(parseISO(task.startDate), {
                     start: selectedStartDate,
                     end: selectedEndDate,
                   })
-              )
-              .sort(
-                (a, b) =>
+                );
+              })
+              .sort((a, b) => {
+                return (
                   new Date(a.startDate).getTime() -
                   new Date(b.startDate).getTime()
-              )
+                );
+              })
               .flatMap((task, index) => [
-                ...(task.subTasks?.map((subTask, subIndex) => {
+                ...task.subTasks.map((subTask: SubTask, subIndex: number) => {
                   const left =
                     daysInRange.findIndex(
                       (day) =>
@@ -120,7 +125,7 @@ const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
                   return (
                     <div
                       key={subTask.id}
-                      className="absolute"
+                      className="absolute border border-slate-400 rounded-full"
                       style={{
                         left: `${left}px`,
                         top: `${top}px`,
@@ -137,11 +142,11 @@ const WeeklyCalendar = ({ tasks }: { tasks: Task[] }) => {
                         className="absolute w-full text-center text-xs"
                         style={{ left: '0px' }}
                       >
-                        {subTask.description} - {subTask.progress}%
+                        {subTask.name} - {subTask.progress}%
                       </span>
                     </div>
                   );
-                }) || []),
+                }),
               ])}
           </div>
         </div>

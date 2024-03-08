@@ -60,4 +60,9 @@ input {
       -ms-overflow-style: none;  /* IE and Edge */
       scrollbar-width: none;  /* Firefox */
 }
+ .calculate-height {
+  height: calc(100vh - 3rem);
+ }
 }
+
+

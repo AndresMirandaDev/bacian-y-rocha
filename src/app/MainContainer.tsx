@@ -1,11 +1,17 @@
 'use client';
-import { Container } from '@radix-ui/themes';
+import { Box, Container } from '@radix-ui/themes';
 import classNames from 'classnames';
 import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
 import React, { PropsWithChildren } from 'react';
 
 const MainContainer = ({ children }: PropsWithChildren) => {
   const { data, status } = useSession();
+  const currentPath = usePathname();
+
+  if (currentPath.includes('gantt')) {
+    return <Box className="ml-16 bg-slate-200 ">{children}</Box>;
+  }
 
   return (
     <Container
