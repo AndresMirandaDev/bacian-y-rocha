@@ -97,7 +97,7 @@ const GanttChart = ({ workOrder }: Props) => {
 
   return (
     <Flex
-      className="bg-gray-90 calculate-height flex-grow"
+      className="bg-slate-100 calculate-height w-fit"
       direction={{
         initial: 'column',
         xs: 'column',
@@ -109,7 +109,7 @@ const GanttChart = ({ workOrder }: Props) => {
       gap="4"
     >
       {/* Listado de actividades */}
-      <div className="flex-grow">
+      <div className="flex-grow bg-slate-300">
         {tasks.map((task, index) => (
           <GanntActivityAccordion
             task={task}
@@ -131,7 +131,7 @@ const GanttChart = ({ workOrder }: Props) => {
         {/* <button onClick={addTask} className="bg-green-500 rounded-full text-white w-6 h-6 flex items-center justify-center mt-5"> + </button> */}
       </div>
       {/* Calendario */}
-      <div className="p-4 bg-slate-100 mb-5 max-w-prose h-fit">
+      <div className="p-4 bg-slate-100 rounded-xl mb-5 max-w-prose h-fit min-w-[65ch]">
         <ScrollArea>
           <WeeklyCalendar
             tasks={tasks}

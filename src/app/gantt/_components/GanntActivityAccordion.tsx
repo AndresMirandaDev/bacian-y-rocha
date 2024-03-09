@@ -1,6 +1,7 @@
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
-import { Flex, Box, Text } from '@radix-ui/themes';
+import { Flex, Box, Text, Separator } from '@radix-ui/themes';
+import React from 'react';
 
 interface Task {
   id: string;
@@ -169,84 +170,87 @@ const GanntActivityAccordion = ({
               </Accordion.Trigger>
             </Flex>
           </Flex>
+          <Separator size="4" />
         </Accordion.Header>
         <Accordion.Content className="data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden">
           {task.subTasks &&
             task.subTasks.map((subTask, subIndex) => (
-              <Flex
-                key={subTask.id}
-                gap="7"
-                direction={{
-                  initial: 'column',
-                  xs: 'column',
-                  sm: 'column',
-                  md: 'column',
-                  lg: 'row',
-                  xl: 'row',
-                }}
-                className="p-1 bg-slate-100"
-              >
-                <Flex direction="column" align="center">
-                  <Box>
-                    <Text>Nombre</Text>
-                  </Box>
-                  <Box>
-                    <Text>{subTask.name}</Text>
-                  </Box>
+              <React.Fragment key={subTask.id}>
+                <Flex
+                  gap="7"
+                  direction={{
+                    initial: 'column',
+                    xs: 'column',
+                    sm: 'column',
+                    md: 'column',
+                    lg: 'row',
+                    xl: 'row',
+                  }}
+                  className="p-2 bg-slate-100"
+                >
+                  <Flex direction="column" align="center">
+                    <Box>
+                      <Text>Nombre</Text>
+                    </Box>
+                    <Box>
+                      <Text>{subTask.name}</Text>
+                    </Box>
+                  </Flex>
+                  <Flex direction="column" align="center">
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Encargado
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        {subTask.assignedTo}
+                      </Text>
+                    </Box>
+                  </Flex>
+                  <Flex direction="column" align="center">
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Progreso
+                      </Text>
+                    </Box>
+                    <input
+                      type="range"
+                      min="0"
+                      max="100"
+                      value={subTask.progress}
+                      onChange={(e) =>
+                        handleSubTaskChange(e, index, subIndex, 'progress')
+                      }
+                      className="range range-info range-xs"
+                    />
+                    <span className="flex justify-between text-xs px-2">
+                      {`${subTask.progress}%`}
+                    </span>
+                  </Flex>
+                  <Flex direction="column" align="center">
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Fecha de inicio
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text>{subTask.startDate}</Text>
+                    </Box>
+                  </Flex>
+                  <Flex direction="column" align="center">
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Duración en días
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text>{subTask.durationInDays}</Text>
+                    </Box>
+                  </Flex>
                 </Flex>
-                <Flex direction="column" align="center">
-                  <Box>
-                    <Text className="font-semibold text-slate-600">
-                      Encargado
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text className="font-semibold text-slate-600">
-                      {subTask.assignedTo}
-                    </Text>
-                  </Box>
-                </Flex>
-                <Flex direction="column" align="center">
-                  <Box>
-                    <Text className="font-semibold text-slate-600">
-                      Progreso
-                    </Text>
-                  </Box>
-                  <input
-                    type="range"
-                    min="0"
-                    max="100"
-                    value={subTask.progress}
-                    onChange={(e) =>
-                      handleSubTaskChange(e, index, subIndex, 'progress')
-                    }
-                    className="range range-info range-xs"
-                  />
-                  <span className="flex justify-between text-xs px-2">
-                    {`${subTask.progress}%`}
-                  </span>
-                </Flex>
-                <Flex direction="column" align="center">
-                  <Box>
-                    <Text className="font-semibold text-slate-600">
-                      Fecha de inicio
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text>{subTask.startDate}</Text>
-                  </Box>
-                </Flex>
-                <Flex direction="column" align="center">
-                  <Box>
-                    <Text className="font-semibold text-slate-600">
-                      Duración en días
-                    </Text>
-                  </Box>
-                  <Box>
-                    <Text>{subTask.durationInDays}</Text>
-                  </Box>
-                </Flex>
-              </Flex>
+                <Separator size="4" />
+              </React.Fragment>
               //   <div
               //     key={subTask.id}
               //     className="grid grid-cols-6 gap-2 mb-2 pl-4 bg-gray-100 items-center"
