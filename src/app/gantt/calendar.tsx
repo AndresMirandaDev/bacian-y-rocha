@@ -49,20 +49,20 @@ const WeeklyCalendar = ({ tasks, workOrderEnd, workOrderStart }: Props) => {
       minScale={0.1}
       maxScale={4}
       limitToBounds={true}
-      wheel={{ step: 0.2 }}
+      wheel={{ step: 0.2, disabled: true }}
     >
       <div className="flex gap-4 justify-center mb-4 p-1">
         <input
           type="date"
           value={format(selectedStartDate, 'yyyy-MM-dd')}
           onChange={(e) => setSelectedStartDate(parseISO(e.target.value))}
-          className=" bg-slate-100 border border-slate-400 rounded-full p-1"
+          className=" bg-slate-600 text-slate-100 border border-slate-400 rounded-full p-1"
         />
         <input
           type="date"
           value={format(selectedEndDate, 'yyyy-MM-dd')}
           onChange={(e) => setSelectedEndDate(parseISO(e.target.value))}
-          className=" bg-slate-100 border border-slate-400 rounded-full p-1"
+          className=" bg-slate-600 text-slate-100 border border-slate-400 rounded-full p-1"
         />
       </div>
       <TransformComponent>
