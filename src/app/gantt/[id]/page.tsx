@@ -16,7 +16,10 @@ const WorkOrderGantt = async ({ params }: Params) => {
   if (!workOrder) return notFound();
 
   return (
-    <Flex px={{ initial: '0', xs: '0', sm: '0', md: '0', lg: '5', xl: '5' }}>
+    <Flex
+      px={{ initial: '0', xs: '0', sm: '0', md: '0', lg: '5', xl: '5' }}
+      className="p-3"
+    >
       <GanttChart workOrder={workOrder} />
     </Flex>
   );

@@ -190,7 +190,9 @@ const GanntActivityAccordion = ({
                 >
                   <Flex direction="column" align="center">
                     <Box>
-                      <Text>Nombre</Text>
+                      <Text className="font-semibold text-slate-600">
+                        Nombre
+                      </Text>
                     </Box>
                     <Box>
                       <Text>{subTask.name}</Text>

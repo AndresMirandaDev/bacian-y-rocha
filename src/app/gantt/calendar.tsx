@@ -12,6 +12,7 @@ import {
 import esLocale from 'date-fns/locale/es';
 import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
 import { SubTask, Task } from '@prisma/client';
+import { Button } from '@radix-ui/themes';
 
 interface Props {
   tasks: Task[];
@@ -50,25 +51,26 @@ const WeeklyCalendar = ({ tasks, workOrderEnd, workOrderStart }: Props) => {
       limitToBounds={true}
       wheel={{ step: 0.2 }}
     >
-      <div className="flex justify-start mb-4">
+      <div className="flex gap-4 justify-center mb-4 p-1">
         <input
           type="date"
           value={format(selectedStartDate, 'yyyy-MM-dd')}
           onChange={(e) => setSelectedStartDate(parseISO(e.target.value))}
-          className="mr-2"
+          className=" bg-slate-100 border border-slate-400 rounded-full p-1"
         />
         <input
           type="date"
           value={format(selectedEndDate, 'yyyy-MM-dd')}
           onChange={(e) => setSelectedEndDate(parseISO(e.target.value))}
+          className=" bg-slate-100 border border-slate-400 rounded-full p-1"
         />
       </div>
       <TransformComponent>
-        <div>
+        <div className="h-screen">
           <div
             style={{
               display: 'flex',
-              minWidth: `${daysInRange.length * 30}px`,
+              minWidth: `${daysInRange.length * 60}px`,
             }}
           >
             {daysInRange.map((day, index) => (
@@ -120,12 +122,12 @@ const WeeklyCalendar = ({ tasks, workOrderEnd, workOrderStart }: Props) => {
                     ) *
                       30 +
                     5;
-                  const top = index * 30 + subIndex * 30 + 40; // Ajusta el espacio vertical entre tareas
+                  const top = index * 100 + subIndex * 30 + 40; // Ajusta el espacio vertical entre tareas
                   const width = subTask.durationInDays * 30;
                   return (
                     <div
                       key={subTask.id}
-                      className="absolute border border-slate-400 rounded-full"
+                      className="relative rounded-full"
                       style={{
                         left: `${left}px`,
                         top: `${top}px`,
@@ -134,12 +136,12 @@ const WeeklyCalendar = ({ tasks, workOrderEnd, workOrderStart }: Props) => {
                     >
                       <div className="bg-gray-200 h-4 rounded-full overflow-hidden">
                         <div
-                          className="bg-blue-600 h-4 rounded-full"
+                          className="bg-blue-400 h-4 rounded-full"
                           style={{ width: `${subTask.progress}%` }}
                         ></div>
                       </div>
                       <span
-                        className="absolute w-full text-center text-xs"
+                        className="absolute text-center text-xs"
                         style={{ left: '0px' }}
                       >
                         {subTask.name} - {subTask.progress}%

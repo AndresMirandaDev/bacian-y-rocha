@@ -5,7 +5,7 @@ import WeeklyCalendar from './calendar';
 import { mockTasks } from './mock';
 import { Task, WorkOrder } from '@prisma/client';
 import { addDays, subDays } from 'date-fns';
-import { Box, Card, Flex, ScrollArea, Text } from '@radix-ui/themes';
+import { Box, Card, Flex, ScrollArea, Separator, Text } from '@radix-ui/themes';
 import GanntActivityAccordion from './_components/GanntActivityAccordion';
 
 interface SubTask {
@@ -96,30 +96,78 @@ const GanttChart = ({ workOrder }: Props) => {
   };
 
   return (
-    <Flex
-      className="bg-slate-100 calculate-height w-fit"
-      direction={{
-        initial: 'column',
-        xs: 'column',
-        sm: 'column',
-        md: 'column',
-        lg: 'row',
-        xl: 'row',
-      }}
-      gap="4"
-    >
-      {/* Listado de actividades */}
-      <div className="flex-grow bg-slate-300">
-        {tasks.map((task, index) => (
-          <GanntActivityAccordion
-            task={task}
-            handleSubTaskChange={handleSubTaskChange}
-            index={index}
-          />
-        ))}
+    <Flex direction="column" gap="3">
+      <Flex
+        direction="column"
+        gap="3"
+        className="bg-stone-700 p-3 shadow-lg rounded-lg"
+      >
+        <Flex direction="column">
+          <Box>
+            <Text className="text-xl text-slate-100">N° Orden de trabajo</Text>
+          </Box>
+          <Box>
+            <Text className="text-slate-200">{workOrder.number}</Text>
+          </Box>
+          <Separator size="4" />
+        </Flex>
+        <Flex direction="column">
+          <Box>
+            <Text className="text-xl text-slate-100">Cliente</Text>
+          </Box>
+          <Box>
+            <Text className="text-slate-200">{workOrder.client}</Text>
+          </Box>
+          <Separator size="4" />
+        </Flex>
+        <Flex direction="column">
+          <Box>
+            <Text className="text-xl text-slate-100">Fecha de inicio</Text>
+          </Box>
+          <Box>
+            <Text className="text-slate-200">
+              {workOrder.startDate.toLocaleDateString()}
+            </Text>
+          </Box>
+          <Separator size="4" />
+        </Flex>
+        <Flex direction="column">
+          <Box>
+            <Text className="text-xl text-slate-100">
+              Fecha estimada de entrega
+            </Text>
+          </Box>
+          <Box>
+            <Text className="text-slate-200">
+              {workOrder.estimatedDate.toLocaleDateString()}
+            </Text>
+          </Box>
+        </Flex>
+      </Flex>
+      <Flex
+        className="bg-slate-100 calculate-height w-fit shadow-lg border border-slate-300 rounded-lg"
+        direction={{
+          initial: 'column',
+          xs: 'column',
+          sm: 'column',
+          md: 'column',
+          lg: 'row',
+          xl: 'row',
+        }}
+        gap="4"
+      >
+        {/* Listado de actividades */}
+        <div className="flex-grow bg-slate-300">
+          {tasks.map((task, index) => (
+            <GanntActivityAccordion
+              task={task}
+              handleSubTaskChange={handleSubTaskChange}
+              index={index}
+            />
+          ))}
 
-        {/* Inputs para añadir nueva tarea */}
-        {/* <div className="grid grid-cols-6 gap-2">
+          {/* Inputs para añadir nueva tarea */}
+          {/* <div className="grid grid-cols-6 gap-2">
           <input type="text" value={newTask.description} onChange={(e) => handleInputChange(e, 'description')} />
           <input type="text" value={newTask.category} onChange={(e) => handleInputChange(e, 'category')} />
           <input type="text" value={newTask.assignedTo} onChange={(e) => handleInputChange(e, 'assignedTo')} />
@@ -128,18 +176,19 @@ const GanttChart = ({ workOrder }: Props) => {
           <input type="number" value={newTask.durationInDays} onChange={(e) => handleInputChange(e, 'durationInDays')} />
           
         </div> */}
-        {/* <button onClick={addTask} className="bg-green-500 rounded-full text-white w-6 h-6 flex items-center justify-center mt-5"> + </button> */}
-      </div>
-      {/* Calendario */}
-      <div className="p-4 bg-slate-100 rounded-xl mb-5 max-w-prose h-fit min-w-[65ch]">
-        <ScrollArea>
-          <WeeklyCalendar
-            tasks={tasks}
-            workOrderStart={subDays(workOrder.startDate, 2)}
-            workOrderEnd={addDays(workOrder.estimatedDate, 2)}
-          />
-        </ScrollArea>
-      </div>
+          {/* <button onClick={addTask} className="bg-green-500 rounded-full text-white w-6 h-6 flex items-center justify-center mt-5"> + </button> */}
+        </div>
+        {/* Calendario */}
+        <div className="p-4 bg-slate-100 rounded-xl mb-5 max-w-prose h-full min-w-[65ch]">
+          <ScrollArea>
+            <WeeklyCalendar
+              tasks={tasks}
+              workOrderStart={subDays(workOrder.startDate, 2)}
+              workOrderEnd={addDays(workOrder.estimatedDate, 2)}
+            />
+          </ScrollArea>
+        </div>
+      </Flex>
     </Flex>
   );
 };
