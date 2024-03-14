@@ -1,9 +1,9 @@
 'use client';
 import colors from '@/app/styles/colors';
-import { WorkOrder } from '@prisma/client';
+import { SubTask, Task, WorkOrder } from '@prisma/client';
 import { Box, Flex, Grid, ScrollArea, Separator, Text } from '@radix-ui/themes';
 import { Locale, eachDayOfInterval, format } from 'date-fns';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import esLocale from 'date-fns/locale/es';
 import GanttAccordion from './GanttAccordion';
 
@@ -31,6 +31,49 @@ const GanttChartX = ({ workOrder }: Props) => {
     { label: 'Inicio', id: 4 },
     { label: 'Días', id: 5 },
   ];
+
+  useEffect(() => {
+    if (workOrder) {
+      setTasks(workOrder.activities);
+    }
+  }, [workOrder]);
+
+  const [tasks, setTasks] = useState<Task[]>([]);
+  const [newTask, setNewTask] = useState({
+    id: '0',
+    description: '',
+    assignedTo: '',
+    progress: 0,
+    startDate: '',
+    durationInDays: 0,
+    subTasks: [],
+  });
+
+  const handleSubTaskChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    taskIndex: number,
+    subTaskIndex: number,
+    field: keyof SubTask
+  ) => {
+    const updatedTasks = tasks.map((task, index) => {
+      if (index === taskIndex) {
+        const updatedSubTasks = task.subTasks?.map((subTask, sIndex) => {
+          if (sIndex === subTaskIndex) {
+            if (field === 'progress') {
+              return { ...subTask, [field]: parseInt(e.target.value) };
+            } else {
+              return { ...subTask, [field]: e.target.value };
+            }
+          }
+          return subTask;
+        });
+        return { ...task, subTasks: updatedSubTasks };
+      }
+      return task;
+    });
+
+    setTasks(updatedTasks);
+  };
 
   return (
     <Grid className="w-full" columns="1">
@@ -62,12 +105,18 @@ const GanttChartX = ({ workOrder }: Props) => {
           </Text>
         </Flex>
       </Flex>
-      <Flex className="w-full p-3 " align="center">
-        <Flex className="w-1/2 border-r-2 ">
+      <Flex
+        className="w-full bg-slate-700 mt-5 rounded-sm text-slate-100"
+        align="center"
+      >
+        <Flex
+          className="w-1/2 border-r-2 border-slate-500 h-full"
+          align="center"
+        >
           {chartHeader.map((h) => {
             return (
               <Box key={h.id} className="w-full text-center ">
-                <Text className="font-bold text-slate-600">{h.label}</Text>
+                <Text className="font-bold ">{h.label}</Text>
               </Box>
             );
           })}
@@ -94,14 +143,13 @@ const GanttChartX = ({ workOrder }: Props) => {
           </Flex>
         </ScrollArea>
       </Flex>
-      {workOrder.activities.map((a, index) => {
+      {tasks.map((a, index) => {
         return (
           <GanttAccordion
             task={a}
             index={index}
-            handleSubTaskChange={() => {
-              console.log('hola');
-            }}
+            handleSubTaskChange={handleSubTaskChange}
+            workOrderStartDate={workOrder.startDate}
           />
         );
       })}
