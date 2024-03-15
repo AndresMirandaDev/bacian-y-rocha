@@ -8,6 +8,7 @@ import './globals.css';
 import MainContainer from './MainContainer';
 import '@radix-ui/themes/styles.css';
 import colors from './styles/colors';
+import 'gantt-task-react/dist/index.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
