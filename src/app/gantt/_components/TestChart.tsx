@@ -47,7 +47,7 @@ const prepareData = (activities: Activity[]) => {
       id: a.id,
       type: 'project',
       progress: a.progress,
-      isDisabled: true,
+      isDisabled: false,
       hideChildren: false,
 
       styles: {
@@ -64,10 +64,13 @@ const prepareData = (activities: Activity[]) => {
         id: st.id,
         type: 'task',
         progress: st.progress,
-        isDisabled: true,
+        isDisabled: false,
         hideChildren: false,
 
-        styles: { progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d' },
+        styles: {
+          progressColor: 'rgba(78,208,34,0.7903536414565826)',
+          progressSelectedColor: '#4ed022',
+        },
         assignation: st.assignedTo,
         dependencies: [a.id],
         project: a.id,
