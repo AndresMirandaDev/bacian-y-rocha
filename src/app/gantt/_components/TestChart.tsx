@@ -48,7 +48,8 @@ const prepareData = (activities: Activity[]) => {
       type: 'project',
       progress: a.progress,
       isDisabled: true,
-      hideChildren: true,
+      hideChildren: false,
+
       styles: {
         progressColor: '#ffbb54',
         progressSelectedColor: '#ff9e0d',
@@ -65,9 +66,11 @@ const prepareData = (activities: Activity[]) => {
         progress: st.progress,
         isDisabled: true,
         hideChildren: false,
+
         styles: { progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d' },
         assignation: st.assignedTo,
         dependencies: [a.id],
+        project: a.id,
       });
     });
   });
@@ -193,6 +196,10 @@ const TestChart = ({ workOrder }: Props) => {
                 <Flex gap="3">
                   <Text className="text-slate-500">Asignado a:</Text>
                   <Text className="font-semibold">{task.assignation}</Text>
+                </Flex>
+                <Flex gap="3">
+                  <Text className="text-slate-500">orden</Text>
+                  <Text className="font-semibold">{task.displayOrder}</Text>
                 </Flex>
               </Flex>
             </Card>
