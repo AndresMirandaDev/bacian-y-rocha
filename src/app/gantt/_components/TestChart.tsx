@@ -13,11 +13,21 @@ import {
 import 'gantt-task-react/dist/index.css';
 import { Task as Activity } from '@prisma/client';
 import { addDays, eachDayOfInterval, max, min } from 'date-fns';
-import { Box, Button, Card, Flex, Text } from '@radix-ui/themes';
+import {
+  Box,
+  Button,
+  Card,
+  Flex,
+  Grid,
+  Separator,
+  Text,
+} from '@radix-ui/themes';
 import { ViewSwitcher } from './ViewSwither';
 import { updateSaleOrderSchema } from '@/app/api/saleorders/validationSchema';
 import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
+import { FaSave } from 'react-icons/fa';
+import LoadingPAge from '@/app/loading';
 
 interface Props {
   workOrder: WorkOrder;
@@ -203,7 +213,7 @@ const TestChart = ({ workOrder }: Props) => {
     }
   };
 
-  if (!tasks) return <div>loading</div>;
+  if (!tasks) return <LoadingPAge />;
 
   return (
     <div className="Wrapper">
@@ -212,8 +222,10 @@ const TestChart = ({ workOrder }: Props) => {
         onViewListChange={setIsChecked}
         isChecked={isChecked}
       />
-      <Flex>
-        <Button onClick={handleSaveChanges}>Guardar cambios</Button>
+      <Flex className="mt-5 mb-5">
+        <Button onClick={handleSaveChanges}>
+          <FaSave /> Guardar cambios
+        </Button>
       </Flex>
       <Gantt
         viewMode={view}
@@ -227,10 +239,28 @@ const TestChart = ({ workOrder }: Props) => {
         onExpanderClick={handleExpanderClick}
         columnWidth={columnWidth}
         listCellWidth={isChecked ? '155px' : ''}
+        TaskListHeader={() => {
+          return (
+            <Grid
+              columns="3"
+              className="bg-slate-500 p-2 rounded-md text-slate-100"
+            >
+              <Box>
+                <Text>Nombre</Text>
+              </Box>
+              <Box>
+                <Text>Inicio</Text>
+              </Box>
+              <Box>
+                <Text>Término</Text>
+              </Box>
+            </Grid>
+          );
+        }}
         TooltipContent={({ task }: any) => {
           return (
             <>
-              <Card>
+              <Card className="absolute ">
                 <Flex direction="column">
                   <Flex gap="3">
                     <Text className="text-slate-500">Nombre actividad:</Text>
@@ -238,22 +268,26 @@ const TestChart = ({ workOrder }: Props) => {
                       {task.name}
                     </Text>
                   </Flex>
+                  <Separator size="4" />
                   <Flex gap="3">
                     <Text className="text-slate-500">Fecha inicio:</Text>
                     <Text className="font-semibold">
                       {task.start.toLocaleDateString()}
                     </Text>
                   </Flex>
+                  <Separator size="4" />
                   <Flex gap="3">
                     <Text className="text-slate-500">Fecha término:</Text>
                     <Text className="font-semibold">
                       {task.end.toLocaleDateString()}
                     </Text>
                   </Flex>
+                  <Separator size="4" />
                   <Flex gap="3">
                     <Text className="text-slate-500">Progreso:</Text>
                     <Text className="font-semibold">{task.progress}%</Text>
                   </Flex>
+                  <Separator size="4" />
                   <Flex gap="3">
                     <Text className="text-slate-500">Asignado a:</Text>
                     <Text className="font-semibold">{task.assignation}</Text>
