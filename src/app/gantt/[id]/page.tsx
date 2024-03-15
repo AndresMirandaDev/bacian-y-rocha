@@ -2,7 +2,7 @@ import React from 'react';
 import prisma from '../../../../prisma/client';
 import GanttChart from '../GanttChart';
 import { notFound } from 'next/navigation';
-import { Box, Flex } from '@radix-ui/themes';
+import { Box, Container, Flex } from '@radix-ui/themes';
 import GanttChartX from '../_components/GanttChartX';
 import TestChart from '../_components/TestChart';
 
@@ -20,10 +20,12 @@ const WorkOrderGantt = async ({ params }: Params) => {
   return (
     <Flex
       // px={{ initial: '0', xs: '0', sm: '0', md: '0', lg: '5', xl: '5' }}
-      className="p-3 w-full"
+      className="p-3 "
     >
       {/* <GanttChartX workOrder={workOrder} /> */}
-      <TestChart workOrder={workOrder} />
+      <Container>
+        <TestChart workOrder={workOrder} />
+      </Container>
     </Flex>
   );
 };

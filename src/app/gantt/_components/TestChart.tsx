@@ -13,6 +13,7 @@ import {
 import 'gantt-task-react/dist/index.css';
 import { Task as Activity } from '@prisma/client';
 import { addDays } from 'date-fns';
+import { Box, Card, Flex, Text } from '@radix-ui/themes';
 
 interface Props {
   workOrder: WorkOrder;
@@ -33,6 +34,7 @@ const prepareData = (activities: Activity[]) => {
         progressColor: '#ffbb54',
         progressSelectedColor: '#ff9e0d',
       },
+      assignation: a.assignedTo,
     });
     a.subTasks.forEach((st) => {
       data.push({
@@ -44,6 +46,7 @@ const prepareData = (activities: Activity[]) => {
         progress: st.progress,
         isDisabled: true,
         styles: { progressColor: '#ffbb54', progressSelectedColor: '#ff9e0d' },
+        assignation: st.assignedTo,
       });
     });
   });
@@ -66,6 +69,38 @@ const TestChart = ({ workOrder }: Props) => {
       locale="es"
       todayColor="rgba(208,57,34,0.5858718487394958)"
       projectBackgroundColor="rgba(34,78,208,0.5858718487394958)"
+      TooltipContent={({ task }: any) => {
+        return (
+          <Card>
+            <Flex direction="column">
+              <Flex gap="3">
+                <Text className="text-slate-500">Nombre actividad:</Text>
+                <Text className="font-semibold capitalize">{task.name}</Text>
+              </Flex>
+              <Flex gap="3">
+                <Text className="text-slate-500">Fecha inicio:</Text>
+                <Text className="font-semibold">
+                  {task.start.toLocaleDateString()}
+                </Text>
+              </Flex>
+              <Flex gap="3">
+                <Text className="text-slate-500">Fecha término:</Text>
+                <Text className="font-semibold">
+                  {task.end.toLocaleDateString()}
+                </Text>
+              </Flex>
+              <Flex gap="3">
+                <Text className="text-slate-500">Progreso:</Text>
+                <Text className="font-semibold">{task.progress}%</Text>
+              </Flex>
+              <Flex gap="3">
+                <Text className="text-slate-500">Asignado a:</Text>
+                <Text className="font-semibold">{task.assignation}</Text>
+              </Flex>
+            </Flex>
+          </Card>
+        );
+      }}
     />
   );
 };
