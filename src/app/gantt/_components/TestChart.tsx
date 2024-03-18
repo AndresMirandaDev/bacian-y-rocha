@@ -53,13 +53,17 @@ export function getStartEndDateForProject(tasks: Task[], projectId: string) {
 const prepareData = (activities: Activity[]) => {
   let data: any[] = [];
   activities.forEach((a, index) => {
+    const maxProgress = a.subTasks.length * 100;
+    const actualProgress = a.subTasks.reduce((acc, st) => {
+      return acc + st.progress;
+    }, 0);
     data.push({
       start: new Date(a.startDate),
       end: addDays(a.startDate, a.durationInDays - 1),
       name: a.name,
       id: a.id,
       type: 'project',
-      progress: a.progress,
+      progress: (actualProgress * 100) / maxProgress,
       isDisabled: false,
       hideChildren: false,
 
@@ -189,7 +193,28 @@ const TestChart = ({ workOrder }: Props) => {
 
   const handleProgressChange = async (task: Task) => {
     setTasks(tasks.map((t: any) => (t.id === task.id ? task : t)));
-    console.log('On progress change Id:' + task.progress);
+
+    const updatedActivities = [...activities!];
+
+    const filteredActivity = activities?.filter((a) => {
+      return a.id === task.project;
+    })[0];
+
+    const filteredSubTask = filteredActivity?.subTasks.filter(
+      (st) => st.id === task.id
+    )[0];
+
+    const activityIndex = activities?.findIndex(
+      (a) => a.id === filteredActivity?.id
+    );
+
+    const subTaskIndex = filteredActivity?.subTasks.findIndex(
+      (st) => st.id === filteredSubTask?.id
+    );
+    updatedActivities[activityIndex!].subTasks[subTaskIndex!].progress =
+      task.progress;
+
+    setActivities(updatedActivities);
   };
 
   const handleSelect = (task: Task, isSelected: boolean) => {

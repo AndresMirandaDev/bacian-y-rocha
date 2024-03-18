@@ -22,7 +22,6 @@ const WorkOrderGantt = async ({ params }: Params) => {
       // px={{ initial: '0', xs: '0', sm: '0', md: '0', lg: '5', xl: '5' }}
       className="p-3 "
     >
-      {/* <GanttChartX workOrder={workOrder} /> */}
       <Container>
         <TestChart workOrder={workOrder} />
         <Toaster />
