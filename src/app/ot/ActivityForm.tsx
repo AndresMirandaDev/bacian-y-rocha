@@ -99,13 +99,19 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
       | 'position'
   ) => {
     const updatedData = [...activities];
+    let newValue: string | number = (e.target as HTMLInputElement).value;
+
+    if (field === 'durationInDays') {
+      // Remove leading zeros using regular expression
+      newValue = newValue.replace(/^0+/, '') || '0'; // Replace leading zeros with an empty string or '0' if all zeros were removed
+      newValue = parseInt(newValue);
+    }
+
     updatedData[index] = {
       ...updatedData[index],
-      [field]:
-        field === 'durationInDays'
-          ? Number((e.target as HTMLInputElement).value)
-          : (e.target as HTMLInputElement).value,
+      [field]: newValue,
     };
+
     setActivities(updatedData);
     sendActivities(updatedData);
   };
@@ -124,13 +130,28 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
       | 'name'
   ) => {
     const updatedData = [...activities];
-    updatedData[taskIndex].subTasks![subTaskIndex] = {
-      ...updatedData[taskIndex].subTasks![subTaskIndex],
-      [field]:
-        field === 'durationInDays' || field === 'hours' || field === 'hourPrice'
-          ? Number((e.target as HTMLInputElement).value)
-          : (e.target as HTMLInputElement).value,
-    };
+    const inputValue = (e.target as HTMLInputElement).value;
+
+    if (
+      field === 'durationInDays' ||
+      field === 'hours' ||
+      field === 'hourPrice'
+    ) {
+      const newValue =
+        inputValue === '0' || (!isNaN(Number(inputValue)) && inputValue !== '')
+          ? String(Number(inputValue))
+          : '0';
+      updatedData[taskIndex].subTasks![subTaskIndex] = {
+        ...updatedData[taskIndex].subTasks![subTaskIndex],
+        [field]: parseInt(newValue),
+      };
+    } else {
+      updatedData[taskIndex].subTasks![subTaskIndex] = {
+        ...updatedData[taskIndex].subTasks![subTaskIndex],
+        [field]: inputValue,
+      };
+    }
+
     setActivities(updatedData);
     sendActivities(updatedData);
   };
@@ -280,7 +301,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                     </Text>
                   </Box>
                   <input
-                    value={a.durationInDays}
+                    value={String(a.durationInDays)}
                     className="border border-slate-300 rounded-md p-2 text-center"
                     type="number"
                     onChange={(e) => {
@@ -453,7 +474,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                               </Text>
                             </Box>
                             <input
-                              value={st.durationInDays}
+                              value={String(st.durationInDays)}
                               className="border border-slate-300 rounded-md p-2 text-center"
                               type="number"
                               onChange={(e) => {
