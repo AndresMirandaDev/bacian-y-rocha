@@ -143,7 +143,7 @@ const WorkOrderForm = ({
   useEffect(() => {
     if (clientId) {
       const getClientInfo = () => {
-        const selectedClient = clients.filter((c) => (c.id = clientId));
+        const selectedClient = clients.filter((c) => c.id === clientId);
         setClientAddress(selectedClient[0].address);
         setRut(selectedClient[0].rut);
         setSector(selectedClient[0].sector);
@@ -152,6 +152,7 @@ const WorkOrderForm = ({
       getClientInfo();
     }
   }, [clientId]);
+  console.log(clientId);
 
   const onSubmitReceiptMaterial = () => {
     setMaterialsToSubmit([
