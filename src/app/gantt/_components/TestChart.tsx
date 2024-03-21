@@ -28,6 +28,9 @@ import toast, { Toaster } from 'react-hot-toast';
 import axios from 'axios';
 import { FaSave } from 'react-icons/fa';
 import LoadingPAge from '@/app/loading';
+import classNames from 'classnames';
+import * as Accordion from '@radix-ui/react-accordion';
+import { ChevronDownIcon } from '@radix-ui/react-icons';
 
 interface Props {
   workOrder: WorkOrder;
@@ -183,14 +186,6 @@ const TestChart = ({ workOrder }: Props) => {
     }
   };
 
-  const handleTaskDelete = (task: Task) => {
-    const conf = window.confirm('Are you sure about ' + task.name + ' ?');
-    if (conf) {
-      setTasks(tasks.filter((t: any) => t.id !== task.id));
-    }
-    return conf;
-  };
-
   const handleProgressChange = async (task: Task) => {
     setTasks(tasks.map((t: any) => (t.id === task.id ? task : t)));
 
@@ -236,6 +231,34 @@ const TestChart = ({ workOrder }: Props) => {
       console.log(error);
       toast.error('No se pudieron guardar los cambios');
     }
+  };
+
+  const handleSubTaskChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    taskIndex: number,
+    subTaskIndex: number,
+    field: keyof SubTask
+  ) => {
+    const updatedTasks = activities?.map((task: any, index: number) => {
+      if (index === taskIndex) {
+        const updatedSubTasks = task.subTasks?.map(
+          (subTask: any, sIndex: number) => {
+            if (sIndex === subTaskIndex) {
+              if (field === 'progress') {
+                return { ...subTask, [field]: parseInt(e.target.value) };
+              } else {
+                return { ...subTask, [field]: e.target.value };
+              }
+            }
+            return subTask;
+          }
+        );
+        return { ...task, subTasks: updatedSubTasks };
+      }
+      return task;
+    });
+
+    setActivities(updatedTasks);
   };
 
   if (!tasks) return <LoadingPAge />;
@@ -323,6 +346,76 @@ const TestChart = ({ workOrder }: Props) => {
           );
         }}
       />
+      <Flex className="mt-5">
+        <Box>
+          <Text className="text-xl p-3">Actualizar Progresos</Text>
+        </Box>
+      </Flex>
+      <Grid className="w-full mt-5">
+        {activities?.map((a, index) => {
+          return (
+            <Accordion.Root collapsible type="single" key={a.id}>
+              <Accordion.Item value={a.id}>
+                <Accordion.Header>
+                  <Flex className="bg-slate-500 p-2" justify="between">
+                    <Box className="capitalize text-slate-100 font-semibold">
+                      {a.name}
+                    </Box>
+                    <Accordion.Trigger>
+                      <Box className="text-white">
+                        <ChevronDownIcon />
+                      </Box>
+                    </Accordion.Trigger>
+                  </Flex>
+                </Accordion.Header>
+                <Accordion.Content className="bg-slate-100 data-[state=open]:animate-slideDown data-[state=closed]:animate-slideUp overflow-hidden">
+                  <Grid columns="2" className="p-2 bg-slate-200">
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Nombre
+                      </Text>
+                    </Box>
+                    <Box>
+                      <Text className="font-semibold text-slate-600">
+                        Progreso
+                      </Text>
+                    </Box>
+                  </Grid>
+                  {a.subTasks.map((st, subIndex) => {
+                    return (
+                      <Grid key={st.id} columns="2" className="p-2">
+                        <Box>
+                          <Text className="capitalize">{st.name}</Text>
+                        </Box>
+                        <Box>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={st.progress}
+                            onChange={(e) =>
+                              handleSubTaskChange(
+                                e,
+                                index,
+                                subIndex,
+                                'progress'
+                              )
+                            }
+                            className="range range-info range-xs"
+                          />
+                          <span className="flex justify-between text-xs px-2">
+                            {`${st.progress}%`}
+                          </span>
+                        </Box>
+                      </Grid>
+                    );
+                  })}
+                </Accordion.Content>
+              </Accordion.Item>
+            </Accordion.Root>
+          );
+        })}
+      </Grid>
     </div>
   );
 };
