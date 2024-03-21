@@ -492,7 +492,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                               <Text className="text-slate-500">H.H</Text>
                             </Box>
                             <input
-                              value={st.hours}
+                              value={String(st.hours)}
                               className="border border-slate-300 rounded-md p-2 text-center"
                               type="number"
                               onChange={(e) => {

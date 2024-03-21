@@ -64,7 +64,7 @@ const prepareData = (activities: Activity[]) => {
       id: a.id,
       type: 'project',
       progress: (actualProgress * 100) / maxProgress,
-      isDisabled: false,
+      isDisabled: true,
       hideChildren: false,
 
       styles: {
@@ -81,7 +81,7 @@ const prepareData = (activities: Activity[]) => {
         id: st.id,
         type: 'task',
         progress: st.progress,
-        isDisabled: false,
+        isDisabled: true,
         hideChildren: false,
 
         styles: {
