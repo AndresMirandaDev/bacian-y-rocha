@@ -8,13 +8,24 @@ interface Params {
   params: { id: string };
 }
 
+const getProviders = async () => {
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/providers`,
+    {
+      cache: 'no-store',
+    }
+  );
+
+  const providers = await res.json();
+
+  return providers.body;
+};
+
 const EditSaleOrderPage = async ({ params }: Params) => {
   const saleOrder = await prisma.saleOrder.findUnique({
     where: { id: params.id },
   });
-  const providers = await prisma.stakeholders.findMany({
-    where: { type: StakeholderType.PROVIDER },
-  });
+  const providers = await getProviders();
 
   if (!saleOrder) return notFound();
   return <SaleOrderForm saleOrder={saleOrder} providers={providers} />;
