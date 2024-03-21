@@ -8,13 +8,24 @@ interface Params {
   params: { id: string };
 }
 
+const getClients = async () => {
+  const res = await fetch(
+    `https://bacian-y-rocha-next.vercel.app/api/clients`,
+    {
+      cache: 'no-store',
+    }
+  );
+
+  const clients = await res.json();
+
+  return clients.body;
+};
+
 const EditWorkOrderPage = async ({ params }: Params) => {
   const workOrder = await prisma.workOrder.findUnique({
     where: { id: params.id },
   });
-  const clients = await prisma.stakeholders.findMany({
-    where: { type: StakeholderType.CLIENT },
-  });
+  const clients = await getClients();
 
   const saleOrders = await prisma.saleOrder.findMany();
 
