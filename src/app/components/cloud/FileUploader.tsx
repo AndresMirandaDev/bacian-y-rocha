@@ -25,7 +25,7 @@ const FileUploader = ({ publicId, setPublicId, multiple }: Props) => {
           multiple: multiple,
           clientAllowedFormats: ['pdf'],
         }}
-        uploadPreset="lvoo9bpb"
+        uploadPreset="egv7ezb1"
         onUpload={(result, widget) => {
           if (result.event !== 'success') return;
           const info = result.info as CloudinaryResult;
