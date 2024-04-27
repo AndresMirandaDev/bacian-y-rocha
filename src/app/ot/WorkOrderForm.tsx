@@ -237,12 +237,12 @@ const WorkOrderForm = ({
           clientSector,
           quoteNumber,
           startDate: new Date(startDate).toISOString(),
-          estimatedDate: new Date(estimatedDate).toISOString(),
+          estimatedDate: new Date(startDate).toISOString(),
           componentDevice,
           deviceNumber,
           model,
           componentName,
-          workPrice: parseInt(workPrice),
+          workPrice: workPrice !== '' ? parseInt(workPrice) : 0,
           materials: materialsToSubmit,
           activities,
         });
@@ -257,15 +257,15 @@ const WorkOrderForm = ({
       toast.error(
         'Orden de trabajo no pudo ser registrada, inténtelo nuevamente.'
       );
-      activities.forEach((a) => {
-        a.subTasks!.forEach((st) => {
-          if (!a.description || !st.description.length) {
-            return toast.error(
-              'Alguna(s) descripción(es) de actividades o sub tareas estan vacías, recuerde agregarlas.'
-            );
-          }
-        });
-      });
+      // activities.forEach((a) => {
+      //   a.subTasks!.forEach((st) => {
+      //     if (!a.description || !st.description.length) {
+      //       return toast.error(
+      //         'Alguna(s) descripción(es) de actividades o sub tareas estan vacías, recuerde agregarlas.'
+      //       );
+      //     }
+      //   });
+      // });
     }
   };
 
@@ -356,6 +356,7 @@ const WorkOrderForm = ({
                   valueMissing="Campo requerido"
                   name="number"
                   typeMismatch="numero inválido"
+                  required={false}
                 />
               </Box>
             </Flex>
@@ -371,6 +372,7 @@ const WorkOrderForm = ({
                   name="workPrice"
                   typeMismatch="numero inválido"
                   type="number"
+                  required={false}
                 />
               </Box>
             </Flex>
@@ -385,6 +387,7 @@ const WorkOrderForm = ({
                   valueMissing="Campo requerido"
                   name="description"
                   typeMismatch="descripción invalida"
+                  required={false}
                 />
               </Box>
             </Flex>
@@ -452,6 +455,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="clientRut"
                     typeMismatch="rut invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -466,6 +470,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="clientAddress"
                     typeMismatch="dirección invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -480,6 +485,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="clientSector"
                     typeMismatch="giroinvalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -527,6 +533,7 @@ const WorkOrderForm = ({
                     name="startDate"
                     typeMismatch="fecha invalida"
                     type="date"
+                    required
                   />
                 </Box>
               </Flex>
@@ -541,6 +548,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="quoteNumber"
                     typeMismatch="numero invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -556,6 +564,7 @@ const WorkOrderForm = ({
                     name="estimatedDate"
                     typeMismatch="fecha invalida"
                     type="date"
+                    required
                   />
                 </Box>
               </Flex>
@@ -617,6 +626,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="componentName"
                     typeMismatch="campo invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -631,6 +641,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="model"
                     typeMismatch="campo invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -645,6 +656,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="componentDevice"
                     typeMismatch="campo invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -659,6 +671,7 @@ const WorkOrderForm = ({
                     valueMissing="Campo requerido"
                     name="deviceNumber"
                     typeMismatch="campo invalido"
+                    required={false}
                   />
                 </Box>
               </Flex>
@@ -767,6 +780,7 @@ const WorkOrderForm = ({
                     typeMismatch="Nombre invalido"
                     label="Artículo"
                     name="name"
+                    required={false}
                   />
                 </Box>
                 <Box>
@@ -777,6 +791,7 @@ const WorkOrderForm = ({
                     typeMismatch="Código invalido"
                     label="Código"
                     name="code"
+                    required={false}
                   />
                 </Box>
                 <Box>
@@ -788,6 +803,7 @@ const WorkOrderForm = ({
                     label="Precio unitario"
                     name="unitPrice"
                     type="number"
+                    required={false}
                   />
                 </Box>
                 <Box>
@@ -799,6 +815,7 @@ const WorkOrderForm = ({
                     label="Cantidad"
                     name="quantity"
                     type="number"
+                    required={false}
                   />
                 </Box>
                 <Box>
@@ -810,6 +827,7 @@ const WorkOrderForm = ({
                     label="Descuento"
                     name="discount"
                     type="number"
+                    required={false}
                   />
                 </Box>
                 <Box className="flex items-center justify-center">

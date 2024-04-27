@@ -347,6 +347,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                       onChange={(e) => {
                         handleChange(e, index, 'description');
                       }}
+                      required={false}
                     />
                   </ActivityPopOver>
                 </Flex>
