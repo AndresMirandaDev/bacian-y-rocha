@@ -17,6 +17,7 @@ interface Task {
   hourPrice?: number;
   photos?: string[];
   position?: string;
+  workerNumber?: number;
 }
 
 interface Props {
@@ -128,6 +129,17 @@ const TaskAccordion = ({ activity, subTask }: Props) => {
                 </Box>
                 <Box>
                   <Text>$ {activity.hourPrice}</Text>
+                </Box>
+                <Separator size="4" />
+              </Flex>
+            )}
+            {subTask && (
+              <Flex direction="column" justify="center" align="center" gap="3">
+                <Box>
+                  <Text className="font-bold">Número de trabajadores</Text>
+                </Box>
+                <Box>
+                  <Text>{activity.workerNumber}</Text>
                 </Box>
                 <Separator size="4" />
               </Flex>

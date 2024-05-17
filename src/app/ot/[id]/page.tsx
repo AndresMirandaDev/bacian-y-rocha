@@ -34,7 +34,10 @@ const WorkOrderDetails = async ({ params }: Params) => {
       return (
         accumulator +
         activity.subTasks.reduce((acc, st) => {
-          return acc + st.hours * st.hourPrice;
+          return (
+            acc +
+            st.hours * st.hourPrice * (st.workerNumber ? st.workerNumber : 1)
+          );
         }, 0)
       );
     }, 0) +
@@ -51,7 +54,10 @@ const WorkOrderDetails = async ({ params }: Params) => {
       return (
         accumulator +
         activity.subTasks.reduce((acc, st) => {
-          return acc + st.hours * st.hourPrice;
+          return (
+            acc +
+            st.hours * st.hourPrice * (st.workerNumber ? st.workerNumber : 1)
+          );
         }, 0)
       );
     }, 0) +
@@ -67,7 +73,10 @@ const WorkOrderDetails = async ({ params }: Params) => {
     return (
       accumulator +
       activity.subTasks.reduce((acc, st) => {
-        return acc + st.hours * st.hourPrice;
+        return (
+          acc +
+          st.hours * st.hourPrice * (st.workerNumber ? st.workerNumber : 1)
+        );
       }, 0)
     );
   }, 0);
