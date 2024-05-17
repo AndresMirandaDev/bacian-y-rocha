@@ -32,6 +32,7 @@ interface SubTask {
   hours: number;
   hourPrice: number;
   position: string;
+  workerNumber?: number;
 }
 
 interface Task {
@@ -128,6 +129,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
       | 'hours'
       | 'hourPrice'
       | 'name'
+      | 'workerNumber'
   ) => {
     const updatedData = [...activities];
     const inputValue = (e.target as HTMLInputElement).value;
@@ -135,7 +137,8 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
     if (
       field === 'durationInDays' ||
       field === 'hours' ||
-      field === 'hourPrice'
+      field === 'hourPrice' ||
+      field === 'workerNumber'
     ) {
       const newValue =
         inputValue === '0' || (!isNaN(Number(inputValue)) && inputValue !== '')
@@ -188,6 +191,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
           hours: 0,
           hourPrice: 0,
           position: '',
+          workerNumber: 0,
         },
       ];
     } else {
@@ -203,6 +207,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
           hours: 0,
           hourPrice: 0,
           position: '',
+          workerNumber: 0,
         },
       ];
     }
@@ -542,7 +547,7 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                               <Text className="text-slate-500">Valor H.H</Text>
                             </Box>
                             <input
-                              value={st.hourPrice}
+                              value={String(st.hourPrice)}
                               className="border border-slate-300 rounded-md p-2 text-center"
                               type="number"
                               onChange={(e) => {
@@ -551,6 +556,26 @@ const ActivityForm = ({ sendActivities, tasks, positions }: Props) => {
                                   index,
                                   subTaskIndex,
                                   'hourPrice'
+                                );
+                              }}
+                            />
+                          </Flex>
+                          <Flex direction="column">
+                            <Box>
+                              <Text className="text-slate-500">
+                                Número de trabajadores
+                              </Text>
+                            </Box>
+                            <input
+                              value={String(st.workerNumber)}
+                              className="border border-slate-300 rounded-md p-2 text-center"
+                              type="number"
+                              onChange={(e) => {
+                                handleSubTaksChange(
+                                  e,
+                                  index,
+                                  subTaskIndex,
+                                  'workerNumber'
                                 );
                               }}
                             />

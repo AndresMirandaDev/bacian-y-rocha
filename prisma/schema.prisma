@@ -154,6 +154,7 @@ type SubTask {
   durationInDays Int
   hours          Int
   hourPrice      Int
+  workerNumber   Int?
 }
 
 type Task {
