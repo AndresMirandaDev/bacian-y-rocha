@@ -17,7 +17,7 @@ interface Task {
   hourPrice?: number;
   photos?: string[];
   position?: string;
-  workerNumber?: number;
+  workerNumber?: number | null;
 }
 
 interface Props {
