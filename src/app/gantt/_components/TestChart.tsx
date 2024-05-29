@@ -31,6 +31,10 @@ import LoadingPAge from '@/app/loading';
 import classNames from 'classnames';
 import * as Accordion from '@radix-ui/react-accordion';
 import { ChevronDownIcon } from '@radix-ui/react-icons';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { FaFilePdf } from 'react-icons/fa6';
+import Link from 'next/link';
+import ExportPDFButton from '@/app/ot/workorderpdf/ExportPDFButton';
 
 interface Props {
   workOrder: WorkOrder;
@@ -273,6 +277,11 @@ const TestChart = ({ workOrder }: Props) => {
       <Flex className="mt-5 mb-5">
         <Button onClick={handleSaveChanges}>
           <FaSave /> Guardar cambios
+        </Button>
+      </Flex>
+      <Flex className="mt-5 mb-5">
+        <Button>
+          <ExportPDFButton workOrder={workOrder} />
         </Button>
       </Flex>
       <Gantt
